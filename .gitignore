@@ -1,0 +1,16 @@
+# Godot
+.godot/
+*.tmp
+export/
+*.apk
+*.aab
+*.ipa
+
+# 生图密钥（游戏内 AI 工坊用的本地配置）
+assets/imagegen.json
+
+# 截图与临时文件
+shots/
+__pycache__/
+*.pyc
+.DS_Store
