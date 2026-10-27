@@ -131,6 +131,7 @@ func build() -> void:
 	m.add_child(v)
 	add_child(m)
 	_refresh()
+	Audio.play_bgm("battle")
 	if not Game.tutorial_done("battle"):
 		_run_tutorial()
 

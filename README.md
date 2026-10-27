@@ -82,7 +82,7 @@ python tools/gen_assets.py --only characters/shen_yan --force
 ```
 project.godot / export_presets.cfg
 src/App.tscn, App.gd          根节点：界面容器 + 浮层；--test / --shots 入口
-src/autoload/                 Data（静态数据与贴图）、Game（存档数值）、UIKit（样式与控件工厂）、Router（导航与浮层）、ImageGen（生图客户端）
+src/autoload/                 Data（静态数据与贴图）、Game（存档数值）、UIKit（样式与控件工厂）、Router（导航、浮层、新手引导）、ImageGen（生图客户端）、Audio（BGM 与配音）
 src/systems/Gacha.gd          抽卡规则（纯逻辑，可单测）
 src/screens/                  各界面（全部用代码搭建，样式集中在 UIKit）
 src/dev/ShotRunner.gd         自动截图
@@ -93,10 +93,34 @@ tests/TestRunner.gd           逻辑测试
 docs/                         调研报告与设计说明
 ```
 
+## v0.2 新增
+
+![v0.2 截图](docs/screenshots/v02_contact_sheet.jpg)
+
+新手引导 / 第二章 / 剧情 CG / 回忆相册 / 约会 / 触碰互动 / 互动回应 / 抠图后的主页立绘
+
+| 内容 | 说明 | 代码 / 数据 |
+| --- | --- | --- |
+| 第二章「潮汐之约」 | 5 节：被删掉的档案 → 沈砚 / 顾辞 / 陆灼三条个人线 → 终章 Boss「裂隙之心」（自动派出战力最高的男主）；新增配角说话人（`who: "npc"` + `name`） | `data/story.json` |
+| 剧情 CG 与回忆 | 剧本行 `cg` / `cg_end` 铺满全屏 CG，看过即收进「回忆」相册（主页右侧入口），可全屏欣赏；主线 7 张 + 约会 9 张 | `Story.gd`、`Gallery.gd` |
+| 约会 | 每位男主 3 个约会地点，好感 Lv.2 / 4 / 6 解锁，每人每天 1 次（+15 好感，首次 100 钻并解锁约会 CG）；约会里有「触碰互动」：在立绘上点亮发光部位，他会回应 | `data/dates.json`、`Dates.gd`、`Story.gd` 的 `touch` 行 |
+| 新手引导 | 首次进入主页由当前男主介绍 7 个入口；第一场战斗暂停讲解攻击 / 技能 / 闪避 / 共鸣 | `Router.coach()` |
+| 角色配音 | 男主的剧情、约会、电话、主页问候共 201 句，MiniMax `speech-2.8-hd`，三人三种音色；设置里可调音乐 / 配音音量 | `Audio.gd`、`tools/gen_audio.py`、`assets/audio/voice/` |
+| 立绘抠图 | image 2 不支持透明背景，出图后用 BiRefNet 本地抠图，立绘不再是方框 | `tools/cutout.py` |
+
+### 声音流水线
+
+```bash
+python tools/gen_audio.py voice      # 配音：遍历剧本里男主的台词，文件名 = md5("角色|台词")[:16]，改台词只重生成改过的句子
+python tools/gen_audio.py bgm        # BGM：Mureka 纯音乐，曲目与提示词在 data/audio.json（下载域名 cdn.mureka.ai 需要放行）
+```
+
+音色在 `data/characters.json` 的 `voice.id`。缺配音 / 缺 BGM 时游戏静默跳过。
+
 ## 后续规划（建议）
 
 1. 用 image 2 出正式美术并统一画风；立绘做 Live2D / 骨骼动画或用视频模型生成「动态思念」。
-2. 语音：电话、思念台词接 TTS 或配音；剧情加 BGM / 音效（`Audio` 自动加载预留）。
-3. 第二章及之后剧情；约会小游戏（拍照、抓娃娃）；主页触摸互动扩展。
+2. BGM 与音效（`Audio` 已就绪，等 Mureka 下载放行）；思念卡台词配音。
+3. 第三章「回响之城」；约会小游戏（拍照、抓娃娃）；主页触摸互动扩展。
 4. 服务端：账号、存档云同步、内购验单、活动与卡池配置下发；生图改为服务端离线生成。
 5. 上架：Android / iOS 导出模板、隐私合规、抽卡概率公示页。

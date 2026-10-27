@@ -1,5 +1,5 @@
 extends "res://src/screens/BaseScreen.gd"
-## 电话：全屏立绘 + 通话计时 + 逐句台词（正式版接语音文件）。
+## 电话：全屏立绘 + 通话计时 + 逐句台词，有配音时播放配音。
 
 var cid := ""
 var lines: Array = []
@@ -49,7 +49,9 @@ func build() -> void:
 	next_btn.pressed.connect(_next)
 	var hang := UIKit.button("挂断", "danger", 30, 96)
 	hang.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	hang.pressed.connect(func() -> void: Router.back())
+	hang.pressed.connect(func() -> void:
+		Audio.stop_voice()
+		Router.back())
 	row.add_child(next_btn)
 	row.add_child(hang)
 	v.add_child(row)
@@ -69,6 +71,7 @@ func _next() -> void:
 	idx += 1
 	if idx >= lines.size():
 		finished = true
+		Audio.stop_voice()
 		line_label.text = "（通话结束）"
 		next_btn.disabled = true
 		var key := "call_" + Game.today()
@@ -81,6 +84,7 @@ func _next() -> void:
 			Game.save()
 		return
 	line_label.text = str(lines[idx])
+	Audio.play_voice(cid, str(lines[idx]))
 	UIKit.fade_in(line_label, 0.3)
 	if idx == lines.size() - 1:
 		next_btn.text = "结束通话"

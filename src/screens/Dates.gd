@@ -8,6 +8,7 @@ func build() -> void:
 	if cid == "":
 		cid = str(params.get("char", Game.s.get("favorite", Data.char_order[0])))
 	var ch := Data.character(cid)
+	Audio.play_bgm("daily")
 	var page := UIKit.page("约会", func() -> void: Router.back(), UIKit.pill("每人每天 1 次", UIKit.C_ROSE, 22))
 	var v: VBoxContainer = page[1]
 

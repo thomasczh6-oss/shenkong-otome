@@ -54,7 +54,7 @@ func default_state() -> Dictionary:
 		"moments": {"liked": {}},
 		"month_card": {"until": 0, "last_claim": ""},
 		"battle_pass": {"level": 1, "xp": 0, "claimed": [], "premium": false},
-		"settings": {"text_speed": 1.0, "auto": false},
+		"settings": {"text_speed": 1.0, "auto": false, "bgm_volume": 0.7, "voice_volume": 1.0},
 		"stats": {"battles": 0, "wins": 0, "pulls": 0},
 		"favorite": "shen_yan",
 		"gallery": {},

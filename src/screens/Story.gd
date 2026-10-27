@@ -83,6 +83,7 @@ func build() -> void:
 
 	_build_dialog()
 	_build_top_buttons()
+	Audio.play_bgm(str(scene_data.get("bgm", "daily" if date_id != "" else "story")))
 	_next()
 
 
@@ -224,6 +225,10 @@ func _show_say(line: Dictionary) -> void:
 	var who := str(line.get("who", "narrator"))
 	var text := str(line.get("text", "")).replace("{name}", Game.player_name())
 	var speaker := ""
+	if Data.characters.has(who) and not skipping:
+		Audio.play_voice(who, str(line.get("text", "")))
+	else:
+		Audio.stop_voice()
 	if who == "narrator":
 		name_tag.visible = false
 		portrait.modulate = Color(0.55, 0.55, 0.65)
@@ -481,6 +486,7 @@ func _gain_affection(who: String, n: int) -> void:
 
 func on_resume(result: Variant) -> void:
 	# 从战斗回来
+	Audio.play_bgm(str(scene_data.get("bgm", "story")))
 	if typeof(result) == TYPE_DICTIONARY and bool(result.get("win", false)):
 		_next()
 	else:
@@ -526,6 +532,7 @@ func _show_history() -> void:
 
 func _end() -> void:
 	ended = true
+	Audio.stop_voice()
 	skipping = false
 	auto = false
 	if date_id != "":

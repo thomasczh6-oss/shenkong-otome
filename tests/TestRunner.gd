@@ -17,6 +17,7 @@ func _ready() -> void:
 	_test_save()
 	_test_story()
 	_test_dates()
+	_test_audio()
 	print("\n%d checks, %d failures" % [checks, failures])
 	get_tree().quit(1 if failures > 0 else 0)
 
@@ -225,3 +226,29 @@ func _test_dates() -> void:
 	check(Game.can_date(d1), "跨天后可以再约")
 	var res2 := Game.finish_date("shen_yan_1")
 	check(not res2.first and res2.reward.is_empty(), "重复约会不再给首次奖励")
+
+
+func _test_audio() -> void:
+	print("[声音]")
+	check(Audio.voice_id("shen_yan", "退后。") == "243e8e11fbf27341", "配音文件名算法与 gen_audio.py 一致")
+	# 统计男主台词的配音覆盖率（配音缺失不报错，只是静音）
+	var n := {"total": 0, "voiced": 0}  # lambda 按值捕获局部变量，所以用字典计数
+	var walk := func(lines: Array, f: Callable) -> void:
+		for line in lines:
+			var t := str(line.get("t", "say"))
+			if t == "say" and Data.characters.has(str(line.get("who", ""))):
+				n.total += 1
+				if Audio.has_voice(str(line.who), str(line.text)):
+					n.voiced += 1
+			elif t == "choice":
+				for o in line.options:
+					f.call(o.get("lines", []), f)
+	for ch in Data.chapters:
+		for sc in ch.scenes:
+			walk.call(sc.lines, walk)
+	for d in Data.dates:
+		walk.call(d.lines, walk)
+	print("    男主台词 %d 句，有配音 %d 句" % [n.total, n.voiced])
+	check(n.total > 100, "男主台词数量 > 100")
+	for cid in Data.char_order:
+		check(str(Data.character(cid).get("voice", {}).get("id", "")) != "", "%s 配置了音色" % cid)

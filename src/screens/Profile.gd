@@ -70,6 +70,22 @@ func _settings(v: VBoxContainer) -> void:
 			rebuild())
 		row.add_child(b)
 	pv.add_child(row)
+	for spec in [["音乐", "bgm_volume", 0.7], ["配音", "voice_volume", 1.0]]:
+		var vrow := UIKit.hbox(10)
+		vrow.add_child(UIKit.label(str(spec[0]) + "音量", 26, UIKit.C_TEXT, HORIZONTAL_ALIGNMENT_LEFT, false))
+		var key: String = spec[1]
+		var now := float(Game.s.settings.get(key, spec[2]))
+		for pair in [["关", 0.0], ["低", 0.4], ["中", 0.7], ["高", 1.0]]:
+			var b := UIKit.button(str(pair[0]), "primary" if absf(now - float(pair[1])) < 0.01 else "ghost", 24, 64)
+			b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			var val: float = pair[1]
+			b.pressed.connect(func() -> void:
+				Game.s.settings[key] = val
+				Game.save()
+				Audio.apply_volume()
+				rebuild())
+			vrow.add_child(b)
+		pv.add_child(vrow)
 	var reset := UIKit.button("清除存档，重新开始", "danger", 26, 84)
 	reset.pressed.connect(func() -> void:
 		Router.confirm("清除存档？", "所有进度、思念和好感都会清空，无法恢复。", func() -> void:

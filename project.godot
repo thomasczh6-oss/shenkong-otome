@@ -19,6 +19,7 @@ Game="*res://src/autoload/Game.gd"
 UIKit="*res://src/autoload/UIKit.gd"
 Router="*res://src/autoload/Router.gd"
 ImageGen="*res://src/autoload/ImageGen.gd"
+Audio="*res://src/autoload/Audio.gd"
 
 [display]
 

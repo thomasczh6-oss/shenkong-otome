@@ -12,6 +12,7 @@ func build() -> void:
 		cid = str(Data.char_order[0])
 		Game.s.favorite = cid
 	var ch := Data.character(cid)
+	Audio.play_bgm("title")
 
 	# 背景与立绘
 	var bg := UIKit.image(Data.texture(str(ch.get("home_bg", "backgrounds/harbor_night"))))
@@ -41,6 +42,7 @@ func build() -> void:
 	touch.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 	touch.pressed.connect(func() -> void:
 		Router.toast("%s：%s" % [ch.name, ch.get("greet", "……")], 2.4)
+		Audio.play_voice(cid, str(ch.get("greet", "")))
 		UIKit.pop(portrait, 0.97, 0.3))
 	add_child(touch)
 
