@@ -40,6 +40,12 @@ func _run() -> void:
 	Game.mark_tutorial("battle")
 	Router.go("Home")
 	await _shot("02_home")
+	for c in ["gu_ci", "lu_zhuo"]:
+		Game.s.favorite = c
+		Router.go("Home")
+		await _shot("02_home_" + c)
+	Game.s.favorite = "shen_yan"
+	Router.go("Home")
 	Router.push("Chapters")
 	await _shot("03_chapters")
 

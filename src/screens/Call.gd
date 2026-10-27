@@ -25,6 +25,7 @@ func build() -> void:
 	portrait.set_anchors_preset(Control.PRESET_FULL_RECT)
 	portrait.offset_top = 260
 	portrait.offset_bottom = -520
+	portrait.material = UIKit.portrait_material()
 	add_child(portrait)
 	add_child(UIKit.gradient_rect(Color(0, 0, 0, 0.0), Color(0, 0, 0, 0.9)))
 

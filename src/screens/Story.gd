@@ -59,9 +59,7 @@ func build() -> void:
 	portrait.set_anchors_preset(Control.PRESET_FULL_RECT)
 	portrait.offset_top = 140
 	portrait.offset_bottom = -330
-	var fade := ShaderMaterial.new()
-	fade.shader = load("res://src/fx/fade_bottom.gdshader")
-	portrait.material = fade
+	portrait.material = UIKit.portrait_material()
 	portrait.visible = false
 	add_child(portrait)
 

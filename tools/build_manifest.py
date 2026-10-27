@@ -12,9 +12,10 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 
 STYLE_CHAR = (
-    "乙女向恋爱手游的男性角色立绘，竖版构图，膝上景或半身，面向镜头，"
-    "二次元偏写实的精致画风（接近《恋与深空》的质感），皮肤与发丝细节丰富，"
-    "柔和电影级光影，背景为干净的深色渐变并带少量光斑，无文字无水印"
+    "乙女向恋爱手游的男性角色立绘，竖版构图，七分身（头顶到大腿中部），面向镜头，"
+    "人物居中且只占画面宽度约 70%，头顶上方留出少量空白，双肩、双臂和双手完整入画，身体任何部位都不被画面边缘裁切，"
+    "二次元偏写实的精致画风（接近《恋与深空》的质感），皮肤与发丝细节丰富，柔和电影级光影带淡淡的轮廓光，"
+    "背景为干净的纯色浅灰背景（便于抠图），无道具遮挡，无文字无水印"
 )
 STYLE_BG = "乙女向恋爱手游场景背景图，无人物，竖版 9:16，电影感光影，精致写实的二次元场景，无文字无水印"
 STYLE_CARD = "乙女向恋爱手游「思念卡」插画，男主角与场景的情绪化构图，竖版 3:4，二次元偏写实画风，柔和电影光，无文字无水印"
@@ -122,10 +123,15 @@ def main():
                 "prompt": f"{ch['name']}：{ch['visual']}。{expr_desc}。{STYLE_CHAR}",
                 "cutout": True,  # 出图后用 tools/cutout.py 抠成透明背景
             }
-            if expr != "calm":
+            if expr == "calm":
+                # 以旧版 calm 为参考重绘成完整七分身，保持长相不变（旧图存在 assets/gen/_ref/）
+                entry["ref"] = f"_ref/{ch['id']}_calm"
+                entry["prompt"] = (f"保持参考图中同一角色的脸型、五官、发型、服装与画风完全不变，重新构图为完整的七分身立绘，务必保留参考图中的全部配饰（眼镜、耳钉、项链等）。"
+                                   f"{ch['name']}：{ch['visual']}。{expr_desc}。{STYLE_CHAR}")
+            else:
                 # 用 calm 立绘做参考图（i2i / edits），保证同一角色多表情一致
                 entry["ref"] = base_key
-                entry["prompt"] = f"保持参考图中同一角色的脸型、发型、服装与画风不变，只改变表情与姿态：{expr_desc}。{STYLE_CHAR}"
+                entry["prompt"] = f"保持参考图中同一角色的脸型、发型、服装、配饰（眼镜、耳钉、项链等）与画风不变，只改变表情与姿态：{expr_desc}。{STYLE_CHAR}"
             assets.append(entry)
 
     by_id = {c["id"]: c for c in chars}

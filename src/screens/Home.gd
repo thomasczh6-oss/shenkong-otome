@@ -17,14 +17,22 @@ func build() -> void:
 	# 背景与立绘
 	var bg := UIKit.image(Data.texture(str(ch.get("home_bg", "backgrounds/harbor_night"))))
 	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-	bg.modulate = Color(0.7, 0.74, 0.9)
+	bg.modulate = Color(0.62, 0.62, 0.8)
 	add_child(bg)
+	var ch_color := Color(str(ch.get("color", "#ff9ec7")))
+	add_child(UIKit.glow_blob(Vector2(540, 760), 1100, Color(ch_color, 0.28)))
+	add_child(UIKit.sparkles(Rect2(0, 200, 1080, 1100), 24))
 	var portrait := UIKit.image(Data.texture(Data.portrait_key(cid, "calm")), false)
 	portrait.set_anchors_preset(Control.PRESET_FULL_RECT)
-	portrait.offset_top = 170
-	portrait.offset_bottom = -560
+	portrait.offset_top = 150
+	portrait.offset_bottom = -330
+	portrait.material = UIKit.portrait_material(Color(0.97, 0.94, 1.0), ch_color.lightened(0.4), 0.6, 0.72)
+	portrait.pivot_offset = Vector2(540, 1440)
 	add_child(portrait)
 	UIKit.fade_in(portrait, 0.4)
+	var breathe := portrait.create_tween().set_loops()
+	breathe.tween_property(portrait, "scale", Vector2(1.008, 1.012), 2.6).set_trans(Tween.TRANS_SINE)
+	breathe.tween_property(portrait, "scale", Vector2.ONE, 2.6).set_trans(Tween.TRANS_SINE)
 	var grad := UIKit.gradient_rect(Color(0.04, 0.06, 0.15, 0.0), Color(0.04, 0.06, 0.15, 0.97))
 	grad.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	grad.offset_top = -900
@@ -34,7 +42,7 @@ func build() -> void:
 	var touch := Button.new()
 	touch.flat = true
 	touch.set_anchors_preset(Control.PRESET_FULL_RECT)
-	touch.offset_top = 170
+	touch.offset_top = 150
 	touch.offset_bottom = -560
 	touch.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
 	touch.add_theme_stylebox_override("hover", StyleBoxEmpty.new())

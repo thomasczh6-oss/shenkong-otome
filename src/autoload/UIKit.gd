@@ -434,3 +434,33 @@ func reward_text(reward: Dictionary) -> String:
 	for k in reward.keys():
 		parts.append("%s×%d" % [names.get(k, k), int(reward[k])])
 	return "、".join(parts)
+
+
+## 立绘材质：底部/两侧淡出 + 场景色调 + 轮廓光，让人物和背景像在同一个画面里。
+func portrait_material(tint := Color(0.96, 0.94, 1.0), rim_color := Color(1.0, 0.78, 0.9), rim := 0.55, fade_start := 0.78) -> ShaderMaterial:
+	var mat := ShaderMaterial.new()
+	mat.shader = load("res://src/fx/portrait.gdshader")
+	mat.set_shader_parameter("tint", tint)
+	mat.set_shader_parameter("rim_color", rim_color)
+	mat.set_shader_parameter("rim", rim)
+	mat.set_shader_parameter("fade_start", fade_start)
+	return mat
+
+
+## 人物身后的一团柔光（角色色），中心在 center，直径 d。
+func glow_blob(center: Vector2, d: float, color: Color) -> TextureRect:
+	var g := Gradient.new()
+	g.set_color(0, color)
+	g.set_color(1, Color(color, 0.0))
+	var gt := GradientTexture2D.new()
+	gt.gradient = g
+	gt.fill = GradientTexture2D.FILL_RADIAL
+	gt.fill_from = Vector2(0.5, 0.5)
+	gt.fill_to = Vector2(0.5, 0.0)
+	var tr := TextureRect.new()
+	tr.texture = gt
+	tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	tr.size = Vector2(d, d)
+	tr.position = center - Vector2(d, d) / 2.0
+	return tr
