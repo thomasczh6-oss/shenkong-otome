@@ -30,12 +30,27 @@ def is_cut(img):
     return lo < 10
 
 
-def cut(path, force=False):
-    """抠一张图，返回是否处理了。"""
+def chroma_key(img):
+    """绿幕色键：按「绿色比红蓝高出多少」算透明度，并去掉边缘的绿色溢色。"""
+    import numpy as np
+    a = np.asarray(img.convert("RGB")).astype(np.float32) / 255.0
+    r, g, b = a[..., 0], a[..., 1], a[..., 2]
+    green = g - np.maximum(r, b)
+    alpha = 1.0 - np.clip((green - 0.08) / (0.35 - 0.08), 0.0, 1.0)
+    g2 = np.minimum(g, np.maximum(r, b) + 0.02)  # 去溢色
+    out = np.dstack([r, g2, b, alpha])
+    return Image.fromarray((out * 255).astype(np.uint8), "RGBA")
+
+
+def cut(path, force=False, mode="portrait"):
+    """抠一张图，返回是否处理了。mode: portrait（BiRefNet 人像）或 chroma（绿幕色键）。"""
     global _session
     img = Image.open(path)
     if is_cut(img) and not force:
         return False
+    if mode == "chroma":
+        chroma_key(img).save(path, "PNG", optimize=True)
+        return True
     from rembg import new_session, remove
     if _session is None:
         _session = new_session(MODEL)
@@ -49,9 +64,10 @@ def main():
     ap.add_argument("--only", default="")
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--single", default="", help=argparse.SUPPRESS)
+    ap.add_argument("--mode", default="portrait", help=argparse.SUPPRESS)
     args = ap.parse_args()
     if args.single:
-        cut(pathlib.Path(args.single), force=True)
+        cut(pathlib.Path(args.single), force=True, mode=args.mode)
         return
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     n = 0
@@ -62,7 +78,8 @@ def main():
         if not p.exists() or (is_cut(Image.open(p)) and not args.force):
             continue
         # 每张图单独开一个进程：BiRefNet 在同一进程里连续推理时偶尔会被系统杀掉
-        r = subprocess.run([sys.executable, __file__, "--single", str(p)])
+        r = subprocess.run([sys.executable, __file__, "--single", str(p), "--mode",
+                            "chroma" if e.get("cutout") == "chroma" else "portrait"])
         if r.returncode == 0:
             n += 1
             print("cut", e["key"], flush=True)

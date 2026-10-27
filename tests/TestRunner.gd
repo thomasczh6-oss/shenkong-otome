@@ -166,6 +166,18 @@ func _test_story() -> void:
 	Game.s = Game.default_state()
 	check(Data.chapters.size() >= 2, "至少 2 章")
 	check(Data.chapter("ch2").get("scenes", []).size() == 5, "第二章 5 节")
+	check(Data.chapter("ch3").get("scenes", []).size() == 5 and str(Data.chapter("ch3").get("requires", "")) == "ch2", "第三章 5 节，完成第二章后解锁")
+	var bgms: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/audio.json")).get("bgm", {})
+	for ch in Data.chapters:
+		for sc in ch.scenes:
+			if sc.has("bgm"):
+				check(bgms.has(str(sc.bgm)), "%s/%s 的 BGM %s 在 audio.json 里" % [ch.id, sc.id, sc.bgm])
+	var vid_cards := 0
+	for id in Data.card_order:
+		if Data.card_video(id) != null:
+			vid_cards += 1
+			check(int(Data.cards[id].rarity) == 5, "动态思念 %s 是 5★" % id)
+	print("    动态思念 %d 张" % vid_cards)
 	var cgs: Array = Data.cg_list()
 	check(cgs.size() >= 7, "剧情 CG ≥ 7 张（实际 %d）" % cgs.size())
 	var seen := {}

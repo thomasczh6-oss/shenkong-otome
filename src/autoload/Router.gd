@@ -79,6 +79,12 @@ func _open(screen: String, params: Dictionary) -> void:
 	node.params = params
 	host.add_child(node)
 	node.set_anchors_preset(Control.PRESET_FULL_RECT)
+	# 转场：淡入 + 轻微上浮
+	node.modulate.a = 0.0
+	node.position.y = 24.0
+	var tw := node.create_tween().set_parallel(true)
+	tw.tween_property(node, "modulate:a", 1.0, 0.22)
+	tw.tween_property(node, "position:y", 0.0, 0.28).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	stack.append({"name": screen, "params": params, "node": node})
 
 

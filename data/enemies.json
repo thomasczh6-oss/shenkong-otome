@@ -13,7 +13,8 @@
         "gold": 600,
         "diamonds": 30,
         "xp": 30
-      }
+      },
+      "aura": "#3aa0ff"
     },
     "tide_wraith": {
       "name": "潮魇",
@@ -29,7 +30,8 @@
         "gold": 1500,
         "diamonds": 80,
         "xp": 60
-      }
+      },
+      "aura": "#4a6bff"
     },
     "star_shade": {
       "name": "星影",
@@ -44,7 +46,8 @@
         "gold": 1000,
         "diamonds": 50,
         "xp": 40
-      }
+      },
+      "aura": "#d8ccff"
     },
     "rift_heart": {
       "name": "裂隙之心",
@@ -60,7 +63,25 @@
         "gold": 3000,
         "diamonds": 150,
         "xp": 100
-      }
+      },
+      "aura": "#5fb6ff"
+    },
+    "echo_colossus": {
+      "name": "回响巨像",
+      "desc": "三百一十二个人的回响被强行聚在一起，变成了没有脸的巨人。",
+      "hp": 4200,
+      "atk": 125,
+      "def": 45,
+      "attack_interval": 1.8,
+      "telegraph": 0.75,
+      "img": "enemies/echo_colossus",
+      "boss": true,
+      "reward": {
+        "gold": 4000,
+        "diamonds": 200,
+        "xp": 120
+      },
+      "aura": "#9fe6ff"
     }
   }
 }

@@ -58,7 +58,10 @@ func build() -> void:
 	portrait = UIKit.image(Data.texture("characters/shen_yan/calm"), false)
 	portrait.set_anchors_preset(Control.PRESET_FULL_RECT)
 	portrait.offset_top = 140
-	portrait.offset_bottom = -470
+	portrait.offset_bottom = -330
+	var fade := ShaderMaterial.new()
+	fade.shader = load("res://src/fx/fade_bottom.gdshader")
+	portrait.material = fade
 	portrait.visible = false
 	add_child(portrait)
 
@@ -92,24 +95,36 @@ func _build_dialog() -> void:
 	m.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	m.offset_top = -470
 	m.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var v := UIKit.vbox(0)
+	var v := UIKit.vbox(-18)  # 名牌压在对话框上沿
 	v.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	name_tag = UIKit.panel(UIKit.C_ACCENT, 18, 12)
+	name_tag = PanelContainer.new()
+	name_tag.add_theme_stylebox_override("panel", _tag_sb(UIKit.C_ACCENT))
+	name_tag.z_index = 1
 	name_tag.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	name_tag.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	name_label = UIKit.label("", 30, UIKit.C_BG, HORIZONTAL_ALIGNMENT_CENTER, false)
+	name_label = UIKit.label("", 32, UIKit.C_INK, HORIZONTAL_ALIGNMENT_CENTER, false)
+	name_label.custom_minimum_size = Vector2(120, 0)
 	name_tag.add_child(name_label)
 	v.add_child(name_tag)
-	dialog_panel = UIKit.panel(Color(0.04, 0.05, 0.14, 0.82), 26, 30, Color(1, 1, 1, 0.12), 2)
+	var dsb := UIKit.sb(Color(0.11, 0.06, 0.19, 0.86), 34, Color(1, 0.75, 0.88, 0.45), 2, 34)
+	dsb.content_margin_top = 40
+	dsb.shadow_color = Color(1, 0.45, 0.7, 0.18)
+	dsb.shadow_size = 18
+	dialog_panel = PanelContainer.new()
+	dialog_panel.add_theme_stylebox_override("panel", dsb)
 	dialog_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	dialog_panel.custom_minimum_size = Vector2(0, 330)
 	var dv := UIKit.vbox(10)
 	dv.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	text_label = UIKit.label("", 36, UIKit.C_TEXT)
+	text_label = UIKit.label("", 38, UIKit.C_TEXT)
+	text_label.add_theme_constant_override("line_spacing", 10)
 	text_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	dv.add_child(text_label)
-	hint_label = UIKit.label("▼ 点击继续", 22, UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_RIGHT, false)
+	hint_label = UIKit.label("♡ 点击继续", 22, UIKit.C_ACCENT, HORIZONTAL_ALIGNMENT_RIGHT, false)
 	dv.add_child(hint_label)
+	var ht := hint_label.create_tween().set_loops()
+	ht.tween_property(hint_label, "modulate:a", 0.35, 0.7).set_trans(Tween.TRANS_SINE)
+	ht.tween_property(hint_label, "modulate:a", 1.0, 0.7).set_trans(Tween.TRANS_SINE)
 	dialog_panel.add_child(dv)
 	v.add_child(dialog_panel)
 	m.add_child(v)
@@ -236,20 +251,20 @@ func _show_say(line: Dictionary) -> void:
 	elif who == "npc":
 		speaker = str(line.get("name", "？？？"))
 		name_tag.visible = true
-		name_tag.add_theme_stylebox_override("panel", UIKit.sb(Color(0.62, 0.66, 0.78), 18, Color.TRANSPARENT, 0, 12))
+		name_tag.add_theme_stylebox_override("panel", _tag_sb(Color(0.62, 0.66, 0.78)))
 		portrait.modulate = Color(0.55, 0.55, 0.65)
 		text_label.add_theme_color_override("font_color", UIKit.C_TEXT)
 	elif who == "me":
 		speaker = Game.player_name()
 		name_tag.visible = true
-		name_tag.add_theme_stylebox_override("panel", UIKit.sb(UIKit.C_ROSE, 18, Color.TRANSPARENT, 0, 12))
+		name_tag.add_theme_stylebox_override("panel", _tag_sb(UIKit.C_ROSE))
 		portrait.modulate = Color(0.7, 0.7, 0.78)
 		text_label.add_theme_color_override("font_color", UIKit.C_TEXT)
 	else:
 		var ch := Data.character(who)
 		speaker = str(ch.get("name", who))
 		name_tag.visible = true
-		name_tag.add_theme_stylebox_override("panel", UIKit.sb(Color(str(ch.get("color", "#4fd1c5"))), 18, Color.TRANSPARENT, 0, 12))
+		name_tag.add_theme_stylebox_override("panel", _tag_sb(Color(str(ch.get("color", "#4fd1c5")))))
 		var key := Data.portrait_key(who, str(line.get("expr", "calm")))
 		if key != current_portrait_key:
 			current_portrait_key = key
@@ -261,7 +276,7 @@ func _show_say(line: Dictionary) -> void:
 		text_label.add_theme_color_override("font_color", UIKit.C_TEXT)
 	name_label.text = speaker
 	if touch_layer == null:
-		hint_label.text = "▼ 点击继续"
+		hint_label.text = "♡ 点击继续"
 	history.append({"who": speaker, "text": text})
 	_type(text)
 
@@ -608,3 +623,15 @@ func _next_scene_id() -> String:
 		if str(scenes[i].id) == sc_id and i + 1 < scenes.size():
 			return str(scenes[i + 1].id)
 	return ""
+
+
+## 名牌：角色色 + 白色描边 + 柔光，像一枚小徽章。
+func _tag_sb(color: Color) -> StyleBoxFlat:
+	var st := UIKit.sb(color.lightened(0.25), 30, Color(1, 1, 1, 0.85), 3, 0)
+	st.content_margin_left = 36
+	st.content_margin_right = 36
+	st.content_margin_top = 8
+	st.content_margin_bottom = 8
+	st.shadow_color = Color(color, 0.45)
+	st.shadow_size = 14
+	return st

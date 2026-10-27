@@ -36,7 +36,7 @@ func _bubble(from: String, text: String) -> void:
 	var w := mini(720, 44 + text.length() * 32)
 	var panel := UIKit.panel(UIKit.C_ACCENT if mine else UIKit.C_PANEL2, 22, 18)
 	panel.custom_minimum_size = Vector2(w, 0)
-	var l := UIKit.label(text, 28, UIKit.C_BG if mine else UIKit.C_TEXT)
+	var l := UIKit.label(text, 28, UIKit.C_INK if mine else UIKit.C_TEXT)
 	panel.add_child(l)
 	if mine:
 		h.add_child(UIKit.spacer(0, true))

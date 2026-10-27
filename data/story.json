@@ -1841,6 +1841,916 @@
           "bgm": "tension"
         }
       ]
+    },
+    {
+      "id": "ch3",
+      "title": "第三章 · 回响之城",
+      "requires": "ch2",
+      "cover": "backgrounds/mirror_city",
+      "summary": "零号线的尽头，是一座和澜城一模一样、却没有声音的城。「回声会」的白鸮说，他只想让三百一十二个人回家。",
+      "scenes": [
+        {
+          "id": "s1",
+          "title": "3-1 · 零号线",
+          "bg": "backgrounds/subway_zero",
+          "bgm": "tension",
+          "reward": {
+            "diamonds": 150,
+            "tickets_standard": 1
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "澜城地下 · 废弃的零号地铁线"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "观测仪上那组坐标，最后指向了澜城地下——一条在零号潮之前就停运的地铁线。地图上没有它，局里的档案也只有一行字：「已封存」。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "林岚局长",
+              "text": "零号线是十五年前的疏散通道。那天晚上，最后一班车开进隧道，就再也没开出来。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "林岚局长",
+              "text": "观测员，这次我不拦你。但你得带着他们三个一起去。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "隧道里很冷。站台的电子屏还停在十五年前的日期，时钟定格在 00:17。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "……这地方我小时候来过。那天晚上，我差一点就上了那班车。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "serious",
+              "text": "回响值在升高。不是潮影——更像是很多很多人在同时说话。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "跟紧。别碰任何东西。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "你伸手扶住站台的柱子。下一秒，整座站台像水面一样晃了一下——对面的轨道上，亮起了一列车的灯。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "……车厢里有人。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "车窗后面坐满了乘客。他们穿着十五年前的衣服，安静地看着你们，没有一个人在呼吸。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "（走近车厢看看）",
+                  "aff": {
+                    "gu_ci": 3,
+                    "shen_yan": 2
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "serious",
+                      "text": "站住。……我在你前面。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "calm",
+                      "text": "我在你后面。别怕，我们夹着你走。"
+                    }
+                  ]
+                },
+                {
+                  "text": "（拉住陆灼的手）",
+                  "aff": {
+                    "lu_zhuo": 5
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "shy",
+                      "text": "……我没怕。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "calm",
+                      "text": "不过你别松开。我是说，你别怕。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "列车的门开了。广播里传出一个陌生的男声，温和得近乎悲伤。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "白鸮",
+              "text": "欢迎来到回响之城，观测员。我等了你十五年。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "白鸮",
+              "text": "零号潮带走的三百一十二个人，没有消失。他们的回响被裂隙留在了这里——一座和澜城一模一样、却没有声音的城。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "白鸮",
+              "text": "第一观测员用自己当锁，关上了门。而你把锁打开了。现在，门的两边只隔着一层水面。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "serious",
+              "text": "你是谁？"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "白鸮",
+              "text": "我叫白鸮。「回声会」的人。我只想要一件事——让他们回家。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "车厢里的乘客同时站了起来。黑色的潮水从他们脚下漫出来，凝成一道道人形的影子。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "serious",
+              "text": "回家？你管这叫回家？"
+            },
+            {
+              "t": "battle",
+              "enemy": "tide_shade",
+              "partner": "lu_zhuo"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "影子散去，列车也消失了。站台的另一头，多出了一扇本不该存在的门。门后，是倒过来的澜城。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "他想把两座城合在一起。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "那三百多个人的回响……如果真的能回来呢？"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "……那就先进去看看。看看他说的「家」长什么样。"
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "title": "3-2 · 沈砚 · 镜中的海",
+          "char": "shen_yan",
+          "bg": "backgrounds/mirror_city",
+          "reward": {
+            "diamonds": 150,
+            "tickets_standard": 1
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "回响之城 · 倒影港口"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "回响之城里没有声音。海浪在动，却听不见浪声；风吹过来，却听不见风声。只有你们四个人的脚步，响得像在敲鼓。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "……这里是北港。十五年前的北港。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "码头尽头坐着一个少年。银灰色的头发，湿透的潜水服，抱着膝盖看着海。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "那是……你？"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "十二岁的我。零号潮那晚，我在这里等老师上来。等了一整夜。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "少年抬起头，看着你们。他的眼睛是空的，像海底三千米的黑。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "少年",
+              "text": "她不会上来了。你也知道的吧。……那你为什么还要每天下去？"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "……"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "因为他在等一个回应。现在，他等到了。",
+                  "aff": {
+                    "shen_yan": 7
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "shy",
+                      "text": "……嗯。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "calm",
+                      "text": "我等到了。她叫我的名字，你也听见了。"
+                    }
+                  ]
+                },
+                {
+                  "text": "（走过去，坐在少年身边）",
+                  "aff": {
+                    "shen_yan": 6
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "narrator",
+                      "text": "你在少年身边坐下，学他抱着膝盖。过了很久，你轻声说：「我陪你等。」"
+                    },
+                    {
+                      "t": "say",
+                      "who": "narrator",
+                      "text": "少年愣住了。身后的沈砚也愣住了。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "少年",
+              "text": "……原来那时候，如果有人陪着，是这种感觉啊。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "少年的身影开始变淡。海面却忽然翻涌起来——白鸮的声音从四面八方传来。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "白鸮",
+              "text": "沈砚，留下来吧。在这里，你的老师每天都会从海里走上来。你不用再一个人下潜。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "不了。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "我已经不是一个人下潜了。"
+            },
+            {
+              "t": "battle",
+              "enemy": "tide_wraith",
+              "partner": "shen_yan"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "潮魇碎开的时候，镜中的海第一次发出了声音——很轻的一声浪响。少年站在浪花里，冲你们挥了挥手。"
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch3_shen_yan_mirror"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "……谢谢你。替我陪了他一夜。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "shy",
+              "text": "以后换我陪你。每一夜。"
+            },
+            {
+              "t": "cg_end"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "浪声之后，整座回响之城都轻轻震了一下。好像有什么东西，被你们唤醒了。"
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "title": "3-3 · 顾辞 · 没有星星的夜",
+          "char": "gu_ci",
+          "bg": "backgrounds/mirror_starless",
+          "reward": {
+            "diamonds": 150,
+            "tickets_standard": 1
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "回响之城 · 天文台旧址"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "回响之城的天空是黑的。不是夜晚的黑——是连一颗星星都没有的黑。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "啊……这里没有星星呢。那我今天大概派不上用场了。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "他笑着说完，抬起手，指尖只亮起了一点点光，像快要熄灭的烛火。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "顾辞，你的手在抖。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "被发现了。……零号潮那晚，灯塔塌下来之前，天上也是这样的。一颗星星都看不见。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "serious",
+              "text": "我一直不敢跟别人说。我很怕黑。很怕很怕。所以才一直看着星星。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "那今天换我看着你。",
+                  "aff": {
+                    "gu_ci": 7
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "shy",
+                      "text": "……这句话，是我的台词吧？"
+                    },
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "被你抢走了。那我只好……乖乖被你看着了。"
+                    }
+                  ]
+                },
+                {
+                  "text": "（牵住他的手）",
+                  "aff": {
+                    "gu_ci": 6
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "narrator",
+                      "text": "他的手很凉。你握紧的那一刻，他指尖那点光忽然亮了一些。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "calm",
+                      "text": "……原来是这样。回响者的光，是可以被别人点亮的。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "白鸮",
+              "text": "顾辞。你记得那个把你推上救生艇的人吗？她就在这座城里。只要你愿意留下，你每天都能见到她。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "……我很想见她。很想跟她说谢谢。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "但她让我往有星星的地方划。这里没有星星——所以，这里不是她想让我去的地方。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "黑暗中涌出无数星影。它们扑过来的时候，你听见了他的声音："
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "serious",
+              "text": "观测员，把你的回响给我。今晚，我来当这片天空唯一的星星。"
+            },
+            {
+              "t": "battle",
+              "enemy": "star_shade",
+              "partner": "gu_ci"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "最后一只星影溃散的瞬间，他把全部的光推上了天空。漆黑的天幕上，亮起了一颗星——然后是第二颗、第三颗。"
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch3_gu_ci_light"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "你看。是你点亮的。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "以后不管多黑，我都不怕了。因为我知道，光在哪里。"
+            },
+            {
+              "t": "cg_end"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "星光落进回响之城的街道，那些沉默的人影，第一次抬起了头。"
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "title": "3-4 · 陆灼 · 无声演唱会",
+          "char": "lu_zhuo",
+          "bg": "backgrounds/silent_theater",
+          "reward": {
+            "diamonds": 150,
+            "tickets_limited": 1
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "回响之城 · 旧城区剧场"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "旧城区的剧场里坐满了观众。三百多个人影，安安静静地坐着，看着空荡荡的舞台。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "……他们在等演出。十五年前那天晚上，这里本来有一场演唱会。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "我爸是那场演唱会的鼓手。他让我在后台等他，说唱完最后一首就带我去吃宵夜。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "他走上舞台，拿起话筒。张开嘴——却一点声音都没有。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "陆灼……？"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "serious",
+              "text": "……"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "他又试了一次。还是没有声音。在回响之城里，他的声音被拿走了。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "白鸮",
+              "text": "你看，陆灼。这里的人等了你十五年。只要你留下，你可以唱一辈子——唱给你爸听。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "他握着话筒的手指发白。你看见观众席第一排，有一个人影手里拿着鼓棒。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "（走上舞台，替他唱）",
+                  "aff": {
+                    "lu_zhuo": 8
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "narrator",
+                      "text": "你走上舞台，握住他拿话筒的手。你唱出了那段和声——在排练室里，他教你的那一段。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "narrator",
+                      "text": "你的声音在剧场里响起来的那一刻，他的眼睛红了。"
+                    }
+                  ]
+                },
+                {
+                  "text": "（对他说：你的歌，不需要声音也能听见）",
+                  "aff": {
+                    "lu_zhuo": 6
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "narrator",
+                      "text": "你看着他，一个字一个字地说。他愣了很久，然后笑了，把话筒放回架子上，拿起了吉他。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "narrator",
+                      "text": "吉他没有声音。但他弹得很认真。观众席里，那个拿着鼓棒的人影，开始跟着打拍子。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "第一排的人影站了起来。鼓棒落下，剧场里响起了十五年来的第一声鼓点。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "shy",
+              "text": "……爸。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "鼓手",
+              "text": "臭小子，唱得不错。……但该回去了。有人在等你吃宵夜。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "黑火从剧场四周燃起来。白鸮的声音第一次变得急躁。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "白鸮",
+              "text": "不许走——这场演出还没结束！"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "结束了。我唱完了。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "serious",
+              "text": "观测员，借我你的回响。这次我想烧得漂亮一点。"
+            },
+            {
+              "t": "battle",
+              "enemy": "tide_wraith",
+              "partner": "lu_zhuo"
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch3_lu_zhuo_voice"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "……我的声音回来了。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "shy",
+              "text": "第一句话想说给你听。可是我现在脑子里只有一句。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "我喜欢你。……这句你先收着，下次唱给你听。"
+            },
+            {
+              "t": "cg_end"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "剧场里响起了掌声。很轻，很远，像潮水退去的声音。"
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "title": "3-5 · 终章 · 回声",
+          "bg": "backgrounds/echo_plaza",
+          "bgm": "tension",
+          "reward": {
+            "diamonds": 300,
+            "tickets_limited": 2
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "回响之城 · 中央广场"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "广场中央立着一座钟楼，指针停在 00:17。钟楼下站着一个穿白色风衣的男人，戴着一张白色的鸟形面具。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "白鸮",
+              "text": "你们把我的城弄出了声音。浪声、星光、鼓点……他们都醒了。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "白鸮",
+              "text": "可是醒了又怎么样？他们回不去。他们的身体，十五年前就没有了。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "他摘下面具。那是一张很普通的脸，眼睛里全是血丝。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "白鸮",
+              "text": "我的妻子和女儿，在那班零号线的车上。……我只是想再听一次她们的声音。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "……我懂。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "我们都懂。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "可你这样做，会让整座澜城都变成回响之城。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "白鸮",
+              "text": "那又怎样！"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "钟楼开始转动。三百一十二个人影的回响被抽进钟楼，凝成一个巨大的、没有脸的人形——回响巨像。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "住手！你这样只会让他们再消失一次！"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "沈砚，和我一起去听。",
+                  "aff": {
+                    "shen_yan": 10
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "calm",
+                      "text": "嗯。我在。"
+                    }
+                  ]
+                },
+                {
+                  "text": "顾辞，替我照亮。",
+                  "aff": {
+                    "gu_ci": 10
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "这次换我看着你。"
+                    }
+                  ]
+                },
+                {
+                  "text": "陆灼，跟我一起唱。",
+                  "aff": {
+                    "lu_zhuo": 10
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "smile",
+                      "text": "早就等着了。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "battle",
+              "enemy": "echo_colossus",
+              "partner": "auto"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "巨像倒下的时候，没有发出任何声音。然后，三百一十二个人的声音，同时在广场上响了起来。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "有人在喊孩子的名字。有人在唱一首老歌。有一个女孩的声音，很清楚地叫了一声——「爸爸」。"
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch3_finale"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "白鸮",
+              "text": "……"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "白鸮",
+              "text": "她……她在叫我。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "她们不需要你把澜城变成这里，才能被听见。她们需要的是——有人记得。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "白鸮跪在地上，哭得像个孩子。钟楼的指针，终于从 00:17 走到了 00:18。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "回响之城会一直在这里。但门，我们得关上。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "以后每年的今天，我们都下来看看他们吧。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "我来开一场演唱会。这次有声音的那种。"
+            },
+            {
+              "t": "cg_end"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "你们走出零号线的时候，天已经亮了。白鸮跟在最后，手里攥着那张鸟形面具。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "回到潮汐局，林岚局长在办公室等你。她看着白鸮，沉默了很久，说出了一句你没想到的话。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "林岚局长",
+              "text": "……好久不见，哥哥。"
+            },
+            {
+              "t": "title",
+              "text": "第三章 · 完　　第四章「潮汐局的秘密」敬请期待"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

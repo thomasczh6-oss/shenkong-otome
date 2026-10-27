@@ -74,11 +74,9 @@ func build() -> void:
 	v.add_child(enemy_bar)
 
 	enemy_box = CenterContainer.new()
-	enemy_box.custom_minimum_size = Vector2(0, 620)
+	enemy_box.custom_minimum_size = Vector2(0, 780)
 	enemy_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	enemy_img = UIKit.image(Data.texture(str(enemy.get("img", "enemies/tide_shade"))), false)
-	enemy_img.custom_minimum_size = Vector2(560, 560)
-	enemy_box.add_child(enemy_img)
+	enemy_box.add_child(_build_enemy_stage())
 	v.add_child(enemy_box)
 	warn_label = UIKit.label("", 30, UIKit.C_DANGER, HORIZONTAL_ALIGNMENT_CENTER, false)
 	warn_label.custom_minimum_size = Vector2(0, 44)
@@ -139,8 +137,7 @@ func build() -> void:
 ## 第一次战斗时暂停，讲解四个按钮。
 func _run_tutorial() -> void:
 	paused = true
-	await get_tree().process_frame
-	await get_tree().process_frame
+	await get_tree().create_timer(0.35).timeout  # 等转场动画结束再量控件位置
 	var steps := [
 		{"who": partner_id, "target": attack_btn, "text": "点「攻击」出手。每次攻击都会攒一点共鸣槽。"},
 		{"who": partner_id, "target": skill_btn, "text": "这是我的技能，伤害更高，用完要等一会儿冷却。"},
@@ -168,12 +165,12 @@ func _process(delta: float) -> void:
 	if not telegraphing and enemy_timer >= interval - tele:
 		telegraphing = true
 		warn_label.text = "⚠ %s 准备攻击！" % str(enemy.get("name", ""))
-		enemy_img.modulate = Color(1.0, 0.45, 0.45)
+		_telegraph_fx(tele)
 	if enemy_timer >= interval:
 		enemy_timer = 0.0
 		telegraphing = false
 		warn_label.text = ""
-		enemy_img.modulate = Color(1, 1, 1)
+		_lunge_fx()
 		_enemy_attack()
 
 	# 搭档自动助攻
@@ -236,12 +233,164 @@ func _hit_enemy(dmg: int, label: String, color: Color) -> void:
 	ehp = maxf(0.0, ehp - dmg)
 	log_label.text = "%s 造成 %d 伤害" % [label, dmg]
 	_popup("-%d" % dmg, color, enemy_box)
-	var tw := create_tween()
-	tw.tween_property(enemy_img, "position:x", enemy_img.position.x + 14, 0.05)
-	tw.tween_property(enemy_img, "position:x", enemy_img.position.x, 0.08)
+	_hit_fx(dmg)
 	_refresh()
 	if ehp <= 0.0:
 		_finish(true)
+
+
+# ---------------- 敌人表现 ----------------
+
+var enemy_mat: ShaderMaterial
+var enemy_aura: TextureRect
+var enemy_body: Control
+var idle_tw: Tween
+
+
+## 敌人舞台：背后的光晕、地面阴影、上飘的粒子、带描边发光着色器的本体，整体缓慢呼吸浮动。
+func _build_enemy_stage() -> Control:
+	var boss := bool(enemy.get("boss", false))
+	var side := 780.0 if boss else 720.0
+	var aura_c := Color(str(enemy.get("aura", "#4fa3ff")))
+	var stage := Control.new()
+	stage.custom_minimum_size = Vector2(side, side)
+	stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	var g := Gradient.new()
+	g.set_color(0, Color(aura_c, 0.55 if boss else 0.4))
+	g.set_color(1, Color(aura_c, 0.0))
+	var gt := GradientTexture2D.new()
+	gt.gradient = g
+	gt.fill = GradientTexture2D.FILL_RADIAL
+	gt.fill_from = Vector2(0.5, 0.5)
+	gt.fill_to = Vector2(0.5, 0.0)
+	gt.width = 256
+	gt.height = 256
+	enemy_aura = TextureRect.new()
+	enemy_aura.texture = gt
+	enemy_aura.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	enemy_aura.size = Vector2(side, side) * 1.15
+	enemy_aura.position = -Vector2(side, side) * 0.075
+	enemy_aura.pivot_offset = enemy_aura.size / 2.0
+	enemy_aura.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stage.add_child(enemy_aura)
+	var at := enemy_aura.create_tween().set_loops()
+	at.tween_property(enemy_aura, "modulate:a", 0.55, 1.6).set_trans(Tween.TRANS_SINE)
+	at.tween_property(enemy_aura, "modulate:a", 1.0, 1.6).set_trans(Tween.TRANS_SINE)
+
+	var sg := Gradient.new()
+	sg.set_color(0, Color(0, 0, 0, 0.6))
+	sg.set_color(1, Color(0, 0, 0, 0))
+	var st := GradientTexture2D.new()
+	st.gradient = sg
+	st.fill = GradientTexture2D.FILL_RADIAL
+	st.fill_from = Vector2(0.5, 0.5)
+	st.fill_to = Vector2(0.5, 0.0)
+	var shadow := TextureRect.new()
+	shadow.texture = st
+	shadow.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	shadow.size = Vector2(side * 0.7, side * 0.12)
+	shadow.position = Vector2(side * 0.15, side * 0.88)
+	shadow.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stage.add_child(shadow)
+
+	var motes := CPUParticles2D.new()
+	motes.position = Vector2(side / 2.0, side * 0.75)
+	motes.amount = 60 if boss else 36
+	motes.lifetime = 3.2
+	motes.preprocess = 3.0
+	motes.emission_shape = CPUParticles2D.EMISSION_SHAPE_SPHERE
+	motes.emission_sphere_radius = side * 0.38
+	motes.direction = Vector2(0, -1)
+	motes.spread = 25.0
+	motes.gravity = Vector2(0, -30)
+	motes.initial_velocity_min = 20.0
+	motes.initial_velocity_max = 70.0
+	motes.scale_amount_min = 3.0
+	motes.scale_amount_max = 8.0
+	var cr := Gradient.new()
+	cr.set_color(0, Color(aura_c.lightened(0.4), 0.0))
+	cr.add_point(0.25, Color(aura_c.lightened(0.4), 0.9))
+	cr.set_color(cr.get_point_count() - 1, Color(aura_c, 0.0))
+	motes.color_ramp = cr
+	stage.add_child(motes)
+
+	enemy_body = Control.new()
+	enemy_body.size = Vector2(side, side)
+	enemy_body.pivot_offset = Vector2(side / 2.0, side * 0.9)
+	enemy_body.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stage.add_child(enemy_body)
+	enemy_img = UIKit.image(Data.texture(str(enemy.get("img", "enemies/tide_shade"))), false)
+	enemy_img.size = Vector2(side, side) * 0.92
+	enemy_img.position = Vector2(side, side) * 0.04
+	enemy_mat = ShaderMaterial.new()
+	enemy_mat.shader = preload("res://src/fx/enemy.gdshader")
+	enemy_mat.set_shader_parameter("rim_color", Color(aura_c, 0.9))
+	enemy_img.material = enemy_mat
+	enemy_body.add_child(enemy_img)
+
+	# 呼吸 + 漂浮
+	idle_tw = enemy_body.create_tween().set_loops().set_parallel(true)
+	idle_tw.tween_property(enemy_body, "position:y", -18.0, 1.8).set_trans(Tween.TRANS_SINE)
+	idle_tw.tween_property(enemy_body, "scale", Vector2(1.02, 1.035), 1.8).set_trans(Tween.TRANS_SINE)
+	idle_tw.chain().tween_property(enemy_body, "position:y", 0.0, 1.8).set_trans(Tween.TRANS_SINE)
+	idle_tw.parallel().tween_property(enemy_body, "scale", Vector2(1.0, 1.0), 1.8).set_trans(Tween.TRANS_SINE)
+	# 出场
+	enemy_body.modulate.a = 0.0
+	create_tween().tween_property(enemy_body, "modulate:a", 1.0, 0.6)
+	return stage
+
+
+func _hit_fx(dmg: int) -> void:
+	if enemy_mat == null:
+		return
+	var big := dmg > int(stats.atk) * 2
+	enemy_mat.set_shader_parameter("flash", 0.85)
+	var tw := create_tween()
+	tw.tween_method(func(x: float) -> void: enemy_mat.set_shader_parameter("flash", x), 0.85, 0.0, 0.18)
+	var amp := 26.0 if big else 14.0
+	var sh := create_tween()
+	for i in 4:
+		sh.tween_property(enemy_img, "position:x", enemy_img.size.x * 0.0435 + randf_range(-amp, amp), 0.035)
+	sh.tween_property(enemy_img, "position:x", enemy_img.size.x * 0.0435, 0.05)
+	var pt := create_tween()
+	enemy_img.pivot_offset = enemy_img.size / 2.0
+	pt.tween_property(enemy_img, "scale", Vector2(0.93, 0.93) if big else Vector2(0.97, 0.97), 0.05)
+	pt.tween_property(enemy_img, "scale", Vector2.ONE, 0.15).set_trans(Tween.TRANS_BACK)
+	if big:
+		_flash(Color(1, 1, 1, 0.35))
+
+
+func _telegraph_fx(dur: float) -> void:
+	if enemy_mat == null:
+		return
+	var tw := create_tween().set_parallel(true)
+	tw.tween_method(func(x: float) -> void: enemy_mat.set_shader_parameter("warn", x), 0.0, 1.0, dur * 0.8)
+	tw.tween_property(enemy_aura, "scale", Vector2(1.18, 1.18), dur * 0.8)
+	tw.tween_property(enemy_img, "scale", Vector2(1.06, 1.06), dur * 0.8)
+	enemy_img.pivot_offset = enemy_img.size / 2.0
+
+
+func _lunge_fx() -> void:
+	if enemy_mat == null:
+		return
+	var tw := create_tween()
+	tw.tween_property(enemy_img, "scale", Vector2(1.16, 1.16), 0.08)
+	tw.tween_property(enemy_img, "scale", Vector2.ONE, 0.25).set_trans(Tween.TRANS_BACK)
+	var t2 := create_tween().set_parallel(true)
+	t2.tween_method(func(x: float) -> void: enemy_mat.set_shader_parameter("warn", x), 1.0, 0.0, 0.3)
+	t2.tween_property(enemy_aura, "scale", Vector2.ONE, 0.3)
+
+
+func _death_fx() -> void:
+	if enemy_mat == null:
+		return
+	if idle_tw != null:
+		idle_tw.kill()
+	var tw := create_tween()
+	tw.tween_method(func(x: float) -> void: enemy_mat.set_shader_parameter("dissolve", x), 0.0, 1.05, 0.85)
+	create_tween().tween_property(enemy_aura, "modulate:a", 0.0, 0.85)
+	_flash(Color(1, 1, 1, 0.5))
 
 
 func _enemy_attack() -> void:
@@ -305,6 +454,9 @@ func _finish(win: bool) -> void:
 	if over:
 		return
 	over = true
+	if win:
+		_death_fx()
+		await get_tree().create_timer(0.9).timeout
 	Game.s.stats.battles = int(Game.s.stats.battles) + 1
 	var reward: Dictionary = enemy.get("reward", {})
 	if win:

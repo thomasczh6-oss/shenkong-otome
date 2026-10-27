@@ -149,7 +149,12 @@ func _show_results(results: Array, n: int) -> void:
 		var rarity := int(r.rarity)
 		var cell := UIKit.vbox(6)
 		var w := 186 if n > 1 else 520
-		var box := UIKit.image_box(Data.texture("cards/" + str(r.card)), Vector2(w, int(w * 1.33)), 18, UIKit.rarity_color(rarity), 4 if rarity == 5 else 2)
+		var vid := Data.card_video(str(r.card)) if n == 1 else null
+		var box: PanelContainer
+		if vid != null:
+			box = UIKit.video_box(vid, Vector2(w, int(w * 1.33)), 18, UIKit.rarity_color(rarity), 4)
+		else:
+			box = UIKit.image_box(Data.texture("cards/" + str(r.card)), Vector2(w, int(w * 1.33)), 18, UIKit.rarity_color(rarity), 4 if rarity == 5 else 2)
 		cell.add_child(box)
 		cell.add_child(UIKit.label(UIKit.stars(rarity), 20 if n > 1 else 34, UIKit.rarity_color(rarity), HORIZONTAL_ALIGNMENT_CENTER, false))
 		cell.add_child(UIKit.label(str(c.get("name", "")), 22 if n > 1 else 36, UIKit.C_TEXT, HORIZONTAL_ALIGNMENT_CENTER, false))

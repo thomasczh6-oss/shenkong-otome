@@ -12,7 +12,12 @@ func build() -> void:
 	var v: VBoxContainer = page[1]
 	var content := UIKit.vbox(18)
 
-	var box := UIKit.image_box(Data.texture("cards/" + id), Vector2(0, 980), 28, UIKit.rarity_color(rarity), 3)
+	var video := Data.card_video(id) if owned else null
+	var box: PanelContainer
+	if video != null:
+		box = UIKit.video_box(video, Vector2(0, 980), 28, UIKit.rarity_color(rarity), 3)
+	else:
+		box = UIKit.image_box(Data.texture("cards/" + id), Vector2(0, 980), 28, UIKit.rarity_color(rarity), 3)
 	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	if not owned:
 		box.modulate = Color(0.5, 0.5, 0.6)
@@ -24,6 +29,8 @@ func build() -> void:
 	row.add_child(UIKit.pill(Data.char_name(cid), Color(str(Data.character(cid).get("color", "#4fd1c5"))), 22))
 	if bool(c.get("limited", false)):
 		row.add_child(UIKit.pill("限定", UIKit.C_GOLD, 22))
+	if Data.card_video(id) != null:
+		row.add_child(UIKit.pill("动态思念" if owned else "获得后可看动态", UIKit.C_ROSE, 22))
 	row.add_child(UIKit.spacer(0, true))
 	row.add_child(UIKit.label("Lv.%d / %d" % [Game.card_level(id), Game.CARD_MAX_LEVEL] if owned else "未获得", 26, UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_RIGHT, false))
 	content.add_child(row)

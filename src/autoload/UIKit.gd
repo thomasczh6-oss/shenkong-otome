@@ -1,19 +1,21 @@
 extends Node
 ## 统一的视觉风格与控件工厂。所有界面都用代码搭建，样式只在这里定义，方便整体换肤。
-## 配色：深海夜色底 + 极光青 + 玫瑰粉 + 星光金。
+## 配色（v0.3 面向女性玩家重做）：暮紫夜色底 + 樱粉主色 + 香槟金点缀 + 月白文字。
+## 字体：霞鹜文楷（主字体，OFL）+ 文泉驿正黑（缺字回退）。
 
-const C_BG := Color("0b1026")
-const C_BG2 := Color("111838")
-const C_PANEL := Color("1a2250")
-const C_PANEL2 := Color("242d66")
-const C_LINE := Color("34407f")
-const C_ACCENT := Color("4fd1c5")
-const C_ROSE := Color("f2a7b5")
-const C_GOLD := Color("f4d58d")
-const C_TEXT := Color("f5f6fa")
-const C_MUTED := Color("9aa3c7")
-const C_DANGER := Color("ff6b81")
-const C_OK := Color("7ee8a2")
+const C_BG := Color("130e2a")
+const C_BG2 := Color("2a1a45")
+const C_PANEL := Color(0.19, 0.13, 0.33, 0.92)
+const C_PANEL2 := Color("3a2a63")
+const C_LINE := Color(1.0, 0.78, 0.9, 0.22)
+const C_ACCENT := Color("ff9ec7")
+const C_ROSE := Color("ff7eaa")
+const C_GOLD := Color("f6d79a")
+const C_TEXT := Color("fff7fb")
+const C_MUTED := Color("c3b5dc")
+const C_DANGER := Color("ff6b8a")
+const C_OK := Color("9fe8c4")
+const C_INK := Color("3a1636")  # 浅色按钮上的文字
 
 const RARITY := {3: Color("7fa6ff"), 4: Color("c58bff"), 5: Color("f4d58d")}
 const ELEMENT_COLORS := {"潮": Color("4fa3ff"), "星": Color("c9b6ff"), "焰": Color("ff8c66")}
@@ -22,18 +24,29 @@ var font: Font = null
 
 
 func _ready() -> void:
-	var fpath := "res://assets/fonts/cjk.ttf"
-	if ResourceLoader.exists(fpath):
-		font = load(fpath)
-	elif FileAccess.file_exists(fpath):
-		var ff := FontFile.new()
-		if ff.load_dynamic_font(fpath) == OK:
-			font = ff
+	var main := _load_font("res://assets/fonts/wenkai.ttf")
+	var fallback := _load_font("res://assets/fonts/cjk.ttf")
+	if main != null:
+		if fallback != null:
+			main.fallbacks = [fallback]
+		font = main
+	else:
+		font = fallback
 	var theme := Theme.new()
 	if font != null:
 		theme.default_font = font
 	theme.default_font_size = 34
 	get_tree().root.theme = theme
+
+
+func _load_font(path: String) -> Font:
+	if ResourceLoader.exists(path):
+		return load(path)
+	if FileAccess.file_exists(path):
+		var ff := FontFile.new()
+		if ff.load_dynamic_font(path) == OK:
+			return ff
+	return null
 
 
 func rarity_color(rarity: int) -> Color:
@@ -88,30 +101,49 @@ func button(text: String, kind := "primary", size := 36, min_h := 96) -> Button:
 	var fg := C_TEXT
 	var border := Color.TRANSPARENT
 	var bw := 0
+	var glow := Color.TRANSPARENT
 	match kind:
 		"primary":
 			bg = C_ACCENT
-			fg = C_BG
+			fg = C_INK
+			border = Color(1, 0.92, 0.96, 0.9)
+			bw = 2
+			glow = Color(C_ACCENT, 0.45)
 		"gold":
 			bg = C_GOLD
-			fg = C_BG
+			fg = C_INK
+			border = Color(1, 0.97, 0.88, 0.9)
+			bw = 2
+			glow = Color(C_GOLD, 0.4)
 		"rose":
 			bg = C_ROSE
-			fg = C_BG
+			fg = Color.WHITE
+			border = Color(1, 0.85, 0.92, 0.8)
+			bw = 2
+			glow = Color(C_ROSE, 0.45)
 		"ghost":
-			bg = Color(1, 1, 1, 0.06)
+			bg = Color(1, 0.9, 0.97, 0.07)
 			border = C_LINE
 			bw = 2
 		"danger":
 			bg = C_DANGER
-		"dark":
-			bg = Color(0.03, 0.04, 0.1, 0.7)
-			border = Color(1, 1, 1, 0.12)
+			border = Color(1, 0.85, 0.9, 0.6)
 			bw = 2
-	b.add_theme_stylebox_override("normal", sb(bg, 28, border, bw))
-	b.add_theme_stylebox_override("hover", sb(bg.lightened(0.08), 28, border, bw))
-	b.add_theme_stylebox_override("pressed", sb(bg.darkened(0.18), 28, border, bw))
-	b.add_theme_stylebox_override("disabled", sb(Color(0.3, 0.32, 0.45, 0.45), 28))
+		"dark":
+			bg = Color(0.1, 0.06, 0.18, 0.62)
+			border = Color(1, 0.85, 0.95, 0.18)
+			bw = 2
+	var r := mini(36, int(min_h / 2))
+	b.add_theme_stylebox_override("normal", _glow_sb(sb(bg, r, border, bw), glow))
+	b.add_theme_stylebox_override("hover", _glow_sb(sb(bg.lightened(0.08), r, border, bw), glow))
+	b.add_theme_stylebox_override("pressed", sb(bg.darkened(0.15), r, border, bw))
+	b.add_theme_stylebox_override("disabled", sb(Color(0.35, 0.3, 0.45, 0.4), r, Color(1, 1, 1, 0.08), 2))
+	b.pivot_offset = Vector2(0, 0)
+	b.button_down.connect(func() -> void:
+		b.pivot_offset = b.size / 2.0
+		b.create_tween().tween_property(b, "scale", Vector2(0.96, 0.96), 0.06))
+	b.button_up.connect(func() -> void:
+		b.create_tween().tween_property(b, "scale", Vector2.ONE, 0.12).set_trans(Tween.TRANS_BACK))
 	b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 	b.add_theme_color_override("font_color", fg)
 	b.add_theme_color_override("font_hover_color", fg)
@@ -119,6 +151,13 @@ func button(text: String, kind := "primary", size := 36, min_h := 96) -> Button:
 	b.add_theme_color_override("font_focus_color", fg)
 	b.add_theme_color_override("font_disabled_color", Color(1, 1, 1, 0.4))
 	return b
+
+
+func _glow_sb(s: StyleBoxFlat, glow: Color) -> StyleBoxFlat:
+	if glow.a > 0.0:
+		s.shadow_color = glow
+		s.shadow_size = 14
+	return s
 
 
 func panel(bg := C_PANEL, radius := 28, pad := 24, border: Color = Color.TRANSPARENT, border_w := 0) -> PanelContainer:
@@ -177,10 +216,17 @@ func header(title_text: String, on_back: Callable = Callable(), right: Control =
 		b.custom_minimum_size = Vector2(170, 76)
 		b.pressed.connect(on_back)
 		h.add_child(b)
-	var t := label(title_text, 44, C_TEXT, HORIZONTAL_ALIGNMENT_LEFT, false)
-	t.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	t.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	h.add_child(t)
+	var tv := VBoxContainer.new()
+	tv.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	tv.alignment = BoxContainer.ALIGNMENT_CENTER
+	tv.add_theme_constant_override("separation", 2)
+	var t := label("✦ " + title_text, 46, C_TEXT, HORIZONTAL_ALIGNMENT_LEFT, false)
+	tv.add_child(t)
+	var line := gradient_rect(Color(C_GOLD, 0.9), Color(C_GOLD, 0.0), false)
+	line.custom_minimum_size = Vector2(260, 3)
+	line.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	tv.add_child(line)
+	h.add_child(tv)
 	if right != null:
 		h.add_child(right)
 	return h
@@ -191,7 +237,7 @@ func page(title_text := "", on_back: Callable = Callable(), right: Control = nul
 	var root := Control.new()
 	root.set_anchors_preset(Control.PRESET_FULL_RECT)
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	root.add_child(gradient_rect(C_BG, C_BG2))
+	root.add_child(dreamy_bg())
 	var m := margin(36, 70, 36, 40)
 	m.set_anchors_preset(Control.PRESET_FULL_RECT)
 	m.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -201,6 +247,55 @@ func page(title_text := "", on_back: Callable = Callable(), right: Control = nul
 	m.add_child(v)
 	root.add_child(m)
 	return [root, v]
+
+
+## 页面背景：暮紫渐变 + 两团柔光 + 缓慢闪烁的星点。
+func dreamy_bg() -> Control:
+	var root := Control.new()
+	root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.add_child(gradient_rect(C_BG, C_BG2))
+	for spec in [[Vector2(0.85, 0.08), Color(1.0, 0.55, 0.78, 0.22), 900.0], [Vector2(0.1, 0.75), Color(0.6, 0.55, 1.0, 0.16), 1000.0]]:
+		var g := Gradient.new()
+		g.set_color(0, spec[1])
+		g.set_color(1, Color(spec[1], 0.0))
+		var gt := GradientTexture2D.new()
+		gt.gradient = g
+		gt.fill = GradientTexture2D.FILL_RADIAL
+		gt.fill_from = Vector2(0.5, 0.5)
+		gt.fill_to = Vector2(0.5, 0.0)
+		var tr := TextureRect.new()
+		tr.texture = gt
+		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var d: float = spec[2]
+		tr.size = Vector2(d, d)
+		tr.position = Vector2(1080.0 * spec[0].x, 1920.0 * spec[0].y) - Vector2(d, d) / 2.0
+		root.add_child(tr)
+	root.add_child(sparkles(Rect2(0, 0, 1080, 1920), 40))
+	return root
+
+
+## 闪烁星点粒子，铺在 area 内。
+func sparkles(area: Rect2, amount := 30, color := Color(1, 0.92, 0.97)) -> CPUParticles2D:
+	var pt := CPUParticles2D.new()
+	pt.position = area.get_center()
+	pt.amount = amount
+	pt.lifetime = 4.0
+	pt.preprocess = 4.0
+	pt.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+	pt.emission_rect_extents = area.size / 2.0
+	pt.gravity = Vector2(0, -6)
+	pt.initial_velocity_min = 0.0
+	pt.initial_velocity_max = 8.0
+	pt.scale_amount_min = 2.0
+	pt.scale_amount_max = 5.0
+	var ramp := Gradient.new()
+	ramp.set_color(0, Color(color, 0.0))
+	ramp.add_point(0.5, Color(color, 0.85))
+	ramp.set_color(ramp.get_point_count() - 1, Color(color, 0.0))
+	pt.color_ramp = ramp
+	return pt
 
 
 func gradient_rect(c1: Color, c2: Color, vertical := true) -> TextureRect:
@@ -240,6 +335,26 @@ func image_box(tex: Texture2D, size: Vector2, radius := 24, border: Color = Colo
 	var img := image(tex, true)
 	img.custom_minimum_size = size
 	p.add_child(img)
+	return p
+
+
+## 循环播放的视频块：按 3:4 等比铺满（裁掉多余部分），圆角裁切。
+func video_box(stream: VideoStream, size: Vector2, radius := 24, border: Color = Color.TRANSPARENT, border_w := 0, ratio := 0.75) -> PanelContainer:
+	var p := panel(Color(0, 0, 0, 1), radius, 0, border, border_w)
+	p.custom_minimum_size = size
+	p.clip_contents = true
+	var arc := AspectRatioContainer.new()
+	arc.ratio = ratio
+	arc.stretch_mode = AspectRatioContainer.STRETCH_COVER
+	arc.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var vp := VideoStreamPlayer.new()
+	vp.stream = stream
+	vp.expand = true
+	vp.loop = true
+	vp.autoplay = true
+	vp.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	arc.add_child(vp)
+	p.add_child(arc)
 	return p
 
 

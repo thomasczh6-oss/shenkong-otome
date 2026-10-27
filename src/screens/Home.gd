@@ -64,8 +64,7 @@ func build() -> void:
 
 ## 新手引导：第一次回到主页时，由当前男主介绍各个入口。
 func _run_tutorial() -> void:
-	await get_tree().process_frame
-	await get_tree().process_frame
+	await get_tree().create_timer(0.35).timeout  # 等转场动画结束再量控件位置
 	var steps := [
 		{"who": cid, "text": "欢迎回来，{name}。第一天就撞上裂隙，辛苦了。我带你熟悉一下潮汐局。"},
 		{"who": cid, "target": nav_btns.get("主线"), "text": "主线剧情在这里。第一章「潮起」还有三段，我们三个都在等你。"},
@@ -177,8 +176,9 @@ func _nav() -> Control:
 		["许愿", "抽卡", func() -> void: Router.push("Gacha")],
 		["约会", "约会", func() -> void: Router.push("Dates", {"char": cid})],
 	]
+	var icons := {"主线": "★", "日常": "♪", "思念": "❀", "许愿": "✦", "约会": "♡"}
 	for it in items:
-		var b := UIKit.button(str(it[0]), "dark", 32, 118)
+		var b := UIKit.button(str(icons.get(str(it[0]), "")) + "\n" + str(it[0]), "dark", 30, 128)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.pressed.connect(it[2])
 		nav_btns[str(it[0])] = b
