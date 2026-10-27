@@ -17,16 +17,18 @@ func build() -> void:
 	# 背景与立绘
 	var bg := UIKit.image(Data.texture(str(ch.get("home_bg", "backgrounds/harbor_night"))))
 	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-	bg.modulate = Color(0.62, 0.62, 0.8)
+	bg.modulate = Color(0.5, 0.5, 0.68)
 	add_child(bg)
 	var ch_color := Color(str(ch.get("color", "#ff9ec7")))
-	add_child(UIKit.glow_blob(Vector2(540, 760), 1100, Color(ch_color, 0.28)))
+	# 身后两层柔光，把深色衣服从夜景里托出来
+	add_child(UIKit.glow_blob(Vector2(540, 820), 1250, Color(ch_color, 0.42)))
+	add_child(UIKit.glow_blob(Vector2(540, 900), 700, Color(ch_color.lightened(0.5), 0.38)))
 	add_child(UIKit.sparkles(Rect2(0, 200, 1080, 1100), 24))
 	var portrait := UIKit.image(Data.texture(Data.portrait_key(cid, "calm")), false)
 	portrait.set_anchors_preset(Control.PRESET_FULL_RECT)
 	portrait.offset_top = 150
 	portrait.offset_bottom = -330
-	portrait.material = UIKit.portrait_material(Color(0.97, 0.94, 1.0), ch_color.lightened(0.4), 0.6, 0.72)
+	portrait.material = UIKit.portrait_material(Color(1.0, 0.97, 1.0), ch_color.lightened(0.55), 1.0, 0.72)
 	portrait.pivot_offset = Vector2(540, 1440)
 	add_child(portrait)
 	UIKit.fade_in(portrait, 0.4)

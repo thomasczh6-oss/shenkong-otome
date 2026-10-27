@@ -54,6 +54,7 @@ func build() -> void:
 	bg_rect = UIKit.image(Data.texture(str(scene_data.get("bg", "backgrounds/harbor_night"))))
 	bg_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(bg_rect)
+	add_child(UIKit.glow_blob(Vector2(540, 820), 1200, Color(1.0, 0.82, 0.93, 0.24)))
 
 	portrait = UIKit.image(Data.texture("characters/shen_yan/calm"), false)
 	portrait.set_anchors_preset(Control.PRESET_FULL_RECT)

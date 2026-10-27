@@ -437,7 +437,7 @@ func reward_text(reward: Dictionary) -> String:
 
 
 ## 立绘材质：底部/两侧淡出 + 场景色调 + 轮廓光，让人物和背景像在同一个画面里。
-func portrait_material(tint := Color(0.96, 0.94, 1.0), rim_color := Color(1.0, 0.78, 0.9), rim := 0.55, fade_start := 0.78) -> ShaderMaterial:
+func portrait_material(tint := Color(0.96, 0.94, 1.0), rim_color := Color(1.0, 0.78, 0.9), rim := 0.8, fade_start := 0.78) -> ShaderMaterial:
 	var mat := ShaderMaterial.new()
 	mat.shader = load("res://src/fx/portrait.gdshader")
 	mat.set_shader_parameter("tint", tint)
