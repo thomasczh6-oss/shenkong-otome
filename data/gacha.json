@@ -1,0 +1,42 @@
+{
+  "pools": {
+    "limited": {
+      "order": 0,
+      "name": "星海之约",
+      "subtitle": "限定许愿 · 概率 UP",
+      "desc": "限定思念「潮汐之约」「流星之夜」「余烬之约」概率提升。5★ 若非限定，下一次 5★ 必定为限定（大保底）。",
+      "ticket": "limited",
+      "cost_diamonds": 150,
+      "rate5": 0.01,
+      "rate4": 0.07,
+      "soft_pity_start": 60,
+      "soft_pity_step": 0.10,
+      "hard_pity": 70,
+      "pity4": 10,
+      "featured": ["shen_yan_5_2", "gu_ci_5_2", "lu_zhuo_5_2"],
+      "up_rate": 0.5,
+      "banner": "ui/banner_limited",
+      "ends": "活动期间"
+    },
+    "standard": {
+      "order": 1,
+      "name": "深空回响",
+      "subtitle": "常驻许愿",
+      "desc": "常驻思念池：包含所有常驻 3★ / 4★ / 5★ 思念。",
+      "ticket": "standard",
+      "cost_diamonds": 150,
+      "rate5": 0.01,
+      "rate4": 0.07,
+      "soft_pity_start": 60,
+      "soft_pity_step": 0.10,
+      "hard_pity": 70,
+      "pity4": 10,
+      "featured": [],
+      "up_rate": 0.0,
+      "banner": "ui/banner_standard",
+      "ends": "常驻"
+    }
+  },
+  "dup_stardust": {"3": 5, "4": 20, "5": 100},
+  "exchange": {"stardust_per_ticket": 150}
+}
