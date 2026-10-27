@@ -1,0 +1,19 @@
+{
+  "note": "原型里的购买都是沙盒：点击即发放，不接真实内购。正式版需接 Google Play Billing / StoreKit 插件并做服务端验单。",
+  "diamonds": [
+    {"id": "d60", "diamonds": 60, "bonus": 0, "price": "¥6"},
+    {"id": "d300", "diamonds": 300, "bonus": 30, "price": "¥30"},
+    {"id": "d980", "diamonds": 980, "bonus": 110, "price": "¥98"},
+    {"id": "d1980", "diamonds": 1980, "bonus": 260, "price": "¥198"},
+    {"id": "d3280", "diamonds": 3280, "bonus": 600, "price": "¥328"},
+    {"id": "d6480", "diamonds": 6480, "bonus": 1600, "price": "¥648"}
+  ],
+  "month_card": {"name": "潮汐月卡", "price": "¥30", "instant": 300, "daily": 100, "days": 30, "desc": "立得 300 钻，30 天内每天登录领 100 钻"},
+  "bundles": [
+    {"id": "starter", "name": "新人见面礼", "price": "¥6", "desc": "限购 1 次 · 超值", "reward": {"diamonds": 680, "tickets_standard": 5}, "once": true},
+    {"id": "weekly", "name": "每周心动礼包", "price": "¥30", "desc": "每周可购 1 次", "reward": {"diamonds": 300, "tickets_limited": 2, "gold": 5000}},
+    {"id": "gold", "name": "思念培养礼包", "price": "¥12", "desc": "升级思念用", "reward": {"gold": 30000}}
+  ],
+  "pass": {"name": "星海通行证", "price": "¥68", "desc": "解锁高级奖励轨道：每 5 级一张限定许愿券，其余等级 80 钻"},
+  "exchange": {"stardust_per_ticket": 150, "desc": "重复思念会转化为星屑，150 星屑可兑换 1 张回响许愿券"}
+}

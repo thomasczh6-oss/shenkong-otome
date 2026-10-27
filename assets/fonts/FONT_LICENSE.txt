@@ -1,0 +1,1 @@
+WenQuanYi Zen Hei (GPLv2 with font embedding exception), copied from Ubuntu package fonts-wqy-zenhei

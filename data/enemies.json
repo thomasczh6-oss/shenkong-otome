@@ -1,0 +1,21 @@
+{
+  "enemies": {
+    "tide_shade": {
+      "name": "潮影",
+      "desc": "从虚潮裂隙里渗出的影子，会模仿海浪的声音靠近人。",
+      "hp": 900, "atk": 60, "def": 15,
+      "attack_interval": 2.4, "telegraph": 0.9,
+      "img": "enemies/tide_shade",
+      "reward": {"gold": 600, "diamonds": 30, "xp": 30}
+    },
+    "tide_wraith": {
+      "name": "潮魇",
+      "desc": "潮影聚合而成的巨影，核心处有一枚不断搏动的虚潮结晶。",
+      "hp": 2200, "atk": 95, "def": 30,
+      "attack_interval": 2.0, "telegraph": 0.8,
+      "img": "enemies/tide_wraith",
+      "boss": true,
+      "reward": {"gold": 1500, "diamonds": 80, "xp": 60}
+    }
+  }
+}
