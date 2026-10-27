@@ -15,6 +15,9 @@ func _ready() -> void:
 	_test_affection()
 	_test_gacha()
 	_test_save()
+	_test_story()
+	_test_dates()
+	_test_audio()
 	print("\n%d checks, %d failures" % [checks, failures])
 	get_tree().quit(1 if failures > 0 else 0)
 
@@ -48,10 +51,12 @@ func _test_data() -> void:
 				var t := str(line.get("t", "say"))
 				if t == "say":
 					var who := str(line.who)
-					check(who in ["narrator", "me"] or Data.characters.has(who), "说话人 %s 存在" % who)
+					check(who in ["narrator", "me"] or Data.characters.has(who) or (who == "npc" and str(line.get("name", "")) != ""), "说话人 %s 存在" % who)
 				elif t == "battle":
 					check(Data.enemies.has(str(line.enemy)), "敌人 %s 存在" % line.enemy)
-					check(Data.characters.has(str(line.partner)), "搭档 %s 存在" % line.partner)
+					check(Data.characters.has(str(line.partner)) or str(line.partner) == "auto", "搭档 %s 存在" % line.partner)
+				elif t == "cg":
+					check(manifest_keys.has(str(line.key)), "CG %s 在清单里" % line.key)
 				elif t == "bg":
 					check(manifest_keys.has(str(line.key)), "背景 %s 在清单里" % line.key)
 				elif t == "choice":
@@ -154,3 +159,96 @@ func _test_save() -> void:
 	check(r.size() > 0 and not Game.can_signin(), "签到一次后当天不可再签")
 	Game.reset()
 	check(not Game.has_save(), "清档")
+
+
+func _test_story() -> void:
+	print("[剧情与回忆]")
+	Game.s = Game.default_state()
+	check(Data.chapters.size() >= 2, "至少 2 章")
+	check(Data.chapter("ch2").get("scenes", []).size() == 5, "第二章 5 节")
+	var cgs: Array = Data.cg_list()
+	check(cgs.size() >= 7, "剧情 CG ≥ 7 张（实际 %d）" % cgs.size())
+	var seen := {}
+	for e in cgs:
+		check(not seen.has(e.key), "CG %s 不重复" % e.key)
+		seen[e.key] = true
+	var k := str(cgs[0].key)
+	check(not Game.cg_unlocked(k), "CG 初始未解锁")
+	check(Game.unlock_cg(k) and Game.cg_unlocked(k), "首次解锁 CG")
+	check(not Game.unlock_cg(k), "重复解锁返回 false")
+	# 每个 cg 段落都要能在本节内收尾（cg_end 前必须有 cg）
+	for ch in Data.chapters:
+		for sc in ch.scenes:
+			var open := false
+			var ok := true
+			for line in sc.lines:
+				var t := str(line.get("t", ""))
+				if t == "cg":
+					open = true
+				elif t == "cg_end":
+					ok = ok and open
+					open = false
+			check(ok, "%s/%s 的 cg_end 成对" % [ch.id, sc.id])
+
+
+func _test_dates() -> void:
+	print("[约会]")
+	var keys: Array = Data.manifest_keys()
+	check(Data.dates.size() == 9, "9 个约会（实际 %d）" % Data.dates.size())
+	for cid in Data.char_order:
+		check(Data.dates_of(cid).size() == 3, "%s 有 3 个约会" % cid)
+	for d in Data.dates:
+		check(keys.has(str(d.bg)), "约会 %s 的背景在清单里" % d.id)
+		var touches := 0
+		for line in d.lines:
+			var t := str(line.get("t", "say"))
+			if t == "touch":
+				touches += 1
+				check(line.spots.size() >= 2, "约会 %s 的触碰点 ≥ 2" % d.id)
+			elif t == "cg":
+				check(keys.has(str(line.key)), "约会 CG %s 在清单里" % line.key)
+			elif t == "say":
+				check(str(line.who) in ["narrator", "me"] or Data.characters.has(str(line.who)), "约会 %s 说话人存在" % d.id)
+		check(touches == 1, "约会 %s 有一段触碰互动" % d.id)
+	Game.s = Game.default_state()
+	var d1: Dictionary = Data.date("shen_yan_1")
+	var d3: Dictionary = Data.date("shen_yan_3")
+	check(not Game.date_unlocked(d1), "好感 Lv.1 时约会未解锁")
+	Game.s.affection["shen_yan"] = 40
+	check(Game.can_date(d1) and not Game.date_unlocked(d3), "Lv.2 解锁第一个约会，第三个仍锁着")
+	var dia := Game.diamonds()
+	var res := Game.finish_date("shen_yan_1")
+	check(res.first and Game.diamonds() == dia + 100, "首次约会奖励 100 钻")
+	check(Game.affection("shen_yan") == 55, "约会 +15 好感（实际 %d）" % Game.affection("shen_yan"))
+	check(Game.dated_today("shen_yan") and not Game.can_date(d1), "当天不能再约")
+	check(Game.can_date(Data.date("gu_ci_1")) == false, "顾辞好感不够仍不能约")
+	Game.s.dates.day = "2000-01-01"
+	check(Game.can_date(d1), "跨天后可以再约")
+	var res2 := Game.finish_date("shen_yan_1")
+	check(not res2.first and res2.reward.is_empty(), "重复约会不再给首次奖励")
+
+
+func _test_audio() -> void:
+	print("[声音]")
+	check(Audio.voice_id("shen_yan", "退后。") == "243e8e11fbf27341", "配音文件名算法与 gen_audio.py 一致")
+	# 统计男主台词的配音覆盖率（配音缺失不报错，只是静音）
+	var n := {"total": 0, "voiced": 0}  # lambda 按值捕获局部变量，所以用字典计数
+	var walk := func(lines: Array, f: Callable) -> void:
+		for line in lines:
+			var t := str(line.get("t", "say"))
+			if t == "say" and Data.characters.has(str(line.get("who", ""))):
+				n.total += 1
+				if Audio.has_voice(str(line.who), str(line.text)):
+					n.voiced += 1
+			elif t == "choice":
+				for o in line.options:
+					f.call(o.get("lines", []), f)
+	for ch in Data.chapters:
+		for sc in ch.scenes:
+			walk.call(sc.lines, walk)
+	for d in Data.dates:
+		walk.call(d.lines, walk)
+	print("    男主台词 %d 句，有配音 %d 句" % [n.total, n.voiced])
+	check(n.total > 100, "男主台词数量 > 100")
+	for cid in Data.char_order:
+		check(str(Data.character(cid).get("voice", {}).get("id", "")) != "", "%s 配置了音色" % cid)

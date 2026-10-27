@@ -1,0 +1,27 @@
+{
+  "note": "配音与 BGM 配置，tools/gen_audio.py 读取。",
+  "voice_model": "speech-2.8-hd",
+  "bgm_model": "mureka-7.5",
+  "bgm": {
+    "title": {
+      "prompt": "cinematic otome game main theme, gentle piano and strings, ocean waves and starry night, romantic and mysterious, slow build, instrumental",
+      "use": "标题 / 主页"
+    },
+    "daily": {
+      "prompt": "soft lo-fi romantic piano, warm and cozy, late night city by the sea, light and sweet, instrumental",
+      "use": "约会 / 日常"
+    },
+    "story": {
+      "prompt": "emotional narrative underscore, felt piano, light strings, quiet and tender, visual novel background music, instrumental",
+      "use": "剧情"
+    },
+    "tension": {
+      "prompt": "mysterious suspense ambient, deep ocean drones, low strings, pulsing synth, dark sci-fi, instrumental",
+      "use": "剧情紧张段落"
+    },
+    "battle": {
+      "prompt": "epic anime battle music, fast drums, electric guitar, orchestral hits, heroic and intense, instrumental",
+      "use": "战斗"
+    }
+  }
+}

@@ -7,6 +7,7 @@ var tab := 0
 
 
 func build() -> void:
+	Audio.play_bgm("daily")
 	tab = int(params.get("tab", tab))
 	var page := UIKit.page("日常", func() -> void: Router.back())
 	var v: VBoxContainer = page[1]

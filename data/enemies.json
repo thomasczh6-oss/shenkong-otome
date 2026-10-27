@@ -3,19 +3,64 @@
     "tide_shade": {
       "name": "潮影",
       "desc": "从虚潮裂隙里渗出的影子，会模仿海浪的声音靠近人。",
-      "hp": 900, "atk": 60, "def": 15,
-      "attack_interval": 2.4, "telegraph": 0.9,
+      "hp": 900,
+      "atk": 60,
+      "def": 15,
+      "attack_interval": 2.4,
+      "telegraph": 0.9,
       "img": "enemies/tide_shade",
-      "reward": {"gold": 600, "diamonds": 30, "xp": 30}
+      "reward": {
+        "gold": 600,
+        "diamonds": 30,
+        "xp": 30
+      }
     },
     "tide_wraith": {
       "name": "潮魇",
       "desc": "潮影聚合而成的巨影，核心处有一枚不断搏动的虚潮结晶。",
-      "hp": 2200, "atk": 95, "def": 30,
-      "attack_interval": 2.0, "telegraph": 0.8,
+      "hp": 2200,
+      "atk": 95,
+      "def": 30,
+      "attack_interval": 2.0,
+      "telegraph": 0.8,
       "img": "enemies/tide_wraith",
       "boss": true,
-      "reward": {"gold": 1500, "diamonds": 80, "xp": 60}
+      "reward": {
+        "gold": 1500,
+        "diamonds": 80,
+        "xp": 60
+      }
+    },
+    "star_shade": {
+      "name": "星影",
+      "desc": "从星空裂隙坠落的碎片聚成的影子，速度很快，攻击前会闪一下星光。",
+      "hp": 1500,
+      "atk": 80,
+      "def": 22,
+      "attack_interval": 1.8,
+      "telegraph": 0.7,
+      "img": "enemies/star_shade",
+      "reward": {
+        "gold": 1000,
+        "diamonds": 50,
+        "xp": 40
+      }
+    },
+    "rift_heart": {
+      "name": "裂隙之心",
+      "desc": "海与天两道裂隙合成的核心结晶。十五年来，它一直锁着一个人。",
+      "hp": 3300,
+      "atk": 105,
+      "def": 40,
+      "attack_interval": 1.9,
+      "telegraph": 0.75,
+      "img": "enemies/rift_heart",
+      "boss": true,
+      "reward": {
+        "gold": 3000,
+        "diamonds": 150,
+        "xp": 100
+      }
     }
   }
 }

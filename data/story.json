@@ -10,91 +10,398 @@
           "id": "s1",
           "title": "序章 · 裂隙之夜",
           "bg": "backgrounds/harbor_night",
-          "reward": {"diamonds": 150, "tickets_standard": 2},
+          "reward": {
+            "diamonds": 150,
+            "tickets_standard": 2
+          },
           "lines": [
-            {"t": "title", "text": "澜城 · 2049 年 · 北港"},
-            {"t": "say", "who": "narrator", "text": "到任澜城的第一天，深空潮汐局给你的第一份工作，是在午夜的北港做一次例行观测。"},
-            {"t": "say", "who": "narrator", "text": "海面平静得不像话。直到观测仪的指针，在 00:17 突然打到了底。"},
-            {"t": "say", "who": "me", "text": "……这不对。回响值不可能这么高。"},
-            {"t": "say", "who": "narrator", "text": "海面裂开一道幽蓝的缝。那是你只在档案里见过的东西——虚潮裂隙。"},
-            {"t": "say", "who": "narrator", "text": "黑色的影子从缝隙里渗出来，发出像海浪一样的声音。它们在模仿海，然后朝你涌来。"},
-            {"t": "say", "who": "narrator", "text": "就在影子碰到你指尖的前一秒，海水忽然立了起来。"},
-            {"t": "bg", "key": "backgrounds/harbor_night"},
-            {"t": "say", "who": "shen_yan", "expr": "serious", "text": "退后。"},
-            {"t": "say", "who": "narrator", "text": "一个穿潜航服的男人从浪里走出来，水珠顺着银灰色的发梢落下。他抬手，整面海墙把潮影拍回了裂隙里。"},
-            {"t": "say", "who": "shen_yan", "expr": "calm", "text": "深空潮汐局的新观测员？第一天就撞上裂隙，运气不太好。"},
-            {"t": "choice", "options": [
-              {"text": "谢谢你。你是……？", "aff": {"shen_yan": 5}, "lines": [
-                {"t": "say", "who": "shen_yan", "expr": "calm", "text": "沈砚。海洋研究所的。……不用谢，这是我的海。"}
-              ]},
-              {"text": "我可以自己处理的。", "aff": {"shen_yan": 3}, "lines": [
-                {"t": "say", "who": "shen_yan", "expr": "smile", "text": "是吗。那下次我晚一秒再出手。"},
-                {"t": "say", "who": "narrator", "text": "他嘴上这么说，却站到了你和裂隙之间。"}
-              ]},
-              {"text": "你刚刚……是从海里走出来的？", "aff": {"shen_yan": 4}, "lines": [
-                {"t": "say", "who": "shen_yan", "expr": "calm", "text": "潮汐。我的能力。……别用这种眼神看我，像在看怪物。"},
-                {"t": "say", "who": "me", "text": "不是怪物。是……很好看。"},
-                {"t": "say", "who": "shen_yan", "expr": "shy", "text": "……"}
-              ]}
-            ]},
-            {"t": "say", "who": "narrator", "text": "头顶忽然亮起一道绿色的光。一架搜救机压低高度，探照灯稳稳落在你身上。"},
-            {"t": "say", "who": "gu_ci", "expr": "smile", "text": "北港这边收到异常回响，我来看看——原来是你呀，观测员。"},
-            {"t": "say", "who": "narrator", "text": "声音从通讯频道里传来，温柔得像在哄人睡觉。"},
-            {"t": "say", "who": "gu_ci", "expr": "calm", "text": "我是顾辞，天文台的。沈砚，裂隙还在扩大，光靠你的潮汐压不住。"},
-            {"t": "say", "who": "shen_yan", "expr": "serious", "text": "知道。"},
-            {"t": "say", "who": "narrator", "text": "引擎的轰鸣声从岸边炸开。一辆改装机车冲破警戒线，车灯像一团火。"},
-            {"t": "say", "who": "lu_zhuo", "expr": "smile", "text": "哈！今晚演出取消是因为这个？早说啊，我最喜欢打架了。"},
-            {"t": "say", "who": "lu_zhuo", "expr": "calm", "text": "陆灼。乐队主唱，兼职打潮影。你就是新来的观测员？长得比档案照片好看。"},
-            {"t": "say", "who": "narrator", "text": "三个人，三种回响。你忽然听见了——深海的、星空的、火焰的，三种声音同时在你体内共振。"},
-            {"t": "say", "who": "me", "text": "我能……放大你们的能力。让我试试。"},
-            {"t": "say", "who": "shen_yan", "expr": "calm", "text": "跟紧我。第一次共鸣，别逞强。"},
-            {"t": "battle", "enemy": "tide_shade", "partner": "shen_yan"},
-            {"t": "say", "who": "narrator", "text": "潮影溃散成水雾。裂隙在你们的共鸣里缓缓闭合，海面重新归于平静。"},
-            {"t": "say", "who": "gu_ci", "expr": "smile", "text": "漂亮。观测员，你比档案上写的厉害多了。"},
-            {"t": "say", "who": "lu_zhuo", "expr": "smile", "text": "喂，下次跟我组队。我比他们两个有意思。"},
-            {"t": "say", "who": "shen_yan", "expr": "calm", "text": "……回去休息。明天，研究所见。"},
-            {"t": "say", "who": "narrator", "text": "澜城的第一夜，就这样结束了。但你知道，有什么东西已经不一样了。"}
-          ]
+            {
+              "t": "title",
+              "text": "澜城 · 2049 年 · 北港"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "到任澜城的第一天，深空潮汐局给你的第一份工作，是在午夜的北港做一次例行观测。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "海面平静得不像话。直到观测仪的指针，在 00:17 突然打到了底。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "……这不对。回响值不可能这么高。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "海面裂开一道幽蓝的缝。那是你只在档案里见过的东西——虚潮裂隙。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "黑色的影子从缝隙里渗出来，发出像海浪一样的声音。它们在模仿海，然后朝你涌来。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "就在影子碰到你指尖的前一秒，海水忽然立了起来。"
+            },
+            {
+              "t": "bg",
+              "key": "backgrounds/harbor_night"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "退后。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "一个穿潜航服的男人从浪里走出来，水珠顺着银灰色的发梢落下。他抬手，整面海墙把潮影拍回了裂隙里。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "深空潮汐局的新观测员？第一天就撞上裂隙，运气不太好。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "谢谢你。你是……？",
+                  "aff": {
+                    "shen_yan": 5
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "calm",
+                      "text": "沈砚。海洋研究所的。……不用谢，这是我的海。"
+                    }
+                  ]
+                },
+                {
+                  "text": "我可以自己处理的。",
+                  "aff": {
+                    "shen_yan": 3
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "smile",
+                      "text": "是吗。那下次我晚一秒再出手。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "narrator",
+                      "text": "他嘴上这么说，却站到了你和裂隙之间。"
+                    }
+                  ]
+                },
+                {
+                  "text": "你刚刚……是从海里走出来的？",
+                  "aff": {
+                    "shen_yan": 4
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "calm",
+                      "text": "潮汐。我的能力。……别用这种眼神看我，像在看怪物。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "me",
+                      "text": "不是怪物。是……很好看。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "shy",
+                      "text": "……"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "头顶忽然亮起一道绿色的光。一架搜救机压低高度，探照灯稳稳落在你身上。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "北港这边收到异常回响，我来看看——原来是你呀，观测员。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "声音从通讯频道里传来，温柔得像在哄人睡觉。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "我是顾辞，天文台的。沈砚，裂隙还在扩大，光靠你的潮汐压不住。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "知道。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "引擎的轰鸣声从岸边炸开。一辆改装机车冲破警戒线，车灯像一团火。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "哈！今晚演出取消是因为这个？早说啊，我最喜欢打架了。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "陆灼。乐队主唱，兼职打潮影。你就是新来的观测员？长得比档案照片好看。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "三个人，三种回响。你忽然听见了——深海的、星空的、火焰的，三种声音同时在你体内共振。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "我能……放大你们的能力。让我试试。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "跟紧我。第一次共鸣，别逞强。"
+            },
+            {
+              "t": "battle",
+              "enemy": "tide_shade",
+              "partner": "shen_yan"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "潮影溃散成水雾。裂隙在你们的共鸣里缓缓闭合，海面重新归于平静。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "漂亮。观测员，你比档案上写的厉害多了。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "喂，下次跟我组队。我比他们两个有意思。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "……回去休息。明天，研究所见。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "澜城的第一夜，就这样结束了。但你知道，有什么东西已经不一样了。"
+            }
+          ],
+          "bgm": "tension"
         },
         {
           "id": "s2",
           "title": "沈砚 · 深海的回声",
           "char": "shen_yan",
           "bg": "backgrounds/research_lab",
-          "reward": {"diamonds": 150, "tickets_standard": 1},
+          "reward": {
+            "diamonds": 150,
+            "tickets_standard": 1
+          },
           "lines": [
-            {"t": "title", "text": "澜城海洋研究所 · 清晨"},
-            {"t": "say", "who": "narrator", "text": "七点整。研究所门口，他真的拿着两杯咖啡在等你。"},
-            {"t": "say", "who": "shen_yan", "expr": "calm", "text": "加了三块糖。你昨晚的观测日志里写的。"},
-            {"t": "say", "who": "me", "text": "你连这个都看了？"},
-            {"t": "say", "who": "shen_yan", "expr": "calm", "text": "局里要求交叉核对。……顺便看的。"},
-            {"t": "choice", "options": [
-              {"text": "顺便看得挺仔细。", "aff": {"shen_yan": 5}, "lines": [
-                {"t": "say", "who": "shen_yan", "expr": "shy", "text": "……喝你的咖啡。"}
-              ]},
-              {"text": "谢谢，很好喝。", "aff": {"shen_yan": 3}, "lines": [
-                {"t": "say", "who": "shen_yan", "expr": "smile", "text": "嗯。明天也可以。"}
-              ]}
-            ]},
-            {"t": "say", "who": "narrator", "text": "他带你走进深潜准备区。墙上挂着一枚很旧的贝壳，用细绳系着。"},
-            {"t": "say", "who": "shen_yan", "expr": "calm", "text": "十五年前裂隙第一次打开，我在这片海里失去过人。从那以后我每天都下去听。"},
-            {"t": "say", "who": "shen_yan", "expr": "serious", "text": "深海里有回响。很弱，但一直在。昨晚你出现之后，它第一次……回应了我。"},
-            {"t": "say", "who": "me", "text": "所以你想让我陪你下去？"},
-            {"t": "say", "who": "shen_yan", "expr": "calm", "text": "不。我想让你在上面等我。但局里不会同意，而且——"},
-            {"t": "say", "who": "narrator", "text": "警报声划破走廊。深潜站的方向，回响值再一次打到了底。"},
-            {"t": "say", "who": "shen_yan", "expr": "serious", "text": "潮影进站了。跟紧我，别离开我三步以外。"},
-            {"t": "battle", "enemy": "tide_shade", "partner": "shen_yan"},
-            {"t": "say", "who": "narrator", "text": "最后一只潮影化成水雾。他回头确认你完好，才松开一直握着的拳头。"},
-            {"t": "say", "who": "shen_yan", "expr": "shy", "text": "……下次别站那么近。会分心。"},
-            {"t": "choice", "options": [
-              {"text": "你会因为我分心？", "aff": {"shen_yan": 6}, "lines": [
-                {"t": "say", "who": "shen_yan", "expr": "shy", "text": "我说的是潮影。……走了，带你去听回响。"}
-              ]},
-              {"text": "好，我记住了。", "aff": {"shen_yan": 3}, "lines": [
-                {"t": "say", "who": "shen_yan", "expr": "calm", "text": "嗯。记住就好。"}
-              ]}
-            ]},
-            {"t": "say", "who": "narrator", "text": "他把那枚贝壳取下来，放进你手心。里面有很轻很轻的声音，像海在叫你的名字。"}
+            {
+              "t": "title",
+              "text": "澜城海洋研究所 · 清晨"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "七点整。研究所门口，他真的拿着两杯咖啡在等你。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "加了三块糖。你昨晚的观测日志里写的。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "你连这个都看了？"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "局里要求交叉核对。……顺便看的。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "顺便看得挺仔细。",
+                  "aff": {
+                    "shen_yan": 5
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "shy",
+                      "text": "……喝你的咖啡。"
+                    }
+                  ]
+                },
+                {
+                  "text": "谢谢，很好喝。",
+                  "aff": {
+                    "shen_yan": 3
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "smile",
+                      "text": "嗯。明天也可以。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "他带你走进深潜准备区。墙上挂着一枚很旧的贝壳，用细绳系着。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "十五年前裂隙第一次打开，我在这片海里失去过人。从那以后我每天都下去听。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "深海里有回响。很弱，但一直在。昨晚你出现之后，它第一次……回应了我。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "所以你想让我陪你下去？"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "不。我想让你在上面等我。但局里不会同意，而且——"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "警报声划破走廊。深潜站的方向，回响值再一次打到了底。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "潮影进站了。跟紧我，别离开我三步以外。"
+            },
+            {
+              "t": "battle",
+              "enemy": "tide_shade",
+              "partner": "shen_yan"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "最后一只潮影化成水雾。他回头确认你完好，才松开一直握着的拳头。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "shy",
+              "text": "……下次别站那么近。会分心。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "你会因为我分心？",
+                  "aff": {
+                    "shen_yan": 6
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "shy",
+                      "text": "我说的是潮影。……走了，带你去听回响。"
+                    }
+                  ]
+                },
+                {
+                  "text": "好，我记住了。",
+                  "aff": {
+                    "shen_yan": 3
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "calm",
+                      "text": "嗯。记住就好。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch1_shen_yan_shell"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "他把那枚贝壳取下来，放进你手心。里面有很轻很轻的声音，像海在叫你的名字。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "以后它会替我听着你。……在我听不见的地方。"
+            }
           ]
         },
         {
@@ -102,41 +409,177 @@
           "title": "顾辞 · 观测台的夜",
           "char": "gu_ci",
           "bg": "backgrounds/observatory",
-          "reward": {"diamonds": 150, "tickets_standard": 1},
+          "reward": {
+            "diamonds": 150,
+            "tickets_standard": 1
+          },
           "lines": [
-            {"t": "title", "text": "澜城天文台 · 深夜"},
-            {"t": "say", "who": "narrator", "text": "穹顶缓缓打开的时候，你差点忘了呼吸。整条银河倾泻在头顶。"},
-            {"t": "say", "who": "gu_ci", "expr": "smile", "text": "喜欢吗？这是我的秘密基地。局里的人都不知道，天文台的观测仪也能测回响。"},
-            {"t": "say", "who": "gu_ci", "expr": "calm", "text": "裂隙不只在海里。星空里也有一道，很小，但每天都在变大。"},
-            {"t": "choice", "options": [
-              {"text": "为什么告诉我？", "aff": {"gu_ci": 5}, "lines": [
-                {"t": "say", "who": "gu_ci", "expr": "smile", "text": "因为你是唯一能同时听见海和星空的人。……也因为我想有人陪我看。"}
-              ]},
-              {"text": "那很危险吧。", "aff": {"gu_ci": 3}, "lines": [
-                {"t": "say", "who": "gu_ci", "expr": "calm", "text": "有点。所以我每天晚上都飞上去看一眼。有我在，它不会掉下来的。"}
-              ]}
-            ]},
-            {"t": "say", "who": "narrator", "text": "他递给你一杯热牛奶，自己手里是一块咬了一半的甜甜圈。"},
-            {"t": "say", "who": "gu_ci", "expr": "shy", "text": "啊，忘了问你要不要……糖霜被我舔掉了。"},
-            {"t": "say", "who": "me", "text": "噗——"},
-            {"t": "say", "who": "gu_ci", "expr": "shy", "text": "别笑了。观测员，你笑起来的角度是 23°，我记下来了。"},
-            {"t": "say", "who": "narrator", "text": "观测仪忽然尖啸。穹顶外，一片黑影遮住了半边银河。"},
-            {"t": "say", "who": "gu_ci", "expr": "serious", "text": "星空那道裂隙……它提前了。抓紧我，我们上去。"},
-            {"t": "bg", "key": "backgrounds/night_sky_flight"},
-            {"t": "say", "who": "narrator", "text": "星轨在他脚下亮起。你们在一瞬间越过穹顶，落在天台边缘。潮影像乌云一样压下来。"},
-            {"t": "say", "who": "gu_ci", "expr": "calm", "text": "跟着我的光走。别怕，我看着你。"},
-            {"t": "battle", "enemy": "tide_shade", "partner": "gu_ci"},
-            {"t": "say", "who": "narrator", "text": "星光散尽，潮影溃散。他落回你身边，气息有点乱，笑容却一点没变。"},
-            {"t": "say", "who": "gu_ci", "expr": "smile", "text": "看，我说过它不会掉下来的。"},
-            {"t": "choice", "options": [
-              {"text": "你刚才手在抖。", "aff": {"gu_ci": 6}, "lines": [
-                {"t": "say", "who": "gu_ci", "expr": "shy", "text": "……是吗。可能是因为你一直抓着我。"}
-              ]},
-              {"text": "谢谢你护着我。", "aff": {"gu_ci": 4}, "lines": [
-                {"t": "say", "who": "gu_ci", "expr": "smile", "text": "这是我的工作。……不，这是我想做的事。"}
-              ]}
-            ]},
-            {"t": "say", "who": "narrator", "text": "他指着一颗没有名字的星：「我用你的名字登记了它。别告诉局里。」"}
+            {
+              "t": "title",
+              "text": "澜城天文台 · 深夜"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "穹顶缓缓打开的时候，你差点忘了呼吸。整条银河倾泻在头顶。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "喜欢吗？这是我的秘密基地。局里的人都不知道，天文台的观测仪也能测回响。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "裂隙不只在海里。星空里也有一道，很小，但每天都在变大。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "为什么告诉我？",
+                  "aff": {
+                    "gu_ci": 5
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "因为你是唯一能同时听见海和星空的人。……也因为我想有人陪我看。"
+                    }
+                  ]
+                },
+                {
+                  "text": "那很危险吧。",
+                  "aff": {
+                    "gu_ci": 3
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "calm",
+                      "text": "有点。所以我每天晚上都飞上去看一眼。有我在，它不会掉下来的。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "他递给你一杯热牛奶，自己手里是一块咬了一半的甜甜圈。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "shy",
+              "text": "啊，忘了问你要不要……糖霜被我舔掉了。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "噗——"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "shy",
+              "text": "别笑了。观测员，你笑起来的角度是 23°，我记下来了。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "观测仪忽然尖啸。穹顶外，一片黑影遮住了半边银河。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "serious",
+              "text": "星空那道裂隙……它提前了。抓紧我，我们上去。"
+            },
+            {
+              "t": "bg",
+              "key": "backgrounds/night_sky_flight"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "星轨在他脚下亮起。你们在一瞬间越过穹顶，落在天台边缘。潮影像乌云一样压下来。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "跟着我的光走。别怕，我看着你。"
+            },
+            {
+              "t": "battle",
+              "enemy": "tide_shade",
+              "partner": "gu_ci"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "星光散尽，潮影溃散。他落回你身边，气息有点乱，笑容却一点没变。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "看，我说过它不会掉下来的。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "你刚才手在抖。",
+                  "aff": {
+                    "gu_ci": 6
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "shy",
+                      "text": "……是吗。可能是因为你一直抓着我。"
+                    }
+                  ]
+                },
+                {
+                  "text": "谢谢你护着我。",
+                  "aff": {
+                    "gu_ci": 4
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "这是我的工作。……不，这是我想做的事。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch1_gu_ci_star"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "他指着一颗没有名字的星：「我用你的名字登记了它。别告诉局里。」"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "这样以后不管你在哪儿，我抬头就能找到你。"
+            }
           ]
         },
         {
@@ -144,35 +587,152 @@
           "title": "陆灼 · 天台与余烬",
           "char": "lu_zhuo",
           "bg": "backgrounds/rooftop_concert",
-          "reward": {"diamonds": 200, "tickets_limited": 1},
+          "reward": {
+            "diamonds": 200,
+            "tickets_limited": 1
+          },
           "lines": [
-            {"t": "title", "text": "旧城区天台 · 晚上九点"},
-            {"t": "say", "who": "narrator", "text": "天台上只摆了一排塑料椅。他坐在音箱上，看到你出现的瞬间整个人亮了起来。"},
-            {"t": "say", "who": "lu_zhuo", "expr": "smile", "text": "来了！第一排，专属座位，谁都不许坐。"},
-            {"t": "say", "who": "me", "text": "……观众只有我一个？"},
-            {"t": "say", "who": "lu_zhuo", "expr": "calm", "text": "对啊。今晚只唱给一个人听。"},
-            {"t": "choice", "options": [
-              {"text": "那你可得唱好点。", "aff": {"lu_zhuo": 4}, "lines": [
-                {"t": "say", "who": "lu_zhuo", "expr": "smile", "text": "放心，我紧张的时候唱得最好。"}
-              ]},
-              {"text": "你紧张了？", "aff": {"lu_zhuo": 6}, "lines": [
-                {"t": "say", "who": "lu_zhuo", "expr": "shy", "text": "……谁紧张了。你坐好。"}
-              ]}
-            ]},
-            {"t": "say", "who": "narrator", "text": "他扔掉话筒，清唱了那首没有名字的歌。唱到副歌的时候，整个天台都安静得只剩他的声音和你的心跳。"},
-            {"t": "say", "who": "lu_zhuo", "expr": "calm", "text": "歌名……其实有了。先不告诉你。"},
-            {"t": "say", "who": "narrator", "text": "远处的高架桥忽然塌下一截。不是地震——是潮影。比昨晚大得多的影子，正把整条高架吞进去。"},
-            {"t": "say", "who": "lu_zhuo", "expr": "serious", "text": "操。那是潮魇。……你留在这。"},
-            {"t": "say", "who": "me", "text": "我跟你去。没有我的共鸣，你烧不动它。"},
-            {"t": "say", "who": "lu_zhuo", "expr": "smile", "text": "……行。抱紧。"},
-            {"t": "bg", "key": "backgrounds/highway_night"},
-            {"t": "say", "who": "narrator", "text": "机车冲上高架的瞬间，你听见他在风里笑。火光从他身上烧起来，像一颗不肯熄灭的星。"},
-            {"t": "say", "who": "lu_zhuo", "expr": "serious", "text": "怕什么。我烧不完的。"},
-            {"t": "battle", "enemy": "tide_wraith", "partner": "lu_zhuo"},
-            {"t": "say", "who": "narrator", "text": "潮魇的结晶碎裂的那一刻，火焰收回他体内。他半跪在地上喘气，抬头却还在笑。"},
-            {"t": "say", "who": "lu_zhuo", "expr": "smile", "text": "看吧。……歌名现在可以告诉你了。"},
-            {"t": "say", "who": "lu_zhuo", "expr": "shy", "text": "就叫你的名字。"},
-            {"t": "say", "who": "narrator", "text": "澜城的夜还很长。深海、星空、火焰——而你已经听见了三种回响。"}
+            {
+              "t": "title",
+              "text": "旧城区天台 · 晚上九点"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "天台上只摆了一排塑料椅。他坐在音箱上，看到你出现的瞬间整个人亮了起来。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "来了！第一排，专属座位，谁都不许坐。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "……观众只有我一个？"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "对啊。今晚只唱给一个人听。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "那你可得唱好点。",
+                  "aff": {
+                    "lu_zhuo": 4
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "smile",
+                      "text": "放心，我紧张的时候唱得最好。"
+                    }
+                  ]
+                },
+                {
+                  "text": "你紧张了？",
+                  "aff": {
+                    "lu_zhuo": 6
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "shy",
+                      "text": "……谁紧张了。你坐好。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "他扔掉话筒，清唱了那首没有名字的歌。唱到副歌的时候，整个天台都安静得只剩他的声音和你的心跳。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "歌名……其实有了。先不告诉你。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "远处的高架桥忽然塌下一截。不是地震——是潮影。比昨晚大得多的影子，正把整条高架吞进去。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "serious",
+              "text": "操。那是潮魇。……你留在这。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "我跟你去。没有我的共鸣，你烧不动它。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "……行。抱紧。"
+            },
+            {
+              "t": "bg",
+              "key": "backgrounds/highway_night"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "机车冲上高架的瞬间，你听见他在风里笑。火光从他身上烧起来，像一颗不肯熄灭的星。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "serious",
+              "text": "怕什么。我烧不完的。"
+            },
+            {
+              "t": "battle",
+              "enemy": "tide_wraith",
+              "partner": "lu_zhuo"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "潮魇的结晶碎裂的那一刻，火焰收回他体内。他半跪在地上喘气，抬头却还在笑。"
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch1_lu_zhuo_song"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "看吧。……歌名现在可以告诉你了。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "shy",
+              "text": "就叫你的名字。"
+            },
+            {
+              "t": "cg_end"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "澜城的夜还很长。深海、星空、火焰——而你已经听见了三种回响。"
+            }
           ]
         }
       ]
@@ -180,23 +740,1105 @@
     {
       "id": "ch2",
       "title": "第二章 · 潮汐之约",
-      "summary": "裂隙背后的真相，与十五年前的那场灾难。（开发中：完成第一章后解锁）",
-      "cover": "backgrounds/deep_sea",
+      "summary": "被删掉的档案、十五年前的零号潮、第一观测员的下落。深海、星空与火焰，各自藏着那一页的三分之一。",
+      "cover": "backgrounds/lighthouse",
       "requires": "ch1",
       "scenes": [
         {
           "id": "s1",
-          "title": "预告 · 深海之下",
-          "bg": "backgrounds/deep_sea",
-          "reward": {"diamonds": 100},
+          "title": "2-1 · 被删掉的一页",
+          "bg": "backgrounds/bureau_archive",
+          "reward": {
+            "diamonds": 150,
+            "tickets_standard": 1
+          },
           "lines": [
-            {"t": "title", "text": "第二章 · 预告"},
-            {"t": "say", "who": "narrator", "text": "深空潮汐局的加密档案里，十五年前的灾难记录被人删掉了整整一页。"},
-            {"t": "say", "who": "shen_yan", "expr": "serious", "text": "那一页，我见过。"},
-            {"t": "say", "who": "gu_ci", "expr": "calm", "text": "星空里的裂隙和海里的，是同一道。"},
-            {"t": "say", "who": "lu_zhuo", "expr": "calm", "text": "所以关上它，得三个人一起。还有你。"},
-            {"t": "say", "who": "narrator", "text": "第二章正在创作中，敬请期待。"}
+            {
+              "t": "title",
+              "text": "深空潮汐局 · 地下三层档案室"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "第一章结束后的第七天，你被叫进了局长办公室。门关上之前，你听见走廊里有人在小声说：「就是她，三种回响都听得见的那个。」"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "林岚局长",
+              "text": "坐。北港、研究所、天文台、旧城区高架——七天，四次裂隙。观测员，你知道过去十五年，澜城一共只开过几次吗？"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "……档案上写的是十一次。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "林岚局长",
+              "text": "是十二次。第一次的记录，被人删掉了。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "她把一份泛黄的纸质档案推到你面前。第 47 页到第 49 页之间，有一道整齐的裁切痕。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "林岚局长",
+              "text": "十五年前的「零号潮」。那一夜海和天同时裂开，三百多人失踪。能活下来的人，后来大多成了回响者。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "林岚局长",
+              "text": "你身边那三个，都在那天晚上。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "你走出办公室的时候，三个人已经站在档案室门口了——靠墙的、倚着门框的、蹲在台阶上的，姿势各不相同，表情却一样凝重。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "局长找你说零号潮的事了吧。看你脸色就知道。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "裂隙的频率在变快。我把这七天的星图叠在一起——海里那道和天上那道，是同一个形状。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "被删掉的那一页，我见过。十五年前，在我老师的潜航日志里。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "你们三个……都是零号潮的幸存者？",
+                  "aff": {
+                    "shen_yan": 2,
+                    "gu_ci": 2,
+                    "lu_zhuo": 2
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "嗯。不过那天晚上的事，我们三个都记不太清了。像被谁拿走了一块。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "calm",
+                      "text": "我就记得火。很大的火。还有一个人一直在喊「往上跑」。"
+                    }
+                  ]
+                },
+                {
+                  "text": "为什么不早点告诉我？",
+                  "aff": {
+                    "shen_yan": 3,
+                    "lu_zhuo": 1
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "calm",
+                      "text": "因为告诉你，你就会去查。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "shy",
+                      "text": "……而我没想好要不要让你去。"
+                    }
+                  ]
+                },
+                {
+                  "text": "那我们一起把那一页找回来。",
+                  "aff": {
+                    "gu_ci": 3,
+                    "lu_zhuo": 3
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "smile",
+                      "text": "就等你这句话。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "那就说定了。观测员带队，我们三个负责保护你。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "档案室的灯忽然一盏接一盏地熄灭。最深处的铁柜缝隙里，渗出了你熟悉的、像潮水一样的黑色。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "潮影进了局里？不可能，这里有屏障——"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "serious",
+              "text": "除非它不是从外面进来的。它一直都在这里，守着那一页。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "那正好，拆开看看它守的是什么。观测员，这次跟我？"
+            },
+            {
+              "t": "battle",
+              "enemy": "tide_shade",
+              "partner": "lu_zhuo"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "潮影散去后，铁柜最底层露出一枚被海水泡得发白的徽章。徽章背面，刻着一行字。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "「深空潮汐局 · 第一观测员」……这是十五年前的观测员？"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "局里的名册上，第一观测员这个位置一直是空的。原来不是没有人，是有人被抹掉了。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "名字被磨掉了。……但我知道去哪里找她。三千米之下。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "三条线索，三个方向。深海、星空、火焰——他们看着你，等你先选。"
+            }
+          ],
+          "bgm": "tension"
+        },
+        {
+          "id": "s2",
+          "title": "2-2 · 沈砚 · 三千米之下",
+          "char": "shen_yan",
+          "bg": "backgrounds/submarine_cabin",
+          "reward": {
+            "diamonds": 150,
+            "tickets_standard": 1
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "深潜器「潮声号」 · 下潜中"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "舷窗外的蓝色一点点变深，最后变成你从未见过的黑。深度计的数字在跳：1800、2100、2500。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "怕吗？"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "你上次说想让我在上面等你。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "嗯。现在也这么想。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "但零号潮那天，我的老师就是在这个深度失去联系的。她最后发回来的一句话是——「回响在叫我」。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "十五年，我每天下来听。直到你出现，它才第一次回应。所以……我需要你在这里。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "我不会让你一个人下来。",
+                  "aff": {
+                    "shen_yan": 6
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "shy",
+                      "text": "……我知道。所以我才没拦你。"
+                    }
+                  ]
+                },
+                {
+                  "text": "你老师……对你很重要吧。",
+                  "aff": {
+                    "shen_yan": 4
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "calm",
+                      "text": "她教我潜水，教我听海。我十二岁之后的所有东西，都是她给的。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "calm",
+                      "text": "包括墙上那枚贝壳。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "深度 2870 米。舷窗外忽然亮起来——成千上万只发光水母从深渊里升起，像一场倒着下的雪。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "你听见了。很轻的声音，夹在水流里，一遍一遍，说着同一个词。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "……「阿砚」？"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "是她。……她在叫我的名字。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "水母群忽然散开。黑色从深渊里翻涌上来，那不是一只潮影，是一整片会呼吸的海。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "抓住扶手。我要出舱。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "这里是三千米深！"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "我的潮汐在这里最强。……你只要做一件事：把你的回响给我，别松开。"
+            },
+            {
+              "t": "battle",
+              "enemy": "tide_wraith",
+              "partner": "shen_yan"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "黑潮退去。你的掌心贴在舷窗上，他的掌心隔着玻璃贴在另一边。他身后，水母重新亮了起来。"
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch2_shen_yan_dive"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "他回到舱里，浑身是水，第一件事是确认你的手是不是还暖。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "shy",
+              "text": "……冷。你的手。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "那你帮我暖着。",
+                  "aff": {
+                    "shen_yan": 7
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "shy",
+                      "text": "……"
+                    },
+                    {
+                      "t": "say",
+                      "who": "narrator",
+                      "text": "他没说话，只是把你的手整个包进掌心，放在自己心口。那里跳得很快，一点都不像他。"
+                    }
+                  ]
+                },
+                {
+                  "text": "你刚才吓死我了。",
+                  "aff": {
+                    "shen_yan": 5
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "calm",
+                      "text": "抱歉。下次……会先告诉你。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "smile",
+                      "text": "不说「没有下次」了。因为我知道你还会跟下来。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "cg_end"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "刚才的回响里，除了她的声音，还有一组坐标。不在海里——在天上。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "去找顾辞吧。星空那一半，他比我清楚。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "上浮的时候，他一直没松开你的手。深度计一格一格往回跳，像在倒数什么。"
+            }
           ]
+        },
+        {
+          "id": "s3",
+          "title": "2-3 · 顾辞 · 失落的星图",
+          "char": "gu_ci",
+          "bg": "backgrounds/rescue_hangar",
+          "reward": {
+            "diamonds": 150,
+            "tickets_standard": 1
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "澜城搜救基地 · 机库 · 23:40"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "机库里只亮着一盏灯。他坐在搜救机的机翼上，膝盖上摊着一张很旧的手绘星图，边角被火烧掉了一块。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "来了？我刚好把沈砚给的坐标对上了。……你看，这里。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "这张星图是零号潮那天晚上，有人塞进我手里的。我那年十岁，被困在北港的灯塔里。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "一个穿观测员制服的姐姐把我推上救生艇，说「拿好它，往有星星的地方划」。然后灯塔就塌了。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "……是第一观测员。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "嗯。我一直想找到她，跟她说一声谢谢。所以我当了搜救飞行员——想把每一个被困住的人都接回来。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "你一直都在替别人看着星星。",
+                  "aff": {
+                    "gu_ci": 6
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "shy",
+                      "text": "被你这么一说……好像有点帅？"
+                    },
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "开玩笑的。谢谢你，观测员。这句话我会记很久。"
+                    }
+                  ]
+                },
+                {
+                  "text": "那谁来接你回来？",
+                  "aff": {
+                    "gu_ci": 7
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "shy",
+                      "text": "……"
+                    },
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "calm",
+                      "text": "没人问过我这个。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "那就你吧。说好了，以后你负责接我。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "坐标在云层之上一万两千米。那里有星空裂隙的「眼」，也许藏着那一页的另一半。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "副驾驶的位置一直空着。今天，给你。"
+            },
+            {
+              "t": "bg",
+              "key": "backgrounds/night_sky_flight"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "搜救机冲破云层的那一刻，整片星海在你眼前铺开。他关掉了驾驶舱的灯，只剩仪表盘的微光照着他的侧脸。"
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch2_gu_ci_cockpit"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "冷的话，夹克在你座位后面。……是我的，洗过了。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "你笑起来的角度变了。25°。比上次多两度——是因为我吗？"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "是因为星星。",
+                  "aff": {
+                    "gu_ci": 4
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "好吧，那我输给星星了。……不过星星不会记得你笑了几度，我会。"
+                    }
+                  ]
+                },
+                {
+                  "text": "是因为你。",
+                  "aff": {
+                    "gu_ci": 7
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "shy",
+                      "text": "……完了，我要开不稳了。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "narrator",
+                      "text": "机身轻轻晃了一下。你听见他在频道里很小声地说了一句「稳住」，不知道是在对飞机说，还是对自己。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "cg_end"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "警报响起。前方的星空像被撕开一道口子，无数细碎的黑影顺着星光倾泻而下——星影。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "serious",
+              "text": "抓紧。我要开舱门了——星轨在外面才看得清。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "别怕。我看着你，你看着我。我们谁都不会掉下去。"
+            },
+            {
+              "t": "battle",
+              "enemy": "star_shade",
+              "partner": "gu_ci"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "星影溃散后，裂隙之眼里飘出一片发光的纸页。他伸手接住它，指尖在发抖。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "serious",
+              "text": "是档案的第 48 页。……上面写着，零号潮不是自然打开的。是有人在灯塔里，用回响把它「叫」开的。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "最后一行被烧掉了。剩下的那一半，应该在火里。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "去找陆灼吧。……回来的时候，记得让我接你。"
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "title": "2-4 · 陆灼 · 余烬之下",
+          "char": "lu_zhuo",
+          "bg": "backgrounds/rehearsal_room",
+          "reward": {
+            "diamonds": 150,
+            "tickets_limited": 1
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "旧城区 · 「余烬」排练室"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "排练室的墙上贴满了歌词纸，最中间那张被红笔圈了又圈，只写着一个日期——零号潮的那一天。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "别看了，丑。那是我写的第一首歌，十二岁写的，没写完。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "零号潮那晚，我家在灯塔旁边。火烧起来的时候，有个人一直在喊「往上跑」。我跑了。她没有。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "serious",
+              "text": "我的余烬就是那天烧起来的。……我一直觉得，那把火是她留给我的。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "档案的最后一页，应该就在那场火里。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "我知道。灯塔的废墟里有个东西，每到零号潮的日子就会发烫。我一个人去过三次，三次都没打开。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "但今天有你。……喂，先别急着走。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "他把吉他塞进你怀里，自己坐到鼓凳上，手指在膝盖上打拍子。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "那首歌我写完了。第二段副歌缺一句和声。你来唱。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "我不会唱歌……",
+                  "aff": {
+                    "lu_zhuo": 5
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "smile",
+                      "text": "跑调也没关系。全世界就我一个观众，我说好听就好听。"
+                    }
+                  ]
+                },
+                {
+                  "text": "好啊，你教我。",
+                  "aff": {
+                    "lu_zhuo": 6
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "shy",
+                      "text": "……你答应得也太快了吧。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "smile",
+                      "text": "行，跟着我。一、二——"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "那一段和声你唱得断断续续。他却唱得很认真，认真到你不敢看他的眼睛。"
+            },
+            {
+              "t": "bg",
+              "key": "backgrounds/highway_night"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "凌晨两点，机车冲上通往灯塔的高架。风很大，你把脸埋在他背上，听见他的心跳和引擎一样快。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "抱紧点。……不是因为危险。就是想让你抱紧点。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "灯塔的废墟出现在视野里。下一秒，整条高架烧了起来——不是他的火，是黑色的火。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "serious",
+              "text": "潮影学会烧了？……它在模仿我。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "有意思。那就看看谁烧得更旺。"
+            },
+            {
+              "t": "battle",
+              "enemy": "tide_wraith",
+              "partner": "lu_zhuo"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "黑火熄灭的同时，他的火也没收住。火焰顺着他的手臂往上爬，他半跪在地，却还在笑。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "没事……烧过头了而已。离我远点，会烫到你。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "（握住他的手）",
+                  "aff": {
+                    "lu_zhuo": 8
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "narrator",
+                      "text": "你握住了那只燃烧的手。很烫，却没有烧伤你——你的回响像水一样漫过去，火焰一点点安静下来。"
+                    }
+                  ]
+                },
+                {
+                  "text": "你别想一个人扛！",
+                  "aff": {
+                    "lu_zhuo": 6
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "narrator",
+                      "text": "你不顾他的阻拦冲过去抱住他。火焰在你们之间犹豫了一下，然后像被安抚的猫一样蜷缩起来。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch2_lu_zhuo_fire"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "shy",
+              "text": "……你疯了吧。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "十二年了。第一次有人敢碰这把火。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "完了。以后我烧起来，只有你能灭了。你得负责。"
+            },
+            {
+              "t": "cg_end"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "废墟深处，那个发烫的东西终于在你们面前打开——是一只烧焦的铁盒，里面躺着档案的第 49 页。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "「零号潮由第一观测员以回响强行闭合。代价：她本人被卷入裂隙，下落不明。」"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "「附注：下一位能同时听见三种回响的观测员出现时，裂隙会再次苏醒。」"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "serious",
+              "text": "……下一位。说的是你。"
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "title": "2-5 · 终章 · 潮汐之约",
+          "bg": "backgrounds/lighthouse",
+          "reward": {
+            "diamonds": 300,
+            "tickets_limited": 2
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "北港灯塔遗址 · 零号潮纪念日 · 00:17"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "十五年前的同一时刻，同一个地方。海面和夜空同时裂开，两道裂隙在灯塔上方合成了一道。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "裂隙中央，悬着一枚巨大的、搏动的幽蓝结晶。你听见结晶里有一个女人的声音，很温柔，很疲惫。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "？？？",
+              "text": "……你来了。比我想的，要早一点。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "老师……？"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "serious",
+              "text": "是她。灯塔里的那个姐姐。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "serious",
+              "text": "……那个喊「往上跑」的人。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "第一观测员",
+              "text": "我用回响关上了门，却把自己变成了锁。十五年，锁快撑不住了。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "第一观测员",
+              "text": "孩子，你可以像我一样，成为新的锁。也可以……试试我没做到的事。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "你没做到的事？"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "第一观测员",
+              "text": "我只有一个人。而你身边，有他们。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "裂隙之心发出一声长鸣。黑潮从四面八方涌来，比你见过的任何一次都要多。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "这一次，我不会在上面等你。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "这一次，换我们接你回来。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "这一次，谁都不用烧完。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "沈砚，借我你的海。",
+                  "aff": {
+                    "shen_yan": 10
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "calm",
+                      "text": "全部都给你。"
+                    }
+                  ]
+                },
+                {
+                  "text": "顾辞，借我你的星光。",
+                  "aff": {
+                    "gu_ci": 10
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "一直都是你的。"
+                    }
+                  ]
+                },
+                {
+                  "text": "陆灼，借我你的火。",
+                  "aff": {
+                    "lu_zhuo": 10
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "smile",
+                      "text": "早就说了，只对你开放。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "battle",
+              "enemy": "rift_heart",
+              "partner": "auto"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "三种回响在你身体里汇成一条河。你把它全部推向裂隙之心——不是去堵住它，而是去「听」它。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "结晶碎开的那一刻，你听见了十五年前那一夜所有的声音：海浪、警报、哭声、一个女人在喊「往上跑」。然后，一切归于平静。"
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch2_finale"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "海面上，裂隙缓缓合拢。天亮之前，第一缕晨光照在灯塔的废墟上，照在你们四个人身上。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "第一观测员",
+              "text": "……谢谢你。替我，好好听着这座城市。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "她的声音像潮水一样退去。你不知道她是消失了，还是终于回到了某个地方。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "smile",
+              "text": "结束了。……回家吧。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "天亮了。今天的日出，我们一起看完再走。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "我饿了。谁请吃早饭？观测员请吧，毕竟你最厉害。"
+            },
+            {
+              "t": "cg_end"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "你们四个坐在灯塔的台阶上看日出。你以为一切都结束了。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "直到你的观测仪，在 06:17 又轻轻响了一声。屏幕上跳出一行陌生的坐标——不在海里，也不在天上。"
+            },
+            {
+              "t": "title",
+              "text": "第二章 · 完　　第三章「回响之城」敬请期待"
+            }
+          ],
+          "bgm": "tension"
         }
       ]
     }

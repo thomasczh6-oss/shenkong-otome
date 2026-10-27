@@ -3,6 +3,7 @@ extends "res://src/screens/BaseScreen.gd"
 
 
 func build() -> void:
+	Audio.play_bgm("title")
 	add_child(UIKit.gradient_rect(Color("0b1026"), Color("1d1b4b")))
 	var bg := UIKit.image(Data.texture("backgrounds/title"))
 	bg.set_anchors_preset(Control.PRESET_FULL_RECT)

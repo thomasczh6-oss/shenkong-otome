@@ -26,12 +26,30 @@
       "intro": "澜城海洋研究所最年轻的首席潜航员，常年和深海打交道。话不多，却总在你需要的时候出现。能力「潮汐」可以操控水流，也能听见深海里最细微的回响。",
       "personality": "冷静、克制、嘴硬心软；习惯把担心藏在一句「注意安全」里。",
       "likes": "黑咖啡、老唱片、深夜的港口",
-      "expressions": ["calm", "smile", "shy", "serious"],
-      "skill": {"name": "潮涌", "desc": "召唤潮汐冲击敌人，造成 180% 攻击伤害", "mult": 1.8, "cooldown": 6.0},
-      "resonance": {"name": "深海誓约", "desc": "与你共鸣，释放深海之力，造成 320% 攻击伤害", "mult": 3.2},
+      "expressions": [
+        "calm",
+        "smile",
+        "shy",
+        "serious"
+      ],
+      "skill": {
+        "name": "潮涌",
+        "desc": "召唤潮汐冲击敌人，造成 180% 攻击伤害",
+        "mult": 1.8,
+        "cooldown": 6.0
+      },
+      "resonance": {
+        "name": "深海誓约",
+        "desc": "与你共鸣，释放深海之力，造成 320% 攻击伤害",
+        "mult": 3.2
+      },
       "greet": "回来了？今天的海面很平静，像在等你。",
       "home_bg": "backgrounds/harbor_night",
-      "visual": "银灰色短发、深蓝色眼睛、身形修长的 27 岁男性，穿深色高领潜航服外套，冷静克制的神情"
+      "visual": "银灰色短发、深蓝色眼睛、身形修长的 27 岁男性，穿深色高领潜航服外套，冷静克制的神情",
+      "voice": {
+        "id": "male-qn-jingying",
+        "note": "MiniMax speech-2.8-hd 系统音色"
+      }
     },
     {
       "id": "gu_ci",
@@ -48,12 +66,30 @@
       "intro": "白天是天文台的观测员，夜里开着搜救机在澜城上空巡航。温柔、爱笑、记性好得过分，你随口说过的话他都记得。能力「星轨」能折射光线、短距离闪现。",
       "personality": "温柔体贴、擅长照顾人，却很少说自己的事。",
       "likes": "甜食、晴朗的夜空、旧地图",
-      "expressions": ["calm", "smile", "shy", "serious"],
-      "skill": {"name": "星芒", "desc": "凝聚星光刺穿敌人，造成 170% 攻击伤害", "mult": 1.7, "cooldown": 5.5},
-      "resonance": {"name": "星轨共鸣", "desc": "与你共鸣，引落星轨，造成 300% 攻击伤害", "mult": 3.0},
+      "expressions": [
+        "calm",
+        "smile",
+        "shy",
+        "serious"
+      ],
+      "skill": {
+        "name": "星芒",
+        "desc": "凝聚星光刺穿敌人，造成 170% 攻击伤害",
+        "mult": 1.7,
+        "cooldown": 5.5
+      },
+      "resonance": {
+        "name": "星轨共鸣",
+        "desc": "与你共鸣，引落星轨，造成 300% 攻击伤害",
+        "mult": 3.0
+      },
       "greet": "今晚的星图我留了一个位置，给你。",
       "home_bg": "backgrounds/observatory",
-      "visual": "黑色微卷短发、琥珀色眼睛、笑起来很温柔的 25 岁男性，穿白色衬衫外搭浅色飞行夹克，戴着细框眼镜"
+      "visual": "黑色微卷短发、琥珀色眼睛、笑起来很温柔的 25 岁男性，穿白色衬衫外搭浅色飞行夹克，戴着细框眼镜",
+      "voice": {
+        "id": "Chinese (Mandarin)_Gentle_Youth",
+        "note": "MiniMax speech-2.8-hd 系统音色"
+      }
     },
     {
       "id": "lu_zhuo",
@@ -70,12 +106,30 @@
       "intro": "街头乐队「余烬」的主唱，也是澜城夜里跑得最快的机车手。张扬、炽热、不服输，偏偏在你面前会突然安静。能力「余烬」能点燃一切，也能在绝境里把自己燃成光。",
       "personality": "直球、爱闹、有点幼稚，但认真起来谁也拦不住。",
       "likes": "辣、现场演出、凌晨的高架桥",
-      "expressions": ["calm", "smile", "shy", "serious"],
-      "skill": {"name": "燎原", "desc": "烈焰席卷敌人，造成 200% 攻击伤害", "mult": 2.0, "cooldown": 7.0},
-      "resonance": {"name": "余烬之约", "desc": "与你共鸣，燃尽一切，造成 340% 攻击伤害", "mult": 3.4},
+      "expressions": [
+        "calm",
+        "smile",
+        "shy",
+        "serious"
+      ],
+      "skill": {
+        "name": "燎原",
+        "desc": "烈焰席卷敌人，造成 200% 攻击伤害",
+        "mult": 2.0,
+        "cooldown": 7.0
+      },
+      "resonance": {
+        "name": "余烬之约",
+        "desc": "与你共鸣，燃尽一切，造成 340% 攻击伤害",
+        "mult": 3.4
+      },
       "greet": "喂，看见我第一眼是不是心跳快了？老实说。",
       "home_bg": "backgrounds/rooftop_concert",
-      "visual": "暗红色凌乱短发、金色眼睛、耳骨戴黑色耳钉的 24 岁男性，穿黑色皮夹克和乐队 T 恤，张扬自信的笑"
+      "visual": "暗红色凌乱短发、金色眼睛、耳骨戴黑色耳钉的 24 岁男性，穿黑色皮夹克和乐队 T 恤，张扬自信的笑",
+      "voice": {
+        "id": "Chinese (Mandarin)_Unrestrained_Young_Man",
+        "note": "MiniMax speech-2.8-hd 系统音色"
+      }
     }
   ]
 }

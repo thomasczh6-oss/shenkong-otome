@@ -54,9 +54,12 @@ func default_state() -> Dictionary:
 		"moments": {"liked": {}},
 		"month_card": {"until": 0, "last_claim": ""},
 		"battle_pass": {"level": 1, "xp": 0, "claimed": [], "premium": false},
-		"settings": {"text_speed": 1.0, "auto": false},
+		"settings": {"text_speed": 1.0, "auto": false, "bgm_volume": 0.7, "voice_volume": 1.0},
 		"stats": {"battles": 0, "wins": 0, "pulls": 0},
 		"favorite": "shen_yan",
+		"gallery": {},
+		"dates": {"done": {}, "day": "", "today": {}},
+		"tutorial": {},
 	}
 
 
@@ -337,6 +340,72 @@ func chapter_progress(ch_id: String) -> Array:
 		if scene_done(ch_id, str(sc.id)):
 			done += 1
 	return [done, scenes.size()]
+
+
+# ---------------- 回忆（剧情 CG） ----------------
+
+func cg_unlocked(key: String) -> bool:
+	return s.gallery.has(key)
+
+
+## 返回是否首次解锁。
+func unlock_cg(key: String) -> bool:
+	if cg_unlocked(key):
+		return false
+	s.gallery[key] = int(Time.get_unix_time_from_system())
+	save()
+	changed.emit("gallery")
+	return true
+
+
+# ---------------- 约会 ----------------
+
+func date_unlocked(d: Dictionary) -> bool:
+	return affection_level(str(d.get("char", ""))) >= int(d.get("level", 1))
+
+
+func date_done_ever(id: String) -> bool:
+	return s.dates.done.has(id)
+
+
+func dated_today(cid: String) -> bool:
+	return str(s.dates.get("day", "")) == today() and s.dates.today.has(cid)
+
+
+func can_date(d: Dictionary) -> bool:
+	return date_unlocked(d) and not dated_today(str(d.get("char", "")))
+
+
+## 约会结束结算：每次 +好感，首次再给钻石。返回 {first, affection, reward, leveled}。
+func finish_date(id: String) -> Dictionary:
+	var d := Data.date(id)
+	if d.is_empty():
+		return {}
+	var cid := str(d.char)
+	if str(s.dates.get("day", "")) != today():
+		s.dates.day = today()
+		s.dates.today = {}
+	s.dates.today[cid] = id
+	var first := not date_done_ever(id)
+	s.dates.done[id] = int(s.dates.done.get(id, 0)) + 1
+	var aff := int(Data.dates_cfg.get("daily_affection", 15))
+	var leveled := add_affection(cid, aff)
+	var reward: Dictionary = Data.dates_cfg.get("first_reward", {}) if first else {}
+	if reward.size() > 0:
+		grant(reward)
+	save()
+	return {"first": first, "affection": aff, "reward": reward, "leveled": leveled}
+
+
+# ---------------- 新手引导 ----------------
+
+func tutorial_done(step: String) -> bool:
+	return bool(s.tutorial.get(step, false))
+
+
+func mark_tutorial(step: String) -> void:
+	s.tutorial[step] = true
+	save()
 
 
 # ---------------- 日常 ----------------

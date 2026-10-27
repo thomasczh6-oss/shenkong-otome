@@ -34,6 +34,11 @@ func _run() -> void:
 	Router.go("Title")
 	await _shot("01_title")
 	Router.go("Home")
+	await _shot("19_tutorial", 1.0)
+	Router.clear_overlay()
+	Game.mark_tutorial("home")
+	Game.mark_tutorial("battle")
+	Router.go("Home")
 	await _shot("02_home")
 	Router.push("Chapters")
 	await _shot("03_chapters")
@@ -111,4 +116,61 @@ func _run() -> void:
 	await _shot("17_shop")
 	Router.push("Profile")
 	await _shot("18_profile")
+	Router.go("Home")
+
+	# 第二章：带 CG 的剧情
+	for sc in Data.chapter("ch1").scenes:
+		Game.s.story.done["ch1/" + str(sc.id)] = true
+	Game.unlock_chapter("ch2")
+	Router.push("Chapters")
+	await _shot("20_chapters_ch2")
+	Router.push("Story", {"chapter": "ch2", "scene": "s2"})
+	story = Router.stack.back().node
+	await get_tree().create_timer(0.3).timeout
+	guard = 0
+	while not story.cg_active and guard < 80 and not story.ended:
+		if story.choice_layer != null:
+			story._pick(story.lines[story.idx].options[0])
+		elif Router.current_name() == "Battle":
+			Router.back({"win": true})
+		else:
+			story._advance()
+		await get_tree().process_frame
+		story._finish_typing()
+		guard += 1
+	story._advance()
+	await get_tree().process_frame
+	story._finish_typing()
+	await _shot("21_story_cg", 1.2)
+	Router.go("Home")
+	for e in Data.cg_list().slice(0, 7):
+		Game.unlock_cg(str(e.key))
+	Router.push("Gallery")
+	await _shot("22_gallery")
+	Router.go("Home")
+
+	# 约会
+	Router.push("Dates", {"char": "shen_yan"})
+	await _shot("23_dates")
+	Router.push("Story", {"date": "shen_yan_2"})
+	story = Router.stack.back().node
+	await get_tree().create_timer(0.3).timeout
+	guard = 0
+	while story.touch_layer == null and guard < 40 and not story.ended:
+		if story.choice_layer != null:
+			story._pick(story.lines[story.idx].options[0])
+		else:
+			story._advance()
+		await get_tree().process_frame
+		story._finish_typing()
+		guard += 1
+	await _shot("24_date_touch", 1.0)
+	for c in story.touch_layer.get_children():
+		if c is Button:
+			c.pressed.emit()
+			break
+	await get_tree().process_frame
+	story._finish_typing()
+	await _shot("25_date_reaction", 0.5)
+	Router.go("Home")
 	Game.reset()

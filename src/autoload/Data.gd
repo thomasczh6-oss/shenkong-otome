@@ -14,6 +14,10 @@ var calls: Dictionary = {}
 var moments: Array = []
 var shop: Dictionary = {}
 var enemies: Dictionary = {}
+## 约会（data/dates.json）
+var dates_cfg: Dictionary = {}
+var dates: Array = []
+var date_by_id: Dictionary = {}
 ## 美术清单（assets/manifest.json）：key → 生图提示词，游戏内「AI 工坊」会用到。
 var manifest: Dictionary = {}
 
@@ -49,6 +53,10 @@ func load_all() -> void:
 
 	shop = _json("res://data/shop.json")
 	enemies = _json("res://data/enemies.json").get("enemies", {})
+	dates_cfg = _json("res://data/dates.json")
+	dates = dates_cfg.get("dates", [])
+	for d in dates:
+		date_by_id[d.id] = d
 	if FileAccess.file_exists("res://assets/manifest.json"):
 		manifest = _json("res://assets/manifest.json")
 
@@ -107,6 +115,35 @@ func scene(ch_id: String, scene_id: String) -> Dictionary:
 		if str(s.id) == scene_id:
 			return s
 	return {}
+
+
+func date(id: String) -> Dictionary:
+	return date_by_id.get(id, {})
+
+
+func dates_of(cid: String) -> Array:
+	var out: Array = []
+	for d in dates:
+		if str(d.get("char", "")) == cid:
+			out.append(d)
+	return out
+
+
+## 主线与约会里出现的全部 CG（按剧情顺序，约会在后）：[{key, chapter_title, scene_title, char}]。
+func cg_list() -> Array:
+	var out: Array = []
+	for ch in chapters:
+		for sc in ch.get("scenes", []):
+			for line in sc.get("lines", []):
+				if str(line.get("t", "")) == "cg":
+					out.append({"key": str(line.key), "chapter": str(ch.id), "chapter_title": str(ch.title),
+						"scene": str(sc.id), "scene_title": str(sc.title), "char": str(sc.get("char", ""))})
+	for d in dates:
+		for line in d.get("lines", []):
+			if str(line.get("t", "")) == "cg":
+				out.append({"key": str(line.key), "chapter": "date", "chapter_title": "约会 · " + char_name(str(d.char)),
+					"scene": str(d.id), "scene_title": str(d.title), "char": str(d.char)})
+	return out
 
 
 func enemy(eid: String) -> Dictionary:
