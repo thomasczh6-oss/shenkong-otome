@@ -93,7 +93,7 @@ class OpenAIBackend:
     def generate(self, prompt, ratio, ref_path=None):
         size = SIZES.get(ratio, "1024x1024")
         if ref_path is not None:
-            files = {"image": (ref_path.name, ref_path.open("rb"), "image/png")}
+            files = {"image": (ref_path.name, ref_bytes(ref_path), "image/png")}
             data = {"model": self.model, "prompt": prompt, "size": size, "n": "1"}
             if self.quality:
                 data["quality"] = self.quality
@@ -106,6 +106,21 @@ class OpenAIBackend:
         if r.status_code >= 400:
             raise RuntimeError(f"HTTP {r.status_code}: {r.text[:400]}")
         return self._decode(r.json())
+
+
+def ref_bytes(path):
+    """参考图字节。透明背景的立绘先垫上深色底：edits 接口会把透明区域当成蒙版。"""
+    raw = path.read_bytes()
+    if Image is None:
+        return raw
+    img = Image.open(io.BytesIO(raw))
+    if img.mode != "RGBA":
+        return raw
+    bg = Image.new("RGBA", img.size, (12, 14, 28, 255))
+    bg.alpha_composite(img)
+    buf = io.BytesIO()
+    bg.convert("RGB").save(buf, "PNG")
+    return buf.getvalue()
 
 
 # ---------------- drma 后端（与 drma-web 一致） ----------------
@@ -141,7 +156,7 @@ class DrmaBackend:
     def generate(self, prompt, ratio, ref_path=None):
         body = {"modelBuildType": "i2i" if ref_path else "t2i", "prompt": prompt, "ratio": ratio}
         if ref_path:
-            body["inputImageUrlList"] = [self.upload(ref_path)]
+            body["inputImageUrlList"] = [self.upload(ref_path)]  # drma 后端直接传原图
         rec = self._envelope(self.session.post(f"{self.base}/videoAi/aiGenerate/add/new", json=body, timeout=60))
         rid = rec["id"]
         for _ in range(150):
@@ -238,6 +253,12 @@ def main():
                 raw = backend.generate(entry["prompt"], entry.get("ratio", "9:16"), ref_path)
                 out.parent.mkdir(parents=True, exist_ok=True)
                 out.write_bytes(to_png(raw))
+                if entry.get("cutout"):
+                    try:
+                        import cutout  # 同目录的 tools/cutout.py
+                        cutout.cut(out, force=True)
+                    except ImportError:
+                        log("  未安装 rembg，跳过抠图（之后可运行 tools/cutout.py）")
                 jpg = out.with_suffix(".jpg")
                 for stale in (jpg, jpg.with_name(jpg.name + ".import")):
                     if stale.exists():

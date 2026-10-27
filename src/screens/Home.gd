@@ -2,6 +2,8 @@ extends "res://src/screens/BaseScreen.gd"
 ## 主页：当前搭档立绘 + 好感 + 货币 + 各功能入口。
 
 var cid: String = ""
+var nav_btns: Dictionary = {}
+var side_btns: Dictionary = {}
 
 
 func build() -> void:
@@ -54,6 +56,24 @@ func build() -> void:
 	v.add_child(_nav())
 	m.add_child(v)
 	add_child(m)
+	if not Game.tutorial_done("home"):
+		_run_tutorial()
+
+
+## 新手引导：第一次回到主页时，由当前男主介绍各个入口。
+func _run_tutorial() -> void:
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var steps := [
+		{"who": cid, "text": "欢迎回来，{name}。第一天就撞上裂隙，辛苦了。我带你熟悉一下潮汐局。"},
+		{"who": cid, "target": nav_btns.get("主线"), "text": "主线剧情在这里。第一章「潮起」还有三段，我们三个都在等你。"},
+		{"who": cid, "target": nav_btns.get("许愿"), "text": "许愿能得到「思念」卡。局里给新人发了许愿券，先去试试手气吧。"},
+		{"who": cid, "target": nav_btns.get("思念"), "text": "思念卡可以升级、装备。装备得越好，战斗时我们越强；好感越高，加成也越多。"},
+		{"who": cid, "target": nav_btns.get("约会"), "text": "好感到「初识」之后就能约会了。每个人每天一次……别让我等太久。"},
+		{"who": cid, "target": nav_btns.get("日常"), "text": "短信、电话和朋友圈在「日常」里。我们会给你发消息，记得回。"},
+		{"who": cid, "target": side_btns.get("签到"), "text": "每天签到、做任务能拿钻石。好了——先去把主线看完吧。"},
+	]
+	Router.coach(steps, func() -> void: Game.mark_tutorial("home"))
 
 
 func on_resume(_result: Variant) -> void:
@@ -83,6 +103,7 @@ func _side_buttons() -> Control:
 	var items := [
 		["签到", func() -> void: Router.push("Daily", {"tab": 3}), Game.can_signin()],
 		["任务", func() -> void: Router.push("Daily", {"tab": 3}), false],
+		["回忆", func() -> void: Router.push("Gallery"), false],
 		["商店", func() -> void: Router.push("Shop"), false],
 		["我的", func() -> void: Router.push("Profile"), false],
 	]
@@ -92,6 +113,7 @@ func _side_buttons() -> Control:
 		if it[2]:
 			b.add_theme_color_override("font_color", UIKit.C_ROSE)
 		b.pressed.connect(it[1])
+		side_btns[str(it[0])] = b
 		col.add_child(b)
 	row.add_child(col)
 	return row
@@ -148,14 +170,15 @@ func _nav() -> Control:
 	var h := UIKit.hbox(10)
 	var items := [
 		["主线", "剧情", func() -> void: Router.push("Chapters")],
-		["日常", "约会", func() -> void: Router.push("Daily")],
+		["日常", "消息", func() -> void: Router.push("Daily")],
 		["思念", "卡牌", func() -> void: Router.push("Cards")],
 		["许愿", "抽卡", func() -> void: Router.push("Gacha")],
-		["我的", "设置", func() -> void: Router.push("Profile")],
+		["约会", "约会", func() -> void: Router.push("Dates", {"char": cid})],
 	]
 	for it in items:
 		var b := UIKit.button(str(it[0]), "dark", 32, 118)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.pressed.connect(it[2])
+		nav_btns[str(it[0])] = b
 		h.add_child(b)
 	return h

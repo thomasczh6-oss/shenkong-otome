@@ -15,6 +15,8 @@ const SCREENS := {
 	"Call": "res://src/screens/Call.gd",
 	"Shop": "res://src/screens/Shop.gd",
 	"Profile": "res://src/screens/Profile.gd",
+	"Gallery": "res://src/screens/Gallery.gd",
+	"Dates": "res://src/screens/Dates.gd",
 }
 
 var host: Control
@@ -150,6 +152,89 @@ func confirm(title: String, body: String, on_ok: Callable, ok_text := "确定", 
 		dim.queue_free()
 		if on_ok.is_valid():
 			on_ok.call())
+
+
+## 新手引导：依次高亮目标控件并显示说明，点击任意处下一步，结束后调用 on_done。
+## steps: [{target: Control 或 null, text: String, who: 角色 id（可选，显示头像）}]
+func coach(steps: Array, on_done: Callable = Callable(), i := 0) -> void:
+	if overlay == null:
+		return
+	if i >= steps.size():
+		if on_done.is_valid():
+			on_done.call()
+		return
+	var step: Dictionary = steps[i]
+	var root := Control.new()
+	root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	root.mouse_filter = Control.MOUSE_FILTER_STOP
+	overlay.add_child(root)
+	var vp := root.get_viewport_rect().size
+	var target: Control = step.get("target")
+	var hole := Rect2()
+	if target != null and is_instance_valid(target) and target.is_visible_in_tree():
+		hole = target.get_global_rect().grow(12)
+	var dim_c := Color(0, 0, 0, 0.66)
+	if hole.size == Vector2.ZERO:
+		var full := ColorRect.new()
+		full.color = dim_c
+		full.set_anchors_preset(Control.PRESET_FULL_RECT)
+		full.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		root.add_child(full)
+	else:
+		# 四块遮罩围出一个“洞”，再加一圈发光描边
+		for r in [Rect2(0, 0, vp.x, hole.position.y), Rect2(0, hole.end.y, vp.x, vp.y - hole.end.y),
+				Rect2(0, hole.position.y, hole.position.x, hole.size.y), Rect2(hole.end.x, hole.position.y, vp.x - hole.end.x, hole.size.y)]:
+			var cr := ColorRect.new()
+			cr.color = dim_c
+			cr.position = r.position
+			cr.size = r.size
+			cr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			root.add_child(cr)
+		var ring := Panel.new()
+		ring.position = hole.position
+		ring.size = hole.size
+		ring.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		ring.add_theme_stylebox_override("panel", UIKit.sb(Color(0, 0, 0, 0), 20, UIKit.C_GOLD, 5))
+		root.add_child(ring)
+		var tw := ring.create_tween().set_loops()
+		tw.tween_property(ring, "modulate:a", 0.35, 0.6)
+		tw.tween_property(ring, "modulate:a", 1.0, 0.6)
+
+	var bubble := UIKit.panel(Color(0.07, 0.08, 0.2, 0.97), 28, 26, UIKit.C_GOLD, 2)
+	bubble.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var h := UIKit.hbox(18)
+	h.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var who := str(step.get("who", ""))
+	if who != "":
+		var face := UIKit.image_box(Data.texture(Data.portrait_key(who, "smile")), Vector2(120, 120), 60)
+		face.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		h.add_child(face)
+	var v := UIKit.vbox(8)
+	v.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	v.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	if who != "":
+		v.add_child(UIKit.label(Data.char_name(who), 28, Color(str(Data.character(who).get("color", "#ffffff"))), HORIZONTAL_ALIGNMENT_LEFT, false))
+	v.add_child(UIKit.label(str(step.get("text", "")).replace("{name}", Game.player_name()), 30, UIKit.C_TEXT))
+	v.add_child(UIKit.label("点击继续  %d / %d" % [i + 1, steps.size()], 22, UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_RIGHT, false))
+	h.add_child(v)
+	bubble.add_child(h)
+	bubble.position = Vector2(50, 0)
+	bubble.size = Vector2(vp.x - 100, 0)
+	root.add_child(bubble)
+	# 目标在下半屏时气泡放上面，反之放下面
+	await root.get_tree().process_frame
+	var bh := bubble.size.y
+	if hole.size == Vector2.ZERO:
+		bubble.position.y = (vp.y - bh) / 2.0
+	elif hole.get_center().y > vp.y / 2.0:
+		bubble.position.y = maxf(40.0, hole.position.y - bh - 40.0)
+	else:
+		bubble.position.y = minf(vp.y - bh - 40.0, hole.end.y + 40.0)
+	UIKit.fade_in(bubble, 0.2)
+	root.gui_input.connect(func(ev: InputEvent) -> void:
+		if ev is InputEventMouseButton and ev.pressed and ev.button_index == MOUSE_BUTTON_LEFT:
+			root.queue_free()
+			coach(steps, on_done, i + 1))
 
 
 func alert(title: String, body := "", ok_text := "知道了") -> void:

@@ -22,6 +22,7 @@ var telegraphing := false
 var partner_timer := 0.0
 var over := false
 var elapsed := 0.0
+var paused := false
 
 var enemy_img: TextureRect
 var enemy_box: Control
@@ -130,10 +131,28 @@ func build() -> void:
 	m.add_child(v)
 	add_child(m)
 	_refresh()
+	if not Game.tutorial_done("battle"):
+		_run_tutorial()
+
+
+## 第一次战斗时暂停，讲解四个按钮。
+func _run_tutorial() -> void:
+	paused = true
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var steps := [
+		{"who": partner_id, "target": attack_btn, "text": "点「攻击」出手。每次攻击都会攒一点共鸣槽。"},
+		{"who": partner_id, "target": skill_btn, "text": "这是我的技能，伤害更高，用完要等一会儿冷却。"},
+		{"who": partner_id, "target": dodge_btn, "text": "它攻击前会亮起红色预警——那时候点「闪避」，就不会受伤。"},
+		{"who": partner_id, "target": res_btn, "text": "共鸣槽满了，就和我一起放共鸣技。……别怕，我在。"},
+	]
+	Router.coach(steps, func() -> void:
+		Game.mark_tutorial("battle")
+		paused = false)
 
 
 func _process(delta: float) -> void:
-	if over:
+	if over or paused:
 		return
 	elapsed += delta
 	attack_cd = maxf(0.0, attack_cd - delta)

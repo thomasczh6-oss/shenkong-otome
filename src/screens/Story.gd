@@ -1,6 +1,10 @@
 extends "res://src/screens/BaseScreen.gd"
 ## 剧情播放器（视觉小说）：背景、立绘、打字机对话、选项、好感、战斗穿插、记录、自动/跳过。
-## 剧本在 data/story.json，行类型：title / say / bg / choice / battle / aff。
+## 剧本在 data/story.json，行类型：title / say / bg / cg / cg_end / choice / battle / aff。
+## say 的 who 可以是角色 id、narrator、me，或 npc（配合 name 字段，用于局长等配角）。
+## cg 会铺满全屏并解锁到「回忆」相册，直到 cg_end 或本节结束。
+## touch 是约会里的触碰互动：在立绘上点亮几个部位，每碰一处他会回应并加好感，全部碰完后继续。
+## params 里传 date=<约会 id> 时以约会模式播放（data/dates.json），结束时按约会结算。
 
 const TYPE_SPEED := 26.0  # 每秒字数（×设置里的倍率）
 
@@ -29,12 +33,22 @@ var type_tween: Tween = null
 var auto_btn: Button
 var skip_btn: Button
 var current_portrait_key := ""
+var cg_rect: TextureRect
+var cg_active := false
+var date_id := ""
+var touch_layer: Control = null
+var touch_left := 0
+var touch_bar: ProgressBar
 
 
 func build() -> void:
-	ch_id = str(params.get("chapter", "ch1"))
-	sc_id = str(params.get("scene", "s1"))
-	scene_data = Data.scene(ch_id, sc_id)
+	date_id = str(params.get("date", ""))
+	if date_id != "":
+		scene_data = Data.date(date_id)
+	else:
+		ch_id = str(params.get("chapter", "ch1"))
+		sc_id = str(params.get("scene", "s1"))
+		scene_data = Data.scene(ch_id, sc_id)
 	lines = Array(scene_data.get("lines", [])).duplicate()
 
 	bg_rect = UIKit.image(Data.texture(str(scene_data.get("bg", "backgrounds/harbor_night"))))
@@ -47,6 +61,11 @@ func build() -> void:
 	portrait.offset_bottom = -470
 	portrait.visible = false
 	add_child(portrait)
+
+	cg_rect = UIKit.image(null)
+	cg_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	cg_rect.visible = false
+	add_child(cg_rect)
 
 	var grad := UIKit.gradient_rect(Color(0, 0, 0, 0), Color(0, 0, 0, 0.9))
 	grad.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
@@ -153,6 +172,14 @@ func _advance() -> void:
 		return
 	if choice_layer != null:
 		return
+	if touch_layer != null:
+		if typing:
+			_finish_typing()
+		elif touch_left <= 0:
+			touch_layer.queue_free()
+			touch_layer = null
+			_next()
+		return
 	if typing:
 		_finish_typing()
 		return
@@ -174,10 +201,18 @@ func _next() -> void:
 			bg_rect.texture = Data.texture(str(line.get("key", "")))
 			UIKit.fade_in(bg_rect, 0.5)
 			_next()
+		"cg":
+			_show_cg(str(line.get("key", "")))
+			_next()
+		"cg_end":
+			_hide_cg()
+			_next()
 		"choice":
 			_show_choice(line)
+		"touch":
+			_show_touch(line)
 		"battle":
-			Router.push("Battle", {"enemy": str(line.get("enemy", "tide_shade")), "partner": str(line.get("partner", "shen_yan"))})
+			_start_battle(line)
 		"aff":
 			_gain_affection(str(line.get("who", "")), int(line.get("n", 0)))
 			_next()
@@ -193,6 +228,12 @@ func _show_say(line: Dictionary) -> void:
 		name_tag.visible = false
 		portrait.modulate = Color(0.55, 0.55, 0.65)
 		text_label.add_theme_color_override("font_color", Color(0.85, 0.87, 0.95))
+	elif who == "npc":
+		speaker = str(line.get("name", "？？？"))
+		name_tag.visible = true
+		name_tag.add_theme_stylebox_override("panel", UIKit.sb(Color(0.62, 0.66, 0.78), 18, Color.TRANSPARENT, 0, 12))
+		portrait.modulate = Color(0.55, 0.55, 0.65)
+		text_label.add_theme_color_override("font_color", UIKit.C_TEXT)
 	elif who == "me":
 		speaker = Game.player_name()
 		name_tag.visible = true
@@ -208,11 +249,14 @@ func _show_say(line: Dictionary) -> void:
 		if key != current_portrait_key:
 			current_portrait_key = key
 			portrait.texture = Data.texture(key)
-			portrait.visible = true
-			UIKit.fade_in(portrait, 0.25)
+			portrait.visible = not cg_active
+			if not cg_active:
+				UIKit.fade_in(portrait, 0.25)
 		portrait.modulate = Color(1, 1, 1)
 		text_label.add_theme_color_override("font_color", UIKit.C_TEXT)
 	name_label.text = speaker
+	if touch_layer == null:
+		hint_label.text = "▼ 点击继续"
 	history.append({"who": speaker, "text": text})
 	_type(text)
 
@@ -251,6 +295,115 @@ func _on_typed() -> void:
 		await get_tree().create_timer(1.6).timeout
 		if auto and not typing and not ended and choice_layer == null:
 			_advance()
+
+
+func _show_cg(key: String) -> void:
+	if key == "":
+		return
+	Game.unlock_cg(key)
+	cg_rect.texture = Data.texture(key)
+	cg_rect.visible = true
+	cg_active = true
+	portrait.visible = false
+	UIKit.fade_in(cg_rect, 0.8)
+
+
+func _hide_cg() -> void:
+	if not cg_active:
+		return
+	cg_active = false
+	portrait.visible = current_portrait_key != ""
+	var tw := cg_rect.create_tween()
+	tw.tween_property(cg_rect, "modulate:a", 0.0, 0.5)
+	tw.tween_callback(func() -> void:
+		cg_rect.visible = false
+		cg_rect.modulate.a = 1.0)
+
+
+# ---------------- 触碰互动（约会） ----------------
+
+func _show_touch(line: Dictionary) -> void:
+	var who := str(line.get("who", ""))
+	current_portrait_key = Data.portrait_key(who, "calm")
+	portrait.texture = Data.texture(current_portrait_key)
+	portrait.visible = true
+	portrait.modulate = Color(1, 1, 1)
+	_hide_cg()
+	var spots: Array = line.get("spots", [])
+	touch_left = spots.size()
+	touch_layer = Control.new()
+	touch_layer.set_anchors_preset(Control.PRESET_FULL_RECT)
+	touch_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(touch_layer)
+
+	var top := UIKit.vbox(8)
+	top.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	top.offset_top = -560
+	top.offset_bottom = -490
+	top.offset_left = 120
+	top.offset_right = -120
+	top.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	top.add_child(UIKit.label("♥ " + str(line.get("hint", "触碰他")), 30, UIKit.C_ROSE, HORIZONTAL_ALIGNMENT_CENTER))
+	touch_bar = UIKit.progress(0, spots.size(), UIKit.C_ROSE, 16)
+	top.add_child(touch_bar)
+	touch_layer.add_child(top)
+
+	name_tag.visible = false
+	text_label.text = "（点击他身上发光的地方）"
+	text_label.visible_ratio = 1.0
+	hint_label.visible = false
+	await get_tree().process_frame
+	var area := _portrait_draw_rect()
+	for sp in spots:
+		var pos: Array = sp.get("pos", [0.5, 0.3])
+		var center := area.position + Vector2(float(pos[0]) * area.size.x, float(pos[1]) * area.size.y)
+		touch_layer.add_child(_touch_spot(who, sp, center))
+
+
+## 立绘在屏幕上实际绘制的区域（KEEP_ASPECT_CENTERED）。
+func _portrait_draw_rect() -> Rect2:
+	var r := portrait.get_rect()
+	var tex := portrait.texture
+	if tex == null or tex.get_width() == 0:
+		return r
+	var ts := Vector2(tex.get_width(), tex.get_height())
+	var k := minf(r.size.x / ts.x, r.size.y / ts.y)
+	var sz := ts * k
+	return Rect2(r.position + (r.size - sz) / 2.0, sz)
+
+
+func _touch_spot(who: String, sp: Dictionary, center: Vector2) -> Control:
+	var d := 132.0
+	var b := Button.new()
+	b.size = Vector2(d, d)
+	b.position = center - Vector2(d, d) / 2.0
+	var ring := UIKit.sb(Color(1, 0.45, 0.7, 0.35), int(d / 2), Color(1, 0.85, 0.93, 0.95), 5)
+	ring.shadow_color = Color(1, 0.5, 0.75, 0.6)
+	ring.shadow_size = 18
+	for st in ["normal", "hover", "pressed", "focus"]:
+		b.add_theme_stylebox_override(st, ring)
+	b.text = str(sp.get("name", ""))
+	b.add_theme_font_size_override("font_size", 24)
+	for fc in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
+		b.add_theme_color_override(fc, Color(1, 1, 1))
+	b.add_theme_color_override("font_outline_color", Color(0.5, 0.1, 0.3))
+	b.add_theme_constant_override("outline_size", 6)
+	b.pivot_offset = Vector2(d, d) / 2.0
+	var tw := b.create_tween().set_loops()
+	tw.tween_property(b, "scale", Vector2(1.12, 1.12), 0.7)
+	tw.tween_property(b, "scale", Vector2(1.0, 1.0), 0.7)
+	b.pressed.connect(func() -> void:
+		if typing:
+			_finish_typing()
+		tw.kill()
+		b.queue_free()
+		touch_left -= 1
+		touch_bar.value = touch_bar.max_value - touch_left
+		_gain_affection(who, int(sp.get("aff", 3)))
+		_show_say({"who": who, "expr": str(sp.get("expr", "smile")), "text": str(sp.get("text", ""))})
+		if touch_left <= 0:
+			hint_label.text = "♥ 心动值已满 · 点击继续")
+	return b
 
 
 func _show_title(text: String) -> void:
@@ -332,10 +485,21 @@ func on_resume(result: Variant) -> void:
 		_next()
 	else:
 		Router.confirm("战斗失败", "再试一次？", func() -> void:
-			var line: Dictionary = lines[idx]
-			Router.push("Battle", {"enemy": str(line.get("enemy", "tide_shade")), "partner": str(line.get("partner", "shen_yan"))}),
+			_start_battle(lines[idx]),
 			"再战", "退出")
 		# “退出”时停留在本节，玩家可点退出按钮离开
+
+
+## partner 为 "auto" 时，让战力最高的男主上场（终章 Boss 用）。
+func _start_battle(line: Dictionary) -> void:
+	var partner := str(line.get("partner", "shen_yan"))
+	if partner == "auto":
+		var best := -1
+		for cid in Data.char_order:
+			if Game.power(cid) > best:
+				best = Game.power(cid)
+				partner = cid
+	Router.push("Battle", {"enemy": str(line.get("enemy", "tide_shade")), "partner": partner})
 
 
 func _show_history() -> void:
@@ -364,6 +528,9 @@ func _end() -> void:
 	ended = true
 	skipping = false
 	auto = false
+	if date_id != "":
+		_end_date()
+		return
 	var first := Game.mark_scene_done(ch_id, sc_id)
 	var reward: Dictionary = scene_data.get("reward", {})
 	if first and reward.size() > 0:
@@ -401,6 +568,28 @@ func _end() -> void:
 			dim.queue_free()
 			Router.back()
 			Router.push("Story", {"chapter": ch_id, "scene": next_scene}))
+	back.pressed.connect(func() -> void:
+		dim.queue_free()
+		Router.back())
+
+
+func _end_date() -> void:
+	var res := Game.finish_date(date_id)
+	var cid := str(scene_data.get("char", ""))
+	var panel := UIKit.panel(UIKit.C_PANEL, 32, 40, UIKit.C_LINE, 2)
+	panel.custom_minimum_size = Vector2(900, 0)
+	var v := UIKit.vbox(18)
+	v.add_child(UIKit.label("约会结束", 46, UIKit.C_ROSE, HORIZONTAL_ALIGNMENT_CENTER))
+	v.add_child(UIKit.label("和%s的「%s」" % [Data.char_name(cid), str(scene_data.get("title", ""))], 30, UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_CENTER))
+	var total := int(gained.get(cid, 0)) + int(res.get("affection", 0))
+	v.add_child(UIKit.label("%s ♥+%d   当前「%s」" % [Data.char_name(cid), total, Game.affection_name(cid)], 30, UIKit.C_ROSE, HORIZONTAL_ALIGNMENT_CENTER))
+	var reward: Dictionary = res.get("reward", {})
+	if reward.size() > 0:
+		v.add_child(UIKit.label("首次约会奖励：" + UIKit.reward_text(reward) + "，回忆已收进相册", 28, UIKit.C_TEXT, HORIZONTAL_ALIGNMENT_CENTER))
+	var back := UIKit.button("返回", "primary", 32, 90)
+	v.add_child(back)
+	panel.add_child(v)
+	var dim := Router.modal(panel, false)
 	back.pressed.connect(func() -> void:
 		dim.queue_free()
 		Router.back())
