@@ -112,7 +112,7 @@ docs/                         调研报告与设计说明
 
 ```bash
 python tools/gen_audio.py voice      # 配音：遍历剧本里男主的台词，文件名 = md5("角色|台词")[:16]，改台词只重生成改过的句子
-python tools/gen_audio.py bgm        # BGM：Mureka 纯音乐，曲目与提示词在 data/audio.json（下载域名 cdn.mureka.ai 需要放行）
+python tools/gen_audio.py bgm        # BGM：Mureka 纯音乐，5 首（标题、日常、剧情、紧张、战斗），提示词在 data/audio.json（下载域名 cdn.mureka.ai 需要放行）
 ```
 
 音色在 `data/characters.json` 的 `voice.id`。缺配音 / 缺 BGM 时游戏静默跳过。
@@ -120,7 +120,7 @@ python tools/gen_audio.py bgm        # BGM：Mureka 纯音乐，曲目与提示�
 ## 后续规划（建议）
 
 1. 用 image 2 出正式美术并统一画风；立绘做 Live2D / 骨骼动画或用视频模型生成「动态思念」。
-2. BGM 与音效（`Audio` 已就绪，等 Mureka 下载放行）；思念卡台词配音。
+2. 音效；思念卡台词配音；剧情按段落切换 BGM。
 3. 第三章「回响之城」；约会小游戏（拍照、抓娃娃）；主页触摸互动扩展。
 4. 服务端：账号、存档云同步、内购验单、活动与卡池配置下发；生图改为服务端离线生成。
 5. 上架：Android / iOS 导出模板、隐私合规、抽卡概率公示页。
