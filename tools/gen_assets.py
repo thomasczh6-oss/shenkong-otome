@@ -43,6 +43,7 @@ OUT_DIR = ROOT / "assets" / "gen"
 META = OUT_DIR / "_meta.json"
 
 DEFAULT_GATEWAY = "https://ai-gateway.deepthink.works"
+USER_AGENT = "shenkong-otome-assets/1.0"
 DEFAULT_DRMA = "https://video-api-tmp.deepthink.works"
 
 # OpenAI image 2 的尺寸：两边为 16 的倍数、长边 ≤ 3840、比例 ≤ 3:1
@@ -66,6 +67,8 @@ class OpenAIBackend:
         self.quality = quality
         self.session = requests.Session()
         self.session.headers["Authorization"] = f"Bearer {key}"
+        # 网关前的阿里云 WAF 会拦截 python-requests 默认 UA，返回 HTML 挑战页
+        self.session.headers["User-Agent"] = USER_AGENT
 
     def probe(self):
         r = self.session.get(f"{self.base}/models", timeout=60)
@@ -236,8 +239,9 @@ def main():
                 out.parent.mkdir(parents=True, exist_ok=True)
                 out.write_bytes(to_png(raw))
                 jpg = out.with_suffix(".jpg")
-                if jpg.exists():
-                    jpg.unlink()
+                for stale in (jpg, jpg.with_name(jpg.name + ".import")):
+                    if stale.exists():
+                        stale.unlink()
                 meta[key] = {"generated": True, "model": args.model, "backend": args.backend, "ratio": entry.get("ratio"),
                              "ref": entry.get("ref"), "prompt": entry["prompt"], "time": time.strftime("%Y-%m-%d %H:%M:%S")}
                 META.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
