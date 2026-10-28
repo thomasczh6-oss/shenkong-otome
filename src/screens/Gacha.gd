@@ -109,7 +109,7 @@ func build() -> void:
 func _currency_row() -> Control:
 	var h := UIKit.hbox(8)
 	var ticket_kind := str(Gacha.pool(pool_id).get("ticket", "standard"))
-	h.add_child(UIKit.currency("✦", Game.tickets(ticket_kind), UIKit.C_GOLD))
+	h.add_child(UIKit.currency("◆", Game.tickets(ticket_kind), UIKit.C_GOLD))
 	h.add_child(UIKit.currency("◆", Game.diamonds(), UIKit.C_ACCENT))
 	return h
 

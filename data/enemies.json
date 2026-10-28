@@ -14,7 +14,17 @@
         "diamonds": 30,
         "xp": 30
       },
-      "aura": "#3aa0ff"
+      "aura": "#3aa0ff",
+      "element": "潮",
+      "pattern": [
+        "hit",
+        "hit",
+        "heavy"
+      ],
+      "skill_names": {
+        "hit": "浪影扑袭",
+        "heavy": "暗潮翻涌"
+      }
     },
     "tide_wraith": {
       "name": "潮魇",
@@ -31,7 +41,37 @@
         "diamonds": 80,
         "xp": 60
       },
-      "aura": "#4a6bff"
+      "aura": "#4a6bff",
+      "element": "星",
+      "pattern": [
+        "hit",
+        "combo",
+        "heavy",
+        "shield"
+      ],
+      "skill_names": {
+        "combo": "三重潮击",
+        "heavy": "深渊潮压",
+        "shield": "结晶潮壁"
+      },
+      "phase2": {
+        "name": "潮魇·狂潮",
+        "img": "enemies/tide_wraith_p2",
+        "aura": "#36d6e0",
+        "atk_mult": 1.2,
+        "speed_mult": 0.85,
+        "pattern": [
+          "combo",
+          "heavy",
+          "charge",
+          "hit"
+        ],
+        "skill_names": {
+          "charge": "狂潮吞噬",
+          "combo": "龙牙连咬"
+        },
+        "line": "核心裂开了——它要变成海本身！"
+      }
     },
     "star_shade": {
       "name": "星影",
@@ -47,7 +87,18 @@
         "diamonds": 50,
         "xp": 40
       },
-      "aura": "#d8ccff"
+      "aura": "#d8ccff",
+      "element": "星",
+      "pattern": [
+        "hit",
+        "combo",
+        "hit",
+        "heavy"
+      ],
+      "skill_names": {
+        "combo": "星屑乱羽",
+        "heavy": "坠星俯冲"
+      }
     },
     "rift_heart": {
       "name": "裂隙之心",
@@ -64,7 +115,38 @@
         "diamonds": 150,
         "xp": 100
       },
-      "aura": "#5fb6ff"
+      "aura": "#5fb6ff",
+      "element": "潮",
+      "pattern": [
+        "hit",
+        "shield",
+        "heavy",
+        "heal"
+      ],
+      "skill_names": {
+        "shield": "裂隙屏障",
+        "heavy": "潮汐脉冲",
+        "heal": "回溯"
+      },
+      "phase2": {
+        "name": "裂隙之心·双生",
+        "img": "enemies/rift_heart_p2",
+        "aura": "#ffd27a",
+        "element": "星",
+        "atk_mult": 1.25,
+        "speed_mult": 0.85,
+        "pattern": [
+          "combo",
+          "charge",
+          "shield",
+          "heavy"
+        ],
+        "skill_names": {
+          "charge": "双生星蚀",
+          "combo": "星链束缚"
+        },
+        "line": "它分成了两半……海与星一起朝你压过来！"
+      }
     },
     "echo_colossus": {
       "name": "回响巨像",
@@ -81,7 +163,296 @@
         "diamonds": 200,
         "xp": 120
       },
-      "aura": "#9fe6ff"
+      "aura": "#9fe6ff",
+      "element": "潮",
+      "pattern": [
+        "heavy",
+        "hit",
+        "shield",
+        "combo"
+      ],
+      "skill_names": {
+        "heavy": "回声重踏",
+        "shield": "群声之壁",
+        "combo": "嘈杂三连"
+      },
+      "phase2": {
+        "name": "回响巨像·千声",
+        "img": "enemies/echo_colossus_p2",
+        "aura": "#ffe9b0",
+        "element": "焰",
+        "atk_mult": 1.3,
+        "speed_mult": 0.8,
+        "pattern": [
+          "charge",
+          "combo",
+          "heal",
+          "heavy",
+          "combo"
+        ],
+        "skill_names": {
+          "charge": "千声齐鸣",
+          "heal": "回响重塑"
+        },
+        "line": "三百一十二个声音同时在喊……把它们一起送走！"
+      }
+    },
+    "mist_eel": {
+      "name": "雾鳗",
+      "desc": "盘踞在雾港上空的巨大海鳗，雾气做成的鳞片会在攻击前泛起冰青色的光。",
+      "hp": 1300,
+      "atk": 70,
+      "attack_interval": 1.6,
+      "aura": "#bfefff",
+      "element": "潮",
+      "pattern": [
+        "hit",
+        "combo",
+        "hit",
+        "heavy"
+      ],
+      "skill_names": {
+        "combo": "缠绕撕咬",
+        "heavy": "雾潮甩尾"
+      },
+      "reward": {
+        "gold": 800,
+        "diamonds": 40,
+        "xp": 35
+      },
+      "def": 18,
+      "telegraph": 0.8,
+      "img": "enemies/mist_eel"
+    },
+    "lantern_jelly": {
+      "name": "礁灯水母",
+      "desc": "暗礁里成群漂浮的发光水母。很美，但触须带着能让人沉睡的毒。",
+      "hp": 1500,
+      "atk": 72,
+      "attack_interval": 1.7,
+      "aura": "#ff9ed8",
+      "element": "潮",
+      "pattern": [
+        "hit",
+        "heal",
+        "combo",
+        "heavy"
+      ],
+      "skill_names": {
+        "heal": "珠光回流",
+        "combo": "触须缠绕",
+        "heavy": "灯毒绽放"
+      },
+      "reward": {
+        "gold": 900,
+        "diamonds": 40,
+        "xp": 40
+      },
+      "def": 16,
+      "telegraph": 0.8,
+      "img": "enemies/lantern_jelly"
+    },
+    "anchor_golem": {
+      "name": "锈锚魔像",
+      "desc": "沉船的铁锚和锁链被余烬点燃，拼成了一具不知疲倦的魔像。",
+      "hp": 2000,
+      "atk": 88,
+      "attack_interval": 2.1,
+      "aura": "#ff8a4c",
+      "element": "焰",
+      "pattern": [
+        "shield",
+        "heavy",
+        "hit",
+        "charge"
+      ],
+      "skill_names": {
+        "shield": "锈铁护壁",
+        "heavy": "铁锚砸落",
+        "charge": "熔锚蓄焰"
+      },
+      "reward": {
+        "gold": 1200,
+        "diamonds": 50,
+        "xp": 45
+      },
+      "def": 40,
+      "telegraph": 0.8,
+      "img": "enemies/anchor_golem"
+    },
+    "coral_siren": {
+      "name": "珊瑚魅妖",
+      "desc": "血珊瑚里诞生的歌者。她的竖琴一响，整片海都会安静下来。",
+      "hp": 3000,
+      "atk": 100,
+      "attack_interval": 1.8,
+      "aura": "#ff6f91",
+      "element": "焰",
+      "boss": true,
+      "pattern": [
+        "hit",
+        "combo",
+        "heal",
+        "heavy",
+        "charge"
+      ],
+      "skill_names": {
+        "combo": "珊瑚刺雨",
+        "heal": "海葵摇篮曲",
+        "heavy": "血珊瑚绽放",
+        "charge": "塞壬之歌"
+      },
+      "reward": {
+        "gold": 2200,
+        "diamonds": 100,
+        "xp": 80
+      },
+      "def": 32,
+      "telegraph": 0.8,
+      "img": "enemies/coral_siren"
+    },
+    "mirror_moths": {
+      "name": "碎镜蝶群",
+      "desc": "镜子碎片变成的蝶群。每一片都映着你不想看见的自己。",
+      "hp": 2400,
+      "atk": 90,
+      "attack_interval": 1.5,
+      "aura": "#e6f0ff",
+      "element": "星",
+      "pattern": [
+        "combo",
+        "hit",
+        "combo",
+        "shield"
+      ],
+      "skill_names": {
+        "combo": "碎镜风暴",
+        "shield": "万镜回廊"
+      },
+      "reward": {
+        "gold": 1500,
+        "diamonds": 60,
+        "xp": 55
+      },
+      "def": 24,
+      "telegraph": 0.8,
+      "img": "enemies/mirror_moths"
+    },
+    "zero_train": {
+      "name": "零号列车",
+      "desc": "在零号线上永远开不到站的列车，车窗里坐满了模糊的人影。",
+      "hp": 2800,
+      "atk": 100,
+      "attack_interval": 1.7,
+      "aura": "#c45cff",
+      "element": "星",
+      "pattern": [
+        "hit",
+        "charge",
+        "combo",
+        "heavy"
+      ],
+      "skill_names": {
+        "charge": "末班车进站",
+        "combo": "电弧连闪",
+        "heavy": "车厢碾压"
+      },
+      "reward": {
+        "gold": 1800,
+        "diamonds": 70,
+        "xp": 60
+      },
+      "def": 34,
+      "telegraph": 0.8,
+      "img": "enemies/zero_train"
+    },
+    "mirror_mermaid": {
+      "name": "镜海之影",
+      "desc": "水银凝成的人鱼，没有脸，却会用沈砚的声音叫你的名字。",
+      "hp": 3000,
+      "atk": 105,
+      "attack_interval": 1.7,
+      "aura": "#c8e6ff",
+      "element": "潮",
+      "pattern": [
+        "hit",
+        "heavy",
+        "heal",
+        "combo"
+      ],
+      "skill_names": {
+        "heavy": "镜潮倒卷",
+        "heal": "水银回流",
+        "combo": "碎镜鳞刃"
+      },
+      "reward": {
+        "gold": 1900,
+        "diamonds": 70,
+        "xp": 60
+      },
+      "def": 36,
+      "telegraph": 0.8,
+      "img": "enemies/mirror_mermaid"
+    },
+    "starless_owl": {
+      "name": "无星之鸮",
+      "desc": "吞掉了一整片星空的猫头鹰。它闭上眼睛的时候，天就黑了。",
+      "hp": 3200,
+      "atk": 108,
+      "attack_interval": 1.8,
+      "aura": "#ffd36b",
+      "element": "星",
+      "pattern": [
+        "shield",
+        "combo",
+        "heavy",
+        "charge"
+      ],
+      "skill_names": {
+        "shield": "夜幕羽翼",
+        "combo": "星轨利爪",
+        "heavy": "熄星俯冲",
+        "charge": "永夜之瞳"
+      },
+      "reward": {
+        "gold": 2000,
+        "diamonds": 80,
+        "xp": 65
+      },
+      "def": 38,
+      "telegraph": 0.8,
+      "img": "enemies/starless_owl"
+    },
+    "silent_maestro": {
+      "name": "静默指挥家",
+      "desc": "剧院里最后一位观众。他要所有声音都停下，只留他的指挥棒。",
+      "hp": 3800,
+      "atk": 115,
+      "attack_interval": 1.7,
+      "aura": "#ff4d6d",
+      "element": "星",
+      "boss": true,
+      "pattern": [
+        "hit",
+        "combo",
+        "shield",
+        "charge",
+        "heavy"
+      ],
+      "skill_names": {
+        "combo": "断弦三连",
+        "shield": "休止符",
+        "charge": "终章·静默",
+        "heavy": "指挥棒落下"
+      },
+      "reward": {
+        "gold": 3200,
+        "diamonds": 140,
+        "xp": 100
+      },
+      "def": 40,
+      "telegraph": 0.8,
+      "img": "enemies/silent_maestro"
     }
   }
 }

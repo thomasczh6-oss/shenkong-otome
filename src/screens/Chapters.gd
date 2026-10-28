@@ -55,7 +55,7 @@ func _chapter_card(ch: Dictionary) -> Control:
 			elif available:
 				kind = "primary"
 			else:
-				text += "   🔒"
+				text += "  · 未解锁"
 			var b := UIKit.button(text, kind, 30, 88)
 			b.disabled = not available
 			b.alignment = HORIZONTAL_ALIGNMENT_LEFT

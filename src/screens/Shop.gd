@@ -23,7 +23,7 @@ func on_resume(_result: Variant) -> void:
 func _currency_row() -> Control:
 	var h := UIKit.hbox(8)
 	h.add_child(UIKit.currency("◆", Game.diamonds(), UIKit.C_ACCENT))
-	h.add_child(UIKit.currency("⭑", Game.stardust(), UIKit.C_ROSE))
+	h.add_child(UIKit.currency("★", Game.stardust(), UIKit.C_ROSE))
 	return h
 
 
@@ -182,7 +182,7 @@ func _exchange(v: VBoxContainer) -> void:
 	var h := UIKit.hbox(14)
 	var tv := UIKit.vbox(4)
 	tv.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	tv.add_child(UIKit.label("⭑ 星屑 %d" % Game.stardust(), 30, UIKit.C_ROSE, HORIZONTAL_ALIGNMENT_LEFT, false))
+	tv.add_child(UIKit.label("★ 星屑 %d" % Game.stardust(), 30, UIKit.C_ROSE, HORIZONTAL_ALIGNMENT_LEFT, false))
 	tv.add_child(UIKit.label(str(ex.get("desc", "")), 22, UIKit.C_MUTED))
 	h.add_child(tv)
 	var b := UIKit.button("兑换 1 张", "rose", 26, 76)

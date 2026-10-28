@@ -62,7 +62,7 @@ func build() -> void:
 	pulse.tween_property(start, "modulate", Color(1.12, 1.05, 1.1), 1.1).set_trans(Tween.TRANS_SINE)
 	pulse.tween_property(start, "modulate", Color.WHITE, 1.1).set_trans(Tween.TRANS_SINE)
 	if Game.has_save():
-		v.add_child(UIKit.label("欢迎回来，%s ✦" % Game.player_name(), 30, UIKit.C_GOLD, HORIZONTAL_ALIGNMENT_CENTER))
+		v.add_child(UIKit.label("欢迎回来，%s ♡" % Game.player_name(), 30, UIKit.C_GOLD, HORIZONTAL_ALIGNMENT_CENTER))
 	v.add_child(UIKit.spacer(36, false))
 	v.add_child(UIKit.label("v%s · 澜城 2049" % ProjectSettings.get_setting("application/config/version", "0.3"), 22, Color(0.85, 0.78, 0.92, 0.7), HORIZONTAL_ALIGNMENT_CENTER))
 	m.add_child(v)

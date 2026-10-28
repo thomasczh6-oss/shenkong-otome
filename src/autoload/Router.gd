@@ -17,6 +17,8 @@ const SCREENS := {
 	"Profile": "res://src/screens/Profile.gd",
 	"Gallery": "res://src/screens/Gallery.gd",
 	"Dates": "res://src/screens/Dates.gd",
+	"Challenge": "res://src/screens/Challenge.gd",
+	"Bestiary": "res://src/screens/Bestiary.gd",
 }
 
 var host: Control

@@ -38,6 +38,7 @@ func _run() -> void:
 	Router.clear_overlay()
 	Game.mark_tutorial("home")
 	Game.mark_tutorial("battle")
+	Game.mark_tutorial("battle2")
 	Router.go("Home")
 	await _shot("02_home")
 	for c in ["gu_ci", "lu_zhuo"]:
@@ -122,6 +123,39 @@ func _run() -> void:
 	await _shot("17_shop")
 	Router.push("Profile")
 	await _shot("18_profile")
+	Router.go("Home")
+
+	# 挑战：每日讨伐、回廊、选搭档、图鉴、新战斗机制
+	Game.s.tower = {"best": 4}
+	Game.s.battle_stars = {"tower:1": 3, "tower:2": 2, "tower:3": 3, "tower:4": 1}
+	Game.s.bestiary = {"tide_shade": true, "mist_eel": true, "coral_siren": true, "rift_heart": true}
+	Router.push("Challenge")
+	await _shot("26_challenge")
+	var chall: Control = Router.stack.back().node
+	chall._pick_partner("coral_siren", func(_c: String) -> void: pass)
+	await _shot("27_pick_partner")
+	Router.clear_overlay()
+	Router.push("Bestiary")
+	await _shot("28_bestiary")
+	Router.go("Home")
+	Router.push("Battle", {"enemy": "coral_siren", "partner": "shen_yan"})
+	var bt: Control = Router.stack.back().node
+	await get_tree().create_timer(0.4).timeout
+	bt.pattern = ["charge"]
+	bt.pat_i = 0
+	bt._to_idle()
+	bt.st_timer = 99.0
+	await _shot("29_battle_charge", 0.5)
+	bt.meter = 100.0
+	bt._resonance()
+	await _shot("30_battle_qte", 0.45)
+	Router.go("Home")
+	Router.push("Battle", {"enemy": "rift_heart", "partner": "gu_ci"})
+	bt = Router.stack.back().node
+	await get_tree().create_timer(0.4).timeout
+	bt.ehp = bt.ehp_max * 0.51
+	bt._skill()
+	await _shot("31_battle_phase2", 2.0)
 	Router.go("Home")
 
 	# 第二章：带 CG 的剧情

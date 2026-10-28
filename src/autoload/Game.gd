@@ -60,6 +60,10 @@ func default_state() -> Dictionary:
 		"gallery": {},
 		"dates": {"done": {}, "day": "", "today": {}},
 		"tutorial": {},
+		"battle_stars": {},
+		"tower": {"best": 0},
+		"hunt": {"date": "", "done": false},
+		"bestiary": {},
 	}
 
 
@@ -540,3 +544,65 @@ func moment_liked(mid: String) -> bool:
 func like_moment(mid: String) -> void:
 	s.moments.liked[mid] = true
 	save()
+
+
+# ---------------- 战斗进度 ----------------
+
+func battle_stars(key: String) -> int:
+	return int(s.get("battle_stars", {}).get(key, 0))
+
+
+## 记录星级，返回首次达成三星时的额外奖励（没有则为空）。
+func record_stars(key: String, n: int) -> Dictionary:
+	if key == "":
+		return {}
+	if not s.has("battle_stars"):
+		s.battle_stars = {}
+	var old := battle_stars(key)
+	if n > old:
+		s.battle_stars[key] = n
+	if n >= 3 and old < 3:
+		var bonus := {"diamonds": 30}
+		grant(bonus)
+		return bonus
+	save()
+	return {}
+
+
+func total_stars() -> int:
+	var t := 0
+	for k in s.get("battle_stars", {}):
+		t += int(s.battle_stars[k])
+	return t
+
+
+func mark_seen(enemy_id: String) -> void:
+	if not s.has("bestiary"):
+		s.bestiary = {}
+	s.bestiary[enemy_id] = true
+
+
+func tower_best() -> int:
+	return int(s.get("tower", {}).get("best", 0))
+
+
+## 通关某层：第一次通关返回 true（发首通奖励）。
+func clear_tower(floor_n: int) -> bool:
+	if not s.has("tower"):
+		s.tower = {"best": 0}
+	if floor_n > tower_best():
+		s.tower.best = floor_n
+		save()
+		return true
+	return false
+
+
+func hunt_done_today() -> bool:
+	var h: Dictionary = s.get("hunt", {})
+	return str(h.get("date", "")) == today() and bool(h.get("done", false))
+
+
+func mark_hunt_done() -> void:
+	s.hunt = {"date": today(), "done": true}
+	save()
+
