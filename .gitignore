@@ -14,3 +14,4 @@ shots/
 __pycache__/
 *.pyc
 .DS_Store
+assets/video/_raw/

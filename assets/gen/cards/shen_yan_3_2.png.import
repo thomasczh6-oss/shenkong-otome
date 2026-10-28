@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/shen_yan_3_2.png-3133ce1f52b756d4e2bfaa7740f2
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.82
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0

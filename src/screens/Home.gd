@@ -17,14 +17,24 @@ func build() -> void:
 	# 背景与立绘
 	var bg := UIKit.image(Data.texture(str(ch.get("home_bg", "backgrounds/harbor_night"))))
 	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-	bg.modulate = Color(0.7, 0.74, 0.9)
+	bg.modulate = Color(0.5, 0.5, 0.68)
 	add_child(bg)
+	var ch_color := Color(str(ch.get("color", "#ff9ec7")))
+	# 身后两层柔光，把深色衣服从夜景里托出来
+	add_child(UIKit.glow_blob(Vector2(540, 820), 1250, Color(ch_color, 0.42)))
+	add_child(UIKit.glow_blob(Vector2(540, 900), 700, Color(ch_color.lightened(0.5), 0.38)))
+	add_child(UIKit.sparkles(Rect2(0, 200, 1080, 1100), 24))
 	var portrait := UIKit.image(Data.texture(Data.portrait_key(cid, "calm")), false)
 	portrait.set_anchors_preset(Control.PRESET_FULL_RECT)
-	portrait.offset_top = 170
-	portrait.offset_bottom = -560
+	portrait.offset_top = 150
+	portrait.offset_bottom = -330
+	portrait.material = UIKit.portrait_material(Color(1.0, 0.97, 1.0), ch_color.lightened(0.55), 1.0, 0.72)
+	portrait.pivot_offset = Vector2(540, 1440)
 	add_child(portrait)
 	UIKit.fade_in(portrait, 0.4)
+	var breathe := portrait.create_tween().set_loops()
+	breathe.tween_property(portrait, "scale", Vector2(1.008, 1.012), 2.6).set_trans(Tween.TRANS_SINE)
+	breathe.tween_property(portrait, "scale", Vector2.ONE, 2.6).set_trans(Tween.TRANS_SINE)
 	var grad := UIKit.gradient_rect(Color(0.04, 0.06, 0.15, 0.0), Color(0.04, 0.06, 0.15, 0.97))
 	grad.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	grad.offset_top = -900
@@ -34,7 +44,7 @@ func build() -> void:
 	var touch := Button.new()
 	touch.flat = true
 	touch.set_anchors_preset(Control.PRESET_FULL_RECT)
-	touch.offset_top = 170
+	touch.offset_top = 150
 	touch.offset_bottom = -560
 	touch.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
 	touch.add_theme_stylebox_override("hover", StyleBoxEmpty.new())
@@ -46,7 +56,7 @@ func build() -> void:
 		UIKit.pop(portrait, 0.97, 0.3))
 	add_child(touch)
 
-	var m := UIKit.margin(30, 60, 30, 36)
+	var m := UIKit.safe_margin(30, 60, 30, 36)
 	m.set_anchors_preset(Control.PRESET_FULL_RECT)
 	m.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var v := UIKit.vbox(14)
@@ -64,8 +74,7 @@ func build() -> void:
 
 ## 新手引导：第一次回到主页时，由当前男主介绍各个入口。
 func _run_tutorial() -> void:
-	await get_tree().process_frame
-	await get_tree().process_frame
+	await get_tree().create_timer(0.35).timeout  # 等转场动画结束再量控件位置
 	var steps := [
 		{"who": cid, "text": "欢迎回来，{name}。第一天就撞上裂隙，辛苦了。我带你熟悉一下潮汐局。"},
 		{"who": cid, "target": nav_btns.get("主线"), "text": "主线剧情在这里。第一章「潮起」还有三段，我们三个都在等你。"},
@@ -177,8 +186,9 @@ func _nav() -> Control:
 		["许愿", "抽卡", func() -> void: Router.push("Gacha")],
 		["约会", "约会", func() -> void: Router.push("Dates", {"char": cid})],
 	]
+	var icons := {"主线": "★", "日常": "♪", "思念": "❀", "许愿": "✦", "约会": "♡"}
 	for it in items:
-		var b := UIKit.button(str(it[0]), "dark", 32, 118)
+		var b := UIKit.button(str(icons.get(str(it[0]), "")) + "\n" + str(it[0]), "dark", 30, 128)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.pressed.connect(it[2])
 		nav_btns[str(it[0])] = b

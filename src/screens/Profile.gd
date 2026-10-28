@@ -169,7 +169,7 @@ func _imagegen(v: VBoxContainer) -> void:
 			for j in ratio_btns.size():
 				var other: Button = ratio_btns[j]
 				other.add_theme_stylebox_override("normal", UIKit.sb(UIKit.C_ACCENT if other == btn else Color(1, 1, 1, 0.06), 28, UIKit.C_LINE, 0 if other == btn else 2))
-				other.add_theme_color_override("font_color", UIKit.C_BG if other == btn else UIKit.C_TEXT))
+				other.add_theme_color_override("font_color", UIKit.C_INK if other == btn else UIKit.C_TEXT))
 	wv.add_child(ratio_row)
 	status_label = UIKit.label("未配置密钥时无法生成；配置后点「生成」。" if not ImageGen.configured() else "已配置，可以生成。", 22, UIKit.C_MUTED)
 	wv.add_child(status_label)

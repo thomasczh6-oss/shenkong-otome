@@ -24,6 +24,10 @@ var manifest: Dictionary = {}
 var _tex_cache: Dictionary = {}
 
 
+## 正式 Logo（assets/gen/ui/logo_N.png），换一版只改这里。
+const LOGO_KEY := "ui/logo_1"
+
+
 func _ready() -> void:
 	load_all()
 
@@ -172,6 +176,18 @@ func texture(key: String) -> Texture2D:
 		tex = placeholder(key)
 	_tex_cache[key] = tex
 	return tex
+
+
+## 动态思念（tools/gen_video.py 生成的 Ogg Theora），没有则返回 null。
+func card_video(card_id: String) -> VideoStream:
+	var path := "res://assets/video/cards/%s.ogv" % card_id
+	if ResourceLoader.exists(path):
+		return load(path)
+	if FileAccess.file_exists(path):
+		var st := VideoStreamTheora.new()
+		st.file = path
+		return st
+	return null
 
 
 func has_real_texture(key: String) -> bool:

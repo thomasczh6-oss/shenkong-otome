@@ -256,7 +256,7 @@ def main():
                 if entry.get("cutout"):
                     try:
                         import cutout  # 同目录的 tools/cutout.py
-                        cutout.cut(out, force=True)
+                        cutout.cut(out, force=True, mode="chroma" if entry.get("cutout") == "chroma" else "portrait")
                     except ImportError:
                         log("  未安装 rembg，跳过抠图（之后可运行 tools/cutout.py）")
                 jpg = out.with_suffix(".jpg")
