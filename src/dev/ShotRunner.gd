@@ -41,6 +41,11 @@ func _run() -> void:
 	Game.mark_tutorial("battle2")
 	Router.go("Home")
 	await _shot("02_home")
+	# 陪伴：点立绘
+	var home: Node = Router.stack.back().node
+	home._companion(home.get_children().filter(func(n): return n is TextureRect and n.material != null)[0], Data.character(str(Game.s.favorite)))
+	await _shot("42_home_companion", 0.6)
+	Router.go("Home")
 	for c in ["gu_ci", "lu_zhuo"]:
 		Game.s.favorite = c
 		Router.go("Home")
@@ -103,6 +108,27 @@ func _run() -> void:
 	await _shot("10_cards")
 	Router.push("CardDetail", {"card": "shen_yan_5_1"})
 	await _shot("11_card_detail")
+	# 觉醒 3 阶 + 心语
+	if Game.owns("shen_yan_5_1"):
+		Game.s.cards["shen_yan_5_1"]["awaken"] = 3
+		Game.s.cards["shen_yan_5_1"]["dup"] = 1
+		Game.s.stardust = 999
+		Router.back()
+		Router.push("CardDetail", {"card": "shen_yan_5_1"})
+		await get_tree().create_timer(0.3).timeout
+		for sc in Router.stack.back().node.find_children("*", "ScrollContainer", true, false):
+			(sc as ScrollContainer).scroll_vertical = 99999
+		await _shot("43_card_awaken", 0.4)
+	# 委托：一位进行中、一位可领取、一位空闲
+	Game.start_commission("shen_yan", "mid")
+	Game.start_commission("gu_ci", "long")
+	Game.s.commissions.gu_ci.end = Game.now_unix() - 1
+	Router.push("Commission")
+	await _shot("44_commission", 0.4)
+	await _click(_find_button(Router.stack.back().node, "领取"))
+	await _shot("45_commission_note", 0.5)
+	Router.clear_overlay()
+	Game.s.commissions = {}
 	Router.go("Home")
 
 	Router.push("Daily", {"tab": 0})

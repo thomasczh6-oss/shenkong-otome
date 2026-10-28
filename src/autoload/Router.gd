@@ -19,6 +19,7 @@ const SCREENS := {
 	"Dates": "res://src/screens/Dates.gd",
 	"Challenge": "res://src/screens/Challenge.gd",
 	"Bestiary": "res://src/screens/Bestiary.gd",
+	"Commission": "res://src/screens/Commission.gd",
 }
 
 var host: Control
