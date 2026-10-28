@@ -4,10 +4,13 @@ extends Node
 
 const VOICE_DIR := "res://assets/audio/voice/"
 const BGM_DIR := "res://assets/audio/bgm/"
+const SFX_DIR := "res://assets/audio/sfx/"
 
 var bgm_a: AudioStreamPlayer
 var bgm_b: AudioStreamPlayer
 var voice: AudioStreamPlayer
+var sfx: Array = []  # 几个轮流用的音效播放器，音效可以叠在一起
+var _sfx_i := 0
 var current_bgm := ""
 var _cache: Dictionary = {}
 
@@ -17,6 +20,8 @@ func _ready() -> void:
 	bgm_a = _player()
 	bgm_b = _player()
 	voice = _player()
+	for i in 4:
+		sfx.append(_player())
 
 
 func _player() -> AudioStreamPlayer:
@@ -47,6 +52,25 @@ func play_voice(who: String, text: String) -> bool:
 	voice.volume_db = linear_to_db(vol)
 	voice.play()
 	return true
+
+
+## 播放一个音效（tools/gen_sfx.py 合成的 ogg），跟随配音音量。
+func play_sfx(key: String, volume := 1.0) -> void:
+	var vol := _setting("voice_volume", 1.0) * volume
+	if vol <= 0.0:
+		return
+	var path := SFX_DIR + key + ".ogg"
+	var st: AudioStream = _cache.get(path)
+	if st == null and ResourceLoader.exists(path):
+		st = load(path)
+		_cache[path] = st
+	if st == null:
+		return
+	var p: AudioStreamPlayer = sfx[_sfx_i]
+	_sfx_i = (_sfx_i + 1) % sfx.size()
+	p.stream = st
+	p.volume_db = linear_to_db(vol)
+	p.play()
 
 
 func stop_voice() -> void:

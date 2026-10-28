@@ -6,6 +6,7 @@ var characters: Dictionary = {}
 var char_order: Array = []
 var cards: Dictionary = {}
 var awaken_cfg: Dictionary = {}
+var npc_voices: Dictionary = {}
 var companion: Dictionary = {}
 var commissions: Dictionary = {}
 var card_order: Array = []
@@ -48,6 +49,7 @@ func load_all() -> void:
 	awaken_cfg = cd.get("awaken", {})
 	companion = _json("res://data/companion.json")
 	commissions = _json("res://data/commissions.json")
+	npc_voices = _json("res://data/npc_voices.json")
 
 	gacha = _json("res://data/gacha.json")
 
@@ -246,3 +248,11 @@ func portrait_key(cid: String, expression := "calm") -> String:
 	if expression != "calm" and not has_real_texture(key):
 		return "characters/%s/calm" % cid
 	return key
+
+
+## 配角配音的 key（与 tools/gen_audio.py 一致）："npc:<规范名>"；没登记声音的配角返回空。
+func npc_voice_key(name: String) -> String:
+	var canon := str(npc_voices.get("aliases", {}).get(name, name))
+	if not npc_voices.get("voices", {}).has(canon):
+		return ""
+	return "npc:" + canon

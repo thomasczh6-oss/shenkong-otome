@@ -100,8 +100,21 @@ func _run() -> void:
 	Router.push("Gacha")
 	await _shot("08_gacha")
 	var gacha: Control = Router.stack.back().node
-	gacha._do_pull(10)
-	await _shot("09_gacha_result", 2.0)
+	# 许愿演出：固定一组结果（含 5★）方便截图
+	var fake: Array = [{"card": "shen_yan_4_1", "rarity": 4, "new": true}, {"card": "gu_ci_5_2", "rarity": 5, "new": true}]
+	var show = load("res://src/ui/GachaShow.gd").new()
+	show.setup(fake, func() -> void: gacha._show_results(fake, 2))
+	Router.overlay.add_child(show)
+	await _shot("09a_wish_tap", 0.8)
+	show.auto_advance = true
+	show._tapped = true
+	await _shot("09b_wish_charge", 1.3)
+	await _shot("09c_meteor", 1.0)
+	await _shot("09d_reveal4", 2.3)
+	await _shot("09e_reveal5", 3.3)
+	show.skip()
+	await _shot("09_gacha_result", 1.2)
+	Router.clear_overlay()
 	Router.go("Home")
 
 	Router.push("Cards")
@@ -421,6 +434,40 @@ func _run() -> void:
 	bt.ehp = bt.ehp_max * 0.51
 	bt._skill()
 	await _shot("54_hourglass_lord_p2", 2.0)
+	Router.go("Home")
+	# 第九章：陆灼长廊 CG、白塔终章 CG、千声合唱变身
+	Game.unlock_chapter("ch9")
+	for scid in ["s3", "s5"]:
+		Router.push("Story", {"chapter": "ch9", "scene": scid})
+		story = Router.stack.back().node
+		await get_tree().create_timer(0.3).timeout
+		guard = 0
+		while guard < 200 and not story.ended and not story.cg_active:
+			if story.choice_layer != null:
+				story._pick(story.lines[story.idx].options[0])
+			elif Router.current_name() == "Battle":
+				Router.back({"win": true})
+			else:
+				story._advance()
+			await get_tree().process_frame
+			story._finish_typing()
+			guard += 1
+		story._advance()
+		await get_tree().process_frame
+		story._finish_typing()
+		await _shot("55_ch9_cg_" + scid, 1.2)
+		Router.go("Home")
+	Router.push("Battle", {"enemy": "white_warden", "partner": "shen_yan"})
+	bt = Router.stack.back().node
+	await get_tree().create_timer(0.4).timeout
+	await _shot("56_white_warden", 0.3)
+	Router.go("Home")
+	Router.push("Battle", {"enemy": "chorus_engine", "partner": "gu_ci"})
+	bt = Router.stack.back().node
+	await get_tree().create_timer(0.4).timeout
+	bt.ehp = bt.ehp_max * 0.51
+	bt._skill()
+	await _shot("57_chorus_engine_p2", 2.0)
 	Router.go("Home")
 	Router.push("Battle", {"enemy": "zero_lock", "partner": "lu_zhuo"})
 	bt = Router.stack.back().node

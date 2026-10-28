@@ -42,6 +42,10 @@
     "desert": {
       "prompt": "warm desert night romance, oud and soft hand percussion, gentle strings and distant bells, golden sand and starry sky, mysterious yet tender, instrumental",
       "use": "第八章 · 沙海钟声"
+    },
+    "whitetower": {
+      "prompt": "solemn sacred choir and pipe organ, slow celesta and cello, cold white light, mournful yet hopeful lullaby motif, cinematic, instrumental",
+      "use": "第九章 · 白塔"
     }
   }
 }

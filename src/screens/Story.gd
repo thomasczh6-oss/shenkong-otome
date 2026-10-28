@@ -240,8 +240,9 @@ func _show_say(line: Dictionary) -> void:
 	var who := str(line.get("who", "narrator"))
 	var text := str(line.get("text", "")).replace("{name}", Game.player_name())
 	var speaker := ""
-	if Data.characters.has(who) and not skipping:
-		Audio.play_voice(who, str(line.get("text", "")))
+	var vkey := who if Data.characters.has(who) else (Data.npc_voice_key(str(line.get("name", ""))) if who == "npc" else "")
+	if vkey != "" and not skipping:
+		Audio.play_voice(vkey, str(line.get("text", "")))
 	else:
 		Audio.stop_voice()
 	if who == "narrator":

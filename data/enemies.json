@@ -1289,6 +1289,174 @@
         },
         "line": "沙漏翻转了过来……白天和黑夜同时压了下来！"
       }
+    },
+    "echo_doll": {
+      "name": "回响人偶",
+      "desc": "用复制来的孩子回响做成的瓷人偶，长着那些孩子的脸。碎的时候会轻轻叹一口气。",
+      "hp": 5600,
+      "atk": 144,
+      "def": 56,
+      "attack_interval": 1.6,
+      "telegraph": 0.75,
+      "img": "enemies/echo_doll",
+      "aura": "#f4e6ff",
+      "element": "焰",
+      "pattern": [
+        "hit",
+        "combo",
+        "shield",
+        "hit",
+        "heavy"
+      ],
+      "skill_names": {
+        "combo": "童谣三连",
+        "shield": "瓷壳",
+        "heavy": "碎裂之歌"
+      },
+      "reward": {
+        "gold": 3500,
+        "diamonds": 110,
+        "xp": 105
+      }
+    },
+    "storm_ray": {
+      "name": "雷鳐",
+      "desc": "理事会养在暴风雪里的空中鳐鱼，翅膀边缘噼啪地闪着电光。",
+      "hp": 5900,
+      "atk": 146,
+      "def": 56,
+      "attack_interval": 1.5,
+      "telegraph": 0.75,
+      "img": "enemies/storm_ray",
+      "aura": "#9fd4ff",
+      "element": "潮",
+      "pattern": [
+        "combo",
+        "hit",
+        "charge",
+        "heal"
+      ],
+      "skill_names": {
+        "combo": "雷翼",
+        "charge": "落雷",
+        "heal": "充电"
+      },
+      "reward": {
+        "gold": 3600,
+        "diamonds": 115,
+        "xp": 110
+      }
+    },
+    "gramophone_wraith": {
+      "name": "留声机怨灵",
+      "desc": "回音长廊深处飘来的老留声机，喇叭里伸出无数唱针，想把所有声音都收进去。",
+      "hp": 6200,
+      "atk": 150,
+      "def": 58,
+      "attack_interval": 1.5,
+      "telegraph": 0.75,
+      "img": "enemies/gramophone_wraith",
+      "aura": "#e7c27a",
+      "element": "星",
+      "pattern": [
+        "hit",
+        "combo",
+        "shield",
+        "charge"
+      ],
+      "skill_names": {
+        "combo": "刮针",
+        "shield": "黑胶",
+        "charge": "收录"
+      },
+      "reward": {
+        "gold": 3700,
+        "diamonds": 120,
+        "xp": 110
+      }
+    },
+    "white_warden": {
+      "name": "白塔看守",
+      "desc": "塔心之海里没有脸的白衣巨人，提着一盏锁着心跳的灯。白塔的最后一道门。",
+      "hp": 6800,
+      "atk": 156,
+      "def": 60,
+      "attack_interval": 1.7,
+      "telegraph": 0.8,
+      "img": "enemies/white_warden",
+      "aura": "#e6f0ff",
+      "element": "焰",
+      "boss": true,
+      "pattern": [
+        "hit",
+        "charge",
+        "combo",
+        "shield",
+        "heavy"
+      ],
+      "skill_names": {
+        "charge": "提灯",
+        "combo": "白袖",
+        "shield": "静海",
+        "heavy": "闭门"
+      },
+      "reward": {
+        "gold": 5200,
+        "diamonds": 200,
+        "xp": 150
+      }
+    },
+    "chorus_engine": {
+      "name": "千声合唱",
+      "desc": "几百根管风琴管和观测仪拼成的机器，被理事会远程接管后，四个孩子的声音扭成了一个没有脸的合唱。",
+      "hp": 7600,
+      "atk": 168,
+      "def": 62,
+      "attack_interval": 1.8,
+      "telegraph": 0.75,
+      "img": "enemies/chorus_engine",
+      "aura": "#c9b6ff",
+      "element": "潮",
+      "boss": true,
+      "pattern": [
+        "heavy",
+        "shield",
+        "combo",
+        "heal",
+        "charge"
+      ],
+      "skill_names": {
+        "heavy": "千声齐鸣",
+        "shield": "音墙",
+        "combo": "三重唱",
+        "heal": "和声",
+        "charge": "终止式"
+      },
+      "reward": {
+        "gold": 6400,
+        "diamonds": 330,
+        "xp": 180
+      },
+      "phase2": {
+        "name": "千声合唱·安魂",
+        "img": "enemies/chorus_engine_p2",
+        "aura": "#ff9fc8",
+        "element": "星",
+        "atk_mult": 1.3,
+        "speed_mult": 0.8,
+        "pattern": [
+          "charge",
+          "combo",
+          "heavy",
+          "combo",
+          "shield"
+        ],
+        "skill_names": {
+          "charge": "安魂曲",
+          "combo": "四城共鸣"
+        },
+        "line": "所有的管子同时尖啸……四个孩子的声音扭成了一首安魂曲！"
+      }
     }
   }
 }
