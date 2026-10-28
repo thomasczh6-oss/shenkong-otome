@@ -253,6 +253,47 @@ func _run() -> void:
 		story._finish_typing()
 		await _shot("34_ch4_cg_" + scid, 1.2)
 		Router.go("Home")
+	# 第五章：顾辞告白 CG、结局（牵顾辞的手）、深空之鲸变身
+	Game.unlock_chapter("ch5")
+	for spec in [["s3", 0, 0], ["s5", 1, 1]]:
+		Router.push("Story", {"chapter": "ch5", "scene": spec[0]})
+		story = Router.stack.back().node
+		await get_tree().create_timer(0.3).timeout
+		var cgs_seen := 0
+		guard = 0
+		while guard < 200 and not story.ended:
+			if story.cg_active:
+				cgs_seen += 1
+				if cgs_seen > int(spec[2]):
+					break
+				while story.cg_active and guard < 200:
+					story._advance()
+					await get_tree().process_frame
+					story._finish_typing()
+					guard += 1
+				continue
+			if story.choice_layer != null:
+				var opts: Array = story.lines[story.idx].options
+				story._pick(opts[mini(int(spec[1]), opts.size() - 1)])
+			elif Router.current_name() == "Battle":
+				Router.back({"win": true})
+			else:
+				story._advance()
+			await get_tree().process_frame
+			story._finish_typing()
+			guard += 1
+		story._advance()
+		await get_tree().process_frame
+		story._finish_typing()
+		await _shot("40_ch5_cg_" + str(spec[0]), 1.2)
+		Router.go("Home")
+	Router.push("Battle", {"enemy": "abyss_whale", "partner": "gu_ci"})
+	bt = Router.stack.back().node
+	await get_tree().create_timer(0.4).timeout
+	bt.ehp = bt.ehp_max * 0.51
+	bt._skill()
+	await _shot("41_whale_p2", 2.0)
+	Router.go("Home")
 	Router.push("Battle", {"enemy": "zero_lock", "partner": "lu_zhuo"})
 	bt = Router.stack.back().node
 	await get_tree().create_timer(0.4).timeout

@@ -30,6 +30,7 @@ var hint_label: Label
 var choice_layer: Control = null
 var title_layer: Control = null
 var type_tween: Tween = null
+var cg_hide_tween: Tween = null
 var auto_btn: Button
 var skip_btn: Button
 var current_portrait_key := ""
@@ -320,6 +321,10 @@ func _show_cg(key: String) -> void:
 	if key == "":
 		return
 	Game.unlock_cg(key)
+	# 上一张 CG 的淡出还没播完时，先停掉它，否则它结束时会把新 CG 藏起来
+	if cg_hide_tween != null and cg_hide_tween.is_valid():
+		cg_hide_tween.kill()
+	cg_rect.modulate.a = 1.0
 	cg_rect.texture = Data.texture(key)
 	cg_rect.visible = true
 	cg_active = true
@@ -333,6 +338,7 @@ func _hide_cg() -> void:
 	cg_active = false
 	portrait.visible = current_portrait_key != ""
 	var tw := cg_rect.create_tween()
+	cg_hide_tween = tw
 	tw.tween_property(cg_rect, "modulate:a", 0.0, 0.5)
 	tw.tween_callback(func() -> void:
 		cg_rect.visible = false

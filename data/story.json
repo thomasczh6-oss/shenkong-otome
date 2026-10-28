@@ -3834,6 +3834,1048 @@
           ]
         }
       ]
+    },
+    {
+      "id": "ch5",
+      "title": "第五章 · 深空",
+      "requires": "ch4",
+      "cover": "backgrounds/deep_space_sea",
+      "summary": "海和天之间，被折叠起来的那一层。你六岁以前的记忆、十五年前的那一夜，还有一直在等你的人，都在深空的最深处。",
+      "scenes": [
+        {
+          "id": "s1",
+          "title": "5-1 · 深空之门",
+          "bg": "backgrounds/deep_space_gate",
+          "bgm": "deepspace",
+          "reward": {
+            "diamonds": 150,
+            "tickets_standard": 1
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "北港灯塔遗址 · 06:17"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "那行字出现后的第三天清晨，澜城的天空裂开了。不是裂隙——是一扇门。它悬在海平线上方，像一面竖起来的海，又像一片倒下来的星空。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "林岚局长",
+              "text": "观测站叫它「深空之门」。门的另一边，既不是海底，也不是天上。是海和天之间，被折叠起来的那一层。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "林舟",
+              "text": "十五年前，被零号潮卷走的东西，都沉在那一层里。人，声音，还有……记忆。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "我六岁以前的事，我一点都不记得。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "林舟",
+              "text": "那就对了。你的那一部分，也留在那边。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "所以「有人在等你」——是你妈妈？"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "或者，是六岁的你自己。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "沈砚一直没说话。他看着那扇门，像在看一片他已经潜过一千次的海。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "进门的办法，我想好了。我的深潜器扛得住压力，顾辞的搜救机认得星图，陆灼的火能在里面照明。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "三样东西拼在一起，就能做一艘去「深空」的船。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "林岚局长",
+              "text": "林舟已经改好了引擎。……观测员，这一趟，我没有资格命令你。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "我去。不是为了命令，是为了回家。",
+                  "aff": {
+                    "shen_yan": 3,
+                    "gu_ci": 3,
+                    "lu_zhuo": 3
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "那我们送你回家。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "smile",
+                      "text": "顺便把你六岁的自己也接回来。"
+                    }
+                  ]
+                },
+                {
+                  "text": "（看向他们三个）这次可能回不来。你们还要跟吗？",
+                  "aff": {
+                    "shen_yan": 4,
+                    "gu_ci": 4,
+                    "lu_zhuo": 4
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "calm",
+                      "text": "问这种问题，扣分。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "smile",
+                      "text": "你再问一遍，我就把你扛上船。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "我们早就决定了。在你开口之前。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "船驶进门的那一刻，海水从下往上流，星光从四面八方涌来。船舷边，浮出一盏摇晃的灯。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "灯挂在一条小船的船头。撑船的人披着一件破烂的斗篷，没有脸，只有一片会动的潮水。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "渡潮者",
+              "text": "活着的人，不能过这片海。把船上最重要的东西，留下来当船费。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "serious",
+              "text": "它说的「最重要的东西」……在看你。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "抱歉，这个不能给。观测员，把星光借我——我来给它照个路，让它自己回去。"
+            },
+            {
+              "t": "battle",
+              "enemy": "tide_ferryman",
+              "partner": "gu_ci"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "渡潮者的灯熄灭了。它的小船慢慢沉进倒流的海里，只留下一句很轻的话。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "渡潮者",
+              "text": "……那就带着她，往最深的地方去吧。她的母亲，在那里等了十五年。"
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "title": "5-2 · 沈砚 · 没有失去的早晨",
+          "char": "shen_yan",
+          "bg": "backgrounds/seaside_home",
+          "reward": {
+            "diamonds": 150,
+            "tickets_limited": 1
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "深空 · 海的那一边"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "你醒来的时候，躺在一张柔软的床上。窗外是澜城的海，阳光很好，厨房里飘出煎蛋的味道。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "沈砚系着围裙，从厨房里探出头来。他穿着家居服，头发有点乱，看起来比你认识的任何时候都要年轻。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "smile",
+              "text": "醒了？今天周末，研究所不用去。我做了早饭。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "……沈砚？我们不是在深空里吗？"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "嗯。我知道。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "这是深空给我看的东西。一个零号潮从来没发生过的澜城。老师还活着，在楼下等我们一起去潜水。我只是一个普通的研究员。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "……还有你。你每天早上都在这里醒来。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "窗外传来一个女人的声音，在喊他的名字。很温柔，和录音机里一模一样。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "它想让我留下来。在这里，什么都没有失去过。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "那你想留下来吗？",
+                  "aff": {
+                    "shen_yan": 6
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "calm",
+                      "text": "想过。一秒钟。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "smile",
+                      "text": "然后我想起来，真的你，在真的澜城，会因为我做的早饭太咸皱眉头。我想要的是那个你。"
+                    }
+                  ]
+                },
+                {
+                  "text": "（走过去，解开他的围裙）煎蛋糊了，深海先生。",
+                  "aff": {
+                    "shen_yan": 8
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "shy",
+                      "text": "……"
+                    },
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "smile",
+                      "text": "被你发现了。这里的我，连煎蛋都做得这么完美——一看就是假的。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "房间开始像水一样晃动。窗外的海面上，浮起一只巨大的、沉睡着的蝠鲼，它的翅膀上燃着幽幽的火。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "它是这个梦的守门人。只要它醒着，这个梦就不会散。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "观测员。在打之前，我有一句话，想在真的世界之外先说一遍。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "shy",
+              "text": "……我喜欢你。从你在港口第一次对我说「注意安全」的时候，就喜欢。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "好了。现在，去把梦叫醒。"
+            },
+            {
+              "t": "battle",
+              "enemy": "dream_manta",
+              "partner": "shen_yan"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "蝠鲼的火熄灭了，梦一片片剥落。你们站在一片倒过来的海上，头顶是海，脚下是星星。"
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch5_shen_yan_confess"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "刚才那句话，回去以后我会再说一遍。在真的港口，真的早上。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "smile",
+              "text": "那个梦里什么都有，可是没有现在这样——你牵着我的手，我们一起往深处走。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "shy",
+              "text": "这样就够了。比完美好。"
+            },
+            {
+              "t": "cg_end"
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "title": "5-3 · 顾辞 · 星的背面",
+          "char": "gu_ci",
+          "bg": "backgrounds/star_backside",
+          "reward": {
+            "diamonds": 150,
+            "tickets_limited": 1
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "深空 · 星的背面"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "越往深处走，星星就越近。到最后，你们走在星星的「背面」——每一颗星都是一面镜子，映着十五年前的那一夜。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "原来星星的背面是这样的。……我一直很想知道。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "其中一面镜子里，是灯塔下的海。一艘小小的救生艇在浪里摇晃。艇上坐着一个八九岁、戴着眼镜的男孩——还有一个更小的女孩，紧紧抓着他的衣角。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "……那是我？"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "serious",
+              "text": "是你。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "serious",
+              "text": "那个推我上船的姐姐，把一个小女孩也塞了进来。她说：「保护好她，往有星星的地方划。」"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "我划了一整夜。天亮的时候，搜救船来了，有人把你抱走了。我连你的名字都没来得及问。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "后来我开了八年搜救机。每次飞过那片海，都在想——那个小女孩，现在过得好不好。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "……原来那天晚上，一直是你在保护我。",
+                  "aff": {
+                    "gu_ci": 8
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "shy",
+                      "text": "保护得不太好。你后来什么都不记得了。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "不过没关系。我记得。我记性好，你知道的。"
+                    }
+                  ]
+                },
+                {
+                  "text": "（替他擦掉眼镜上的雾气）现在我知道了。我过得很好。",
+                  "aff": {
+                    "gu_ci": 7
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "calm",
+                      "text": "……嗯。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "那就好。那我八年的航线，都没有白飞。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "所有镜子同时暗了下去。一条由黑洞般的鳞片组成的巨蛇，从星星的缝隙里游了出来，一口一口地吞掉那些发光的镜子。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "serious",
+              "text": "它在吃回忆。你的回忆。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "serious",
+              "text": "十五年前我只是个小孩，只能划船。……但现在不一样了。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "观测员，这一次，换我把你的星星一颗一颗抢回来。"
+            },
+            {
+              "t": "battle",
+              "enemy": "star_eater",
+              "partner": "gu_ci"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "巨蛇溃散的时候，被吞下去的镜子重新亮了起来，像一场倒着下的流星雨。"
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch5_gu_ci_confess"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "我一直不知道，自己看了这么多年的星星，到底在找什么。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "shy",
+              "text": "现在知道了。我在找你。……我喜欢你，从救生艇上那一夜开始，大概就喜欢了。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "只是我花了十五年，才认出你。"
+            },
+            {
+              "t": "cg_end"
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "title": "5-4 · 陆灼 · 余烬舞台",
+          "char": "lu_zhuo",
+          "bg": "backgrounds/ember_stage",
+          "reward": {
+            "diamonds": 150,
+            "tickets_limited": 1
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "深空 · 余烬舞台"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "星星的尽头，是一座漂浮在虚空里的舞台。舞台是用燃烧的余烬搭成的，台下一个观众都没有。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "……这地方，好像是专门给我准备的。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "舞台中央站着一个拿着鼓棒的男人。是你在回响之城见过的那个鼓手——陆灼的父亲。这一次，他的脸是清楚的。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "鼓手",
+              "text": "臭小子，又见面了。上次没说完的话，这次说完。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "鼓手",
+              "text": "零号潮那天晚上，我从剧场里抱出来一个小女孩。她一直在哭，喊着找妈妈。我把她交给了一个戴眼镜的小男孩的救生艇。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "鼓手",
+              "text": "然后我回去了。剧场里还有人。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "serious",
+              "text": "……你抱出来的那个小女孩——"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "鼓手",
+              "text": "嗯。就是站在你旁边的这个姑娘。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "陆灼转过头看着你。他的眼睛很亮，像有火在里面烧。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "我恨了十五年。恨他为什么不跟我去吃宵夜，恨他为什么要回去。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "原来他回去之前，救了你。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "谢谢你，叔叔。……也谢谢你，陆灼。",
+                  "aff": {
+                    "lu_zhuo": 6
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "npc",
+                      "name": "鼓手",
+                      "text": "谢他干什么？他那天晚上在后台睡着了。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "shy",
+                      "text": "……爸！"
+                    }
+                  ]
+                },
+                {
+                  "text": "（握住陆灼的手）那这一次，换我陪你去吃宵夜。",
+                  "aff": {
+                    "lu_zhuo": 8
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "shy",
+                      "text": "……说好了啊。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "npc",
+                      "name": "鼓手",
+                      "text": "哈哈，这就对了。去吧。有人陪你吃宵夜，我就放心了。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "鼓手的身影化成火星散开了。舞台下面的余烬翻涌起来，聚成一条巨大的龙——它的身体是燃尽的灰，喉咙里却没有任何声音。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "serious",
+              "text": "灰烬鸣龙……深空里所有被烧掉的声音，都在它身体里。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "正好。我欠这个世界一首歌，就唱给它听。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "serious",
+              "text": "观测员，借我你的回响。这是我这辈子，烧得最亮的一次。"
+            },
+            {
+              "t": "battle",
+              "enemy": "ash_dragon",
+              "partner": "lu_zhuo"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "龙的身体裂开，被烧掉的声音一起涌了出来——笑声，鼓点，还有一个小女孩在喊「妈妈」。"
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch5_lu_zhuo_song"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "这首歌我写了很久，一直没有名字。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "shy",
+              "text": "现在有了。叫《宵夜》。很土吧？……但我只想唱给你一个人听。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "上次那句「我喜欢你」，你收着了吧？今天我来兑现。我喜欢你。下辈子也喜欢。"
+            },
+            {
+              "t": "cg_end"
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "title": "5-5 · 终章 · 晚安，早安",
+          "bg": "backgrounds/deep_space_sea",
+          "bgm": "deepspace",
+          "reward": {
+            "diamonds": 500,
+            "tickets_limited": 3
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "深空 · 最深处"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "最深的地方很安静。没有海，也没有星星。只有一头巨大的鲸，在虚空里缓慢地游着。它的身体半透明，里面装着一整座城市十五年来沉下去的东西。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "鲸的心脏位置，有一点很小很小的光。光里坐着一个女人，怀里抱着一个睡着的小女孩。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "苏晚",
+              "text": "……你来了，念念。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "妈妈。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "苏晚",
+              "text": "这头鲸，是深空自己长出来的。它吞下了零号潮那晚所有的东西，包括你六岁以前的记忆。我留在这里，是为了不让它游出去。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "苏晚",
+              "text": "可是我累了。我的回响，快要撑不住了。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "老师。……我们是来接你的。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "苏晚",
+              "text": "砚。你长大了。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "苏晚",
+              "text": "还有戴眼镜的那个小男孩，和后台睡着的那个孩子。……你们都来了啊。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "嗯。我们都来了。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "这次谁都不用一个人撑着了，阿姨。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "鲸睁开了眼睛。它感觉到了你——那个它吞下的、六岁的小女孩的回响，正在被另一个回响呼唤。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "苏晚",
+              "text": "念念，听我说。打败它，不是为了消灭它。它只是太饿了，太孤单了。像十五年来的我们每一个人。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "苏晚",
+              "text": "去「听」它。然后，把它送回海和天之间该去的地方。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "沈砚，和我一起潜下去。",
+                  "aff": {
+                    "shen_yan": 10
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "calm",
+                      "text": "最深的地方，我陪你。"
+                    }
+                  ]
+                },
+                {
+                  "text": "顾辞，替我照亮它的眼睛。",
+                  "aff": {
+                    "gu_ci": 10
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "这次，我们一起往有星星的地方划。"
+                    }
+                  ]
+                },
+                {
+                  "text": "陆灼，唱给它听。",
+                  "aff": {
+                    "lu_zhuo": 10
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "smile",
+                      "text": "那就来一首安可。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "battle",
+              "enemy": "abyss_whale",
+              "partner": "auto"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "鲸停止了挣扎。你把手放在它巨大的额头上，听见了它的声音——不是怒吼，而是一首很老很老的摇篮曲。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "是你妈妈哄你睡觉时唱的那一首。"
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch5_finale"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "鲸张开嘴，吐出了一整个夜晚的光。光里有灯塔，有救生艇，有剧场，有深海里的贝壳——还有一个六岁的小女孩，牵着妈妈的手，在灯塔下面数星星。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "你想起来了。全部。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "苏晚",
+              "text": "念念，妈妈不能跟你回去了。我的身体，十五年前就留在了海里。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "苏晚",
+              "text": "但我会变成灯塔的光。以后每一个晚上，你抬头的时候，我都在。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "……嗯。我会每天都抬头。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "苏晚",
+              "text": "还有，选一个人，陪你看日出吧。妈妈想在走之前，看你笑一次。"
+            },
+            {
+              "t": "cg_end"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "深空之门在你们身后缓缓合上。船浮出海面的时候，北港的灯塔，十五年来第一次亮了起来。"
+            },
+            {
+              "t": "bg",
+              "key": "backgrounds/lighthouse_dawn"
+            },
+            {
+              "t": "title",
+              "text": "北港灯塔 · 黎明"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "天快亮了。你站在灯塔下面，三个人站在你身边。海风很轻，第一缕晨光正在海平线上酝酿。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "（牵住沈砚的手）",
+                  "aff": {
+                    "shen_yan": 15
+                  },
+                  "lines": [
+                    {
+                      "t": "cg",
+                      "key": "cg/ch5_end_shen_yan"
+                    },
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "calm",
+                      "text": "……港口。早上。我说过回来要再说一遍的。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "shy",
+                      "text": "我喜欢你。以后的每一次下潜，我都会浮上来，回到你身边。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "smile",
+                      "text": "这是约定。比潮汐还准。"
+                    },
+                    {
+                      "t": "cg_end"
+                    }
+                  ]
+                },
+                {
+                  "text": "（牵住顾辞的手）",
+                  "aff": {
+                    "gu_ci": 15
+                  },
+                  "lines": [
+                    {
+                      "t": "cg",
+                      "key": "cg/ch5_end_gu_ci"
+                    },
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "十五年前在这片海上，我没来得及问你的名字。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "shy",
+                      "text": "现在我知道了。……念念，我喜欢你。以后的星图上，每一颗星都替我看着你。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "calm",
+                      "text": "我会记得今天。一辈子。"
+                    },
+                    {
+                      "t": "cg_end"
+                    }
+                  ]
+                },
+                {
+                  "text": "（牵住陆灼的手）",
+                  "aff": {
+                    "lu_zhuo": 15
+                  },
+                  "lines": [
+                    {
+                      "t": "cg",
+                      "key": "cg/ch5_end_lu_zhuo"
+                    },
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "smile",
+                      "text": "说好的宵夜，变成早饭了。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "shy",
+                      "text": "……喂，日出的时候说这种话有点肉麻，但我还是要说。我喜欢你，我的火只为你一个人烧。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "smile",
+                      "text": "走吧，回家。"
+                    },
+                    {
+                      "t": "cg_end"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "太阳升起来了。灯塔的光慢慢淡去，像有人轻轻地，对你笑了一下。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "观测仪在 06:17 又响了一声。这一次，屏幕上什么都没有。只有一行很小的字：「晚安，念念。早安，观测员。」"
+            },
+            {
+              "t": "title",
+              "text": "第五章 · 完　　《深与空恋》第一部 · 完"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

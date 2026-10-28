@@ -181,6 +181,14 @@ func _test_story() -> void:
 				ch4_enemies[str(line.enemy)] = true
 	check(ch4_enemies.size() == 5, "第四章 5 场战斗都是新敌人（%d）" % ch4_enemies.size())
 	check(Data.enemy("zero_lock").has("phase2"), "第四章 Boss 零号之锁有第二形态")
+	check(Data.chapter("ch5").get("scenes", []).size() == 5 and str(Data.chapter("ch5").get("requires", "")) == "ch4", "第五章 5 节，完成第四章后解锁")
+	check(Data.enemy("abyss_whale").has("phase2"), "第五章 Boss 深空之鲸有第二形态")
+	var end_cgs := 0
+	for e in Data.cg_list():
+		if str(e.key).begins_with("cg/ch5_end_"):
+			end_cgs += 1
+			check(str(e.char) != "", "结局 CG %s 归属到男主" % e.key)
+	check(end_cgs == 3, "三位男主各有一张结局 CG（%d）" % end_cgs)
 	var bgms: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/audio.json")).get("bgm", {})
 	for ch in Data.chapters:
 		for sc in ch.scenes:
