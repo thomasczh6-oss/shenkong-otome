@@ -142,6 +142,14 @@ func cg_list() -> Array:
 				if str(line.get("t", "")) == "cg":
 					out.append({"key": str(line.key), "chapter": str(ch.id), "chapter_title": str(ch.title),
 						"scene": str(sc.id), "scene_title": str(sc.title), "char": str(sc.get("char", ""))})
+				elif str(line.get("t", "")) == "choice":
+					# 分支里的 CG（比如结局按选择的人不同），角色取该选项加好感的那位
+					for opt in line.get("options", []):
+						for sub in opt.get("lines", []):
+							if str(sub.get("t", "")) == "cg":
+								var aff: Dictionary = opt.get("aff", {})
+								out.append({"key": str(sub.key), "chapter": str(ch.id), "chapter_title": str(ch.title),
+									"scene": str(sc.id), "scene_title": str(sc.title), "char": str(aff.keys()[0]) if aff.size() == 1 else ""})
 	for d in dates:
 		for line in d.get("lines", []):
 			if str(line.get("t", "")) == "cg":

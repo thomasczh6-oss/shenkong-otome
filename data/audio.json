@@ -26,6 +26,10 @@
     "secret": {
       "prompt": "dark cinematic conspiracy theme, ticking clock, cold minimal piano, deep cello, subtle electronic pulses, mysterious and sad, instrumental",
       "use": "第四章 · 潮汐局的秘密"
+    },
+    "deepspace": {
+      "prompt": "ethereal cinematic finale, soft female choir, celesta and harp, slow swelling strings, whale song ambience, bittersweet and hopeful, instrumental",
+      "use": "第五章 · 深空"
     }
   }
 }

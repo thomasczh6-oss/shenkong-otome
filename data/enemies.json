@@ -618,6 +618,173 @@
         },
         "line": "茧完全裂开了……她在用整座城的回响开门！"
       }
+    },
+    "tide_ferryman": {
+      "name": "渡潮者",
+      "desc": "深空之门后撑船的人，没有脸，只有一片会动的潮水。过海的船费，是你最重要的东西。",
+      "hp": 3600,
+      "atk": 115,
+      "def": 42,
+      "attack_interval": 1.6,
+      "telegraph": 0.75,
+      "img": "enemies/tide_ferryman",
+      "aura": "#7fe0ff",
+      "element": "潮",
+      "pattern": [
+        "hit",
+        "shield",
+        "combo",
+        "heavy"
+      ],
+      "skill_names": {
+        "shield": "灯下结界",
+        "combo": "渡桨三连",
+        "heavy": "沉船"
+      },
+      "reward": {
+        "gold": 2400,
+        "diamonds": 80,
+        "xp": 75
+      }
+    },
+    "dream_manta": {
+      "name": "眠火蝠鲼",
+      "desc": "守着「没有失去的早晨」的梦。它的翅膀燃着幽火，只要它醒着，梦就不会散。",
+      "hp": 3900,
+      "atk": 118,
+      "def": 42,
+      "attack_interval": 1.7,
+      "telegraph": 0.8,
+      "img": "enemies/dream_manta",
+      "aura": "#ffb38a",
+      "element": "焰",
+      "pattern": [
+        "heavy",
+        "hit",
+        "heal",
+        "charge"
+      ],
+      "skill_names": {
+        "heavy": "梦潮压顶",
+        "heal": "回到早晨",
+        "charge": "幽火展翼"
+      },
+      "reward": {
+        "gold": 2500,
+        "diamonds": 85,
+        "xp": 80
+      }
+    },
+    "star_eater": {
+      "name": "噬星蛇",
+      "desc": "在星星的背面游走，一口一口吞掉发光的回忆。它的鳞片像一个个小小的黑洞。",
+      "hp": 4100,
+      "atk": 120,
+      "def": 44,
+      "attack_interval": 1.6,
+      "telegraph": 0.75,
+      "img": "enemies/star_eater",
+      "aura": "#9d8cff",
+      "element": "潮",
+      "pattern": [
+        "combo",
+        "charge",
+        "hit",
+        "shield"
+      ],
+      "skill_names": {
+        "combo": "吞星三连",
+        "charge": "黑洞吐息",
+        "shield": "蜕鳞"
+      },
+      "reward": {
+        "gold": 2600,
+        "diamonds": 90,
+        "xp": 80
+      }
+    },
+    "ash_dragon": {
+      "name": "灰烬鸣龙",
+      "desc": "深空里所有被烧掉的声音聚成的龙。它的身体是燃尽的灰，喉咙里却没有任何声音。",
+      "hp": 4600,
+      "atk": 126,
+      "def": 46,
+      "attack_interval": 1.7,
+      "telegraph": 0.8,
+      "img": "enemies/ash_dragon",
+      "aura": "#ff7a45",
+      "element": "星",
+      "boss": true,
+      "pattern": [
+        "hit",
+        "charge",
+        "combo",
+        "shield",
+        "heavy"
+      ],
+      "skill_names": {
+        "charge": "无声龙吟",
+        "combo": "灰烬三爪",
+        "shield": "余烬鳞甲",
+        "heavy": "坠落的舞台"
+      },
+      "reward": {
+        "gold": 3800,
+        "diamonds": 160,
+        "xp": 110
+      }
+    },
+    "abyss_whale": {
+      "name": "深空之鲸",
+      "desc": "深空自己长出来的鲸。它吞下了零号潮那一夜所有的东西，包括一个六岁女孩的记忆。它只是太饿了，太孤单了。",
+      "hp": 5400,
+      "atk": 135,
+      "def": 48,
+      "attack_interval": 1.8,
+      "telegraph": 0.75,
+      "img": "enemies/abyss_whale",
+      "aura": "#b8d8ff",
+      "element": "星",
+      "boss": true,
+      "pattern": [
+        "heavy",
+        "shield",
+        "combo",
+        "heal",
+        "charge"
+      ],
+      "skill_names": {
+        "heavy": "鲸落",
+        "shield": "深空之腹",
+        "combo": "潮汐三叠",
+        "heal": "吞没",
+        "charge": "十五年的长鸣"
+      },
+      "reward": {
+        "gold": 5000,
+        "diamonds": 260,
+        "xp": 150
+      },
+      "phase2": {
+        "name": "深空之鲸·归潮",
+        "img": "enemies/abyss_whale_p2",
+        "aura": "#ffd9a8",
+        "element": "焰",
+        "atk_mult": 1.3,
+        "speed_mult": 0.8,
+        "pattern": [
+          "charge",
+          "combo",
+          "heavy",
+          "combo",
+          "shield"
+        ],
+        "skill_names": {
+          "charge": "归潮",
+          "combo": "摇篮曲的回声"
+        },
+        "line": "鲸的身体亮起了灯塔一样的光……它在用最后的力气挣扎！"
+      }
     }
   }
 }
