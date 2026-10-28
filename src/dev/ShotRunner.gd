@@ -320,6 +320,40 @@ func _run() -> void:
 	bt._skill()
 	await _shot("41_whale_p2", 2.0)
 	Router.go("Home")
+	# 第六章：顾辞雾港上空 CG、千灯终章 CG、灯母变身
+	Game.unlock_chapter("ch6")
+	for scid in ["s3", "s5"]:
+		Router.push("Story", {"chapter": "ch6", "scene": scid})
+		story = Router.stack.back().node
+		await get_tree().create_timer(0.3).timeout
+		guard = 0
+		while guard < 200 and not story.ended and not story.cg_active:
+			if story.choice_layer != null:
+				story._pick(story.lines[story.idx].options[0])
+			elif Router.current_name() == "Battle":
+				Router.back({"win": true})
+			else:
+				story._advance()
+			await get_tree().process_frame
+			story._finish_typing()
+			guard += 1
+		story._advance()
+		await get_tree().process_frame
+		story._finish_typing()
+		await _shot("46_ch6_cg_" + scid, 1.2)
+		Router.go("Home")
+	Router.push("Battle", {"enemy": "fog_heron", "partner": "gu_ci"})
+	bt = Router.stack.back().node
+	await get_tree().create_timer(0.4).timeout
+	await _shot("47_fog_heron", 0.3)
+	Router.go("Home")
+	Router.push("Battle", {"enemy": "lantern_mother", "partner": "shen_yan"})
+	bt = Router.stack.back().node
+	await get_tree().create_timer(0.4).timeout
+	bt.ehp = bt.ehp_max * 0.51
+	bt._skill()
+	await _shot("48_lantern_mother_p2", 2.0)
+	Router.go("Home")
 	Router.push("Battle", {"enemy": "zero_lock", "partner": "lu_zhuo"})
 	bt = Router.stack.back().node
 	await get_tree().create_timer(0.4).timeout

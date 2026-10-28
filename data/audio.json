@@ -30,6 +30,10 @@
     "deepspace": {
       "prompt": "ethereal cinematic finale, soft female choir, celesta and harp, slow swelling strings, whale song ambience, bittersweet and hopeful, instrumental",
       "use": "第五章 · 深空"
+    },
+    "festival": {
+      "prompt": "warm festive seaside night, gentle taiko and erhu with soft strings, lanterns and fireworks, romantic and joyful, instrumental",
+      "use": "第六章 · 潮汐祭"
     }
   }
 }
