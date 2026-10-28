@@ -55,7 +55,7 @@ func _tile(e: Dictionary) -> Control:
 		box.custom_minimum_size = Vector2(460, 620)
 		var c := CenterContainer.new()
 		var lv := UIKit.vbox(10)
-		lv.add_child(UIKit.label("🔒", 64, UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_CENTER, false))
+		lv.add_child(UIKit.label("未解锁", 40, UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_CENTER, false))
 		lv.add_child(UIKit.label("阅读剧情后解锁", 24, UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_CENTER, false))
 		c.add_child(lv)
 		box.add_child(c)

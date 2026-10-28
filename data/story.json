@@ -336,17 +336,17 @@
               "t": "say",
               "who": "shen_yan",
               "expr": "serious",
-              "text": "潮影进站了。跟紧我，别离开我三步以外。"
+              "text": "雾鳗游进站了。跟紧我，别离开我三步以外。"
             },
             {
               "t": "battle",
-              "enemy": "tide_shade",
+              "enemy": "mist_eel",
               "partner": "shen_yan"
             },
             {
               "t": "say",
               "who": "narrator",
-              "text": "最后一只潮影化成水雾。他回头确认你完好，才松开一直握着的拳头。"
+              "text": "雾鳗最后一圈鳞片化成水雾。他回头确认你完好，才松开一直握着的拳头。"
             },
             {
               "t": "say",
@@ -508,7 +508,7 @@
             {
               "t": "say",
               "who": "narrator",
-              "text": "星轨在他脚下亮起。你们在一瞬间越过穹顶，落在天台边缘。潮影像乌云一样压下来。"
+              "text": "星轨在他脚下亮起。你们在一瞬间越过穹顶，落在天台边缘。一大群礁灯水母像发光的乌云一样压下来。"
             },
             {
               "t": "say",
@@ -518,13 +518,13 @@
             },
             {
               "t": "battle",
-              "enemy": "tide_shade",
+              "enemy": "lantern_jelly",
               "partner": "gu_ci"
             },
             {
               "t": "say",
               "who": "narrator",
-              "text": "星光散尽，潮影溃散。他落回你身边，气息有点乱，笑容却一点没变。"
+              "text": "星光散尽，水母群一盏一盏熄灭。他落回你身边，气息有点乱，笑容却一点没变。"
             },
             {
               "t": "say",
@@ -897,7 +897,7 @@
               "t": "say",
               "who": "shen_yan",
               "expr": "serious",
-              "text": "潮影进了局里？不可能，这里有屏障——"
+              "text": "有东西闯进了局里？不可能，这里有屏障——"
             },
             {
               "t": "say",
@@ -913,13 +913,13 @@
             },
             {
               "t": "battle",
-              "enemy": "tide_shade",
+              "enemy": "anchor_golem",
               "partner": "lu_zhuo"
             },
             {
               "t": "say",
               "who": "narrator",
-              "text": "潮影散去后，铁柜最底层露出一枚被海水泡得发白的徽章。徽章背面，刻着一行字。"
+              "text": "魔像散架后，铁柜最底层露出一枚被海水泡得发白的徽章。徽章背面，刻着一行字。"
             },
             {
               "t": "say",
@@ -1057,7 +1057,7 @@
             {
               "t": "say",
               "who": "narrator",
-              "text": "水母群忽然散开。黑色从深渊里翻涌上来，那不是一只潮影，是一整片会呼吸的海。"
+              "text": "水母群忽然散开。黑色从深渊里翻涌上来，血红的珊瑚随之绽开，一个没有脸的歌者抱着竖琴从珊瑚里升起——珊瑚魅妖。"
             },
             {
               "t": "say",
@@ -1078,7 +1078,7 @@
             },
             {
               "t": "battle",
-              "enemy": "tide_wraith",
+              "enemy": "coral_siren",
               "partner": "shen_yan"
             },
             {
@@ -1524,7 +1524,7 @@
               "t": "say",
               "who": "lu_zhuo",
               "expr": "serious",
-              "text": "潮影学会烧了？……它在模仿我。"
+              "text": "这些镜子……它们在模仿我。"
             },
             {
               "t": "say",
@@ -1534,7 +1534,7 @@
             },
             {
               "t": "battle",
-              "enemy": "tide_wraith",
+              "enemy": "mirror_moths",
               "partner": "lu_zhuo"
             },
             {
@@ -2012,7 +2012,7 @@
             },
             {
               "t": "battle",
-              "enemy": "tide_shade",
+              "enemy": "zero_train",
               "partner": "lu_zhuo"
             },
             {
@@ -2172,13 +2172,13 @@
             },
             {
               "t": "battle",
-              "enemy": "tide_wraith",
+              "enemy": "mirror_mermaid",
               "partner": "shen_yan"
             },
             {
               "t": "say",
               "who": "narrator",
-              "text": "潮魇碎开的时候，镜中的海第一次发出了声音——很轻的一声浪响。少年站在浪花里，冲你们挥了挥手。"
+              "text": "镜海之影碎开的时候，镜中的海第一次发出了声音——很轻的一声浪响。少年站在浪花里，冲你们挥了挥手。"
             },
             {
               "t": "cg",
@@ -2318,7 +2318,7 @@
             {
               "t": "say",
               "who": "narrator",
-              "text": "黑暗中涌出无数星影。它们扑过来的时候，你听见了他的声音："
+              "text": "黑暗中缓缓睁开一双金色的巨眼——吞掉了整片星空的无星之鸮。它们扑过来的时候，你听见了他的声音："
             },
             {
               "t": "say",
@@ -2328,13 +2328,13 @@
             },
             {
               "t": "battle",
-              "enemy": "star_shade",
+              "enemy": "starless_owl",
               "partner": "gu_ci"
             },
             {
               "t": "say",
               "who": "narrator",
-              "text": "最后一只星影溃散的瞬间，他把全部的光推上了天空。漆黑的天幕上，亮起了一颗星——然后是第二颗、第三颗。"
+              "text": "无星之鸮溃散的瞬间，他把全部的光推上了天空。漆黑的天幕上，亮起了一颗星——然后是第二颗、第三颗。"
             },
             {
               "t": "cg",
@@ -2508,7 +2508,7 @@
             },
             {
               "t": "battle",
-              "enemy": "tide_wraith",
+              "enemy": "silent_maestro",
               "partner": "lu_zhuo"
             },
             {

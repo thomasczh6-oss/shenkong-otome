@@ -250,7 +250,7 @@ func header(title_text: String, on_back: Callable = Callable(), right: Control =
 	tv.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	tv.alignment = BoxContainer.ALIGNMENT_CENTER
 	tv.add_theme_constant_override("separation", 2)
-	var t := label("✦ " + title_text, 46, C_TEXT, HORIZONTAL_ALIGNMENT_LEFT, false)
+	var t := label("❀ " + title_text, 46, C_TEXT, HORIZONTAL_ALIGNMENT_LEFT, false)
 	tv.add_child(t)
 	var line := gradient_rect(Color(C_GOLD, 0.9), Color(C_GOLD, 0.0), false)
 	line.custom_minimum_size = Vector2(260, 3)

@@ -38,6 +38,7 @@ func _run() -> void:
 	Router.clear_overlay()
 	Game.mark_tutorial("home")
 	Game.mark_tutorial("battle")
+	Game.mark_tutorial("battle2")
 	Router.go("Home")
 	await _shot("02_home")
 	for c in ["gu_ci", "lu_zhuo"]:
@@ -124,6 +125,47 @@ func _run() -> void:
 	await _shot("18_profile")
 	Router.go("Home")
 
+	# 挑战：每日讨伐、回廊、选搭档、图鉴、新战斗机制
+	Game.s.tower = {"best": 4}
+	Game.s.battle_stars = {"tower:1": 3, "tower:2": 2, "tower:3": 3, "tower:4": 1}
+	Game.s.bestiary = {"tide_shade": true, "mist_eel": true, "coral_siren": true, "rift_heart": true}
+	Router.push("Challenge")
+	await _shot("26_challenge")
+	# 真实点击路径：点「讨伐」→ 弹出选搭档 → 点顾辞 → 进入战斗（v0.4.0 在真机上这里闪退）
+	var hunt_btn := _find_button(Router.stack.back().node, "讨伐")
+	await _click(hunt_btn)
+	await _shot("27_pick_partner")
+	var pick := _find_button(Router.overlay, "顾辞")
+	await _click(pick)
+	await _shot("27b_hunt_battle", 1.5)
+	print("[shot] hunt battle open: ", Router.current_name())
+	Router.clear_overlay()
+	Router.go("Home")
+	Router.push("Challenge")
+	await get_tree().create_timer(0.4).timeout
+	Router.push("Bestiary")
+	await _shot("28_bestiary")
+	Router.go("Home")
+	Router.push("Battle", {"enemy": "coral_siren", "partner": "shen_yan"})
+	var bt: Control = Router.stack.back().node
+	await get_tree().create_timer(0.4).timeout
+	bt.pattern = ["charge"]
+	bt.pat_i = 0
+	bt._to_idle()
+	bt.st_timer = 99.0
+	await _shot("29_battle_charge", 0.5)
+	bt.meter = 100.0
+	bt._resonance()
+	await _shot("30_battle_qte", 0.45)
+	Router.go("Home")
+	Router.push("Battle", {"enemy": "rift_heart", "partner": "gu_ci"})
+	bt = Router.stack.back().node
+	await get_tree().create_timer(0.4).timeout
+	bt.ehp = bt.ehp_max * 0.51
+	bt._skill()
+	await _shot("31_battle_phase2", 2.0)
+	Router.go("Home")
+
 	# 第二章：带 CG 的剧情
 	for sc in Data.chapter("ch1").scenes:
 		Game.s.story.done["ch1/" + str(sc.id)] = true
@@ -180,3 +222,35 @@ func _run() -> void:
 	await _shot("25_date_reaction", 0.5)
 	Router.go("Home")
 	Game.reset()
+
+
+func _find_button(root: Node, text_part: String) -> Button:
+	for n in root.find_children("*", "Button", true, false):
+		var b := n as Button
+		if b.is_visible_in_tree() and (b.text.contains(text_part) or _has_label(b, text_part)):
+			return b
+	return null
+
+
+func _has_label(n: Node, text_part: String) -> bool:
+	for l in n.find_children("*", "Label", true, false):
+		if (l as Label).text.contains(text_part):
+			return true
+	return false
+
+
+## 用真实的鼠标事件点一个按钮（和手机上的点击走同一条路）。
+func _click(b: Control) -> void:
+	if b == null:
+		print("[shot] 找不到按钮")
+		return
+	var pos := b.get_global_rect().get_center()
+	for pressed in [true, false]:
+		var ev := InputEventMouseButton.new()
+		ev.button_index = MOUSE_BUTTON_LEFT
+		ev.pressed = pressed
+		ev.position = pos
+		ev.global_position = pos
+		get_viewport().push_input(ev, true)
+		await get_tree().process_frame
+

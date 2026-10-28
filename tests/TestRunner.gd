@@ -20,6 +20,9 @@ func _ready() -> void:
 	_test_audio()
 	await _test_fonts()
 	await _test_drag_scroll()
+	_test_combat_rules()
+	await _test_battle_sim()
+	await _test_challenge_flow()
 	print("\n%d checks, %d failures" % [checks, failures])
 	get_tree().quit(1 if failures > 0 else 0)
 
@@ -282,6 +285,18 @@ func _test_fonts() -> void:
 	check(lbl.get_theme_font("font") == UIKit.font, "CanvasLayer 下的 Label 用中文字体")
 	check(edit.get_theme_font("font") == UIKit.font, "CanvasLayer 下的输入框用中文字体")
 	layer.queue_free()
+	# 代码和数据里出现的所有字符，打包的字体里都要有（真机上没有系统字体兜底）
+	var missing := {}
+	for dir in ["res://src/screens", "res://src/autoload", "res://data"]:
+		for f in DirAccess.get_files_at(dir):
+			if not (f.ends_with(".gd") or f.ends_with(".json")):
+				continue
+			var txt := FileAccess.get_file_as_string(dir.path_join(f))
+			for i in txt.length():
+				var c := txt.unicode_at(i)
+				if c > 127 and not UIKit.font.has_char(c):
+					missing[String.chr(c)] = f
+	check(missing.is_empty(), "所有文字都在打包字体里 %s" % str(missing))
 
 
 func _mouse(pos: Vector2, pressed: Variant = null) -> void:
@@ -330,3 +345,196 @@ func _test_drag_scroll() -> void:
 	check(taps.n == 1, "轻点按钮仍然有效")
 	host.queue_free()
 
+
+const CombatRules := preload("res://src/systems/Combat.gd")
+
+
+func _test_combat_rules() -> void:
+	var fresh := {"hp": 1200, "atk": 90, "def": 30}
+	var strong := {"hp": 9000, "atk": 900, "def": 300}
+	for bid in CombatRules.roster(Data.enemies).boss:
+		var be: Dictionary = Data.enemy(bid)
+		var fs: Dictionary = CombatRules.hunt_scale(fresh, be)
+		var hit := maxf(5.0, 90.0 - float(be.def) * 0.5)
+		check(float(be.hp) * fs.hp_mult / hit <= 40.0, "新手讨伐 %s 约 %d 下普攻可打完" % [bid, int(float(be.hp) * fs.hp_mult / hit)])
+		var ss: Dictionary = CombatRules.hunt_scale(strong, be)
+		check(is_equal_approx(ss.hp_mult, 1.4) and is_equal_approx(ss.atk_mult, 1.1), "高战力讨伐 %s 封顶为强化版" % bid)
+	check(CombatRules.element_mult("潮", "焰") == 1.5, "潮克焰")
+	check(CombatRules.element_mult("焰", "星") == 1.5, "焰克星")
+	check(CombatRules.element_mult("星", "潮") == 1.5, "星克潮")
+	check(CombatRules.element_mult("焰", "潮") == 0.75, "被克制伤害降低")
+	check(CombatRules.element_mult("潮", "潮") == 1.0, "同属性无加成")
+	check(CombatRules.weakness("焰") == "潮", "焰的弱点是潮")
+	check(CombatRules.stars(true, 0.8, 1) == 3, "满足全部条件三星")
+	check(CombatRules.stars(true, 0.3, 2) == 1, "血量不足只有一星")
+	check(CombatRules.stars(false, 1.0, 5) == 0, "失败零星")
+	# 敌人数据
+	var used := {}
+	for ch in Data.chapters:
+		for sc in ch.scenes:
+			for l in sc.lines:
+				if str(l.get("t", "")) == "battle":
+					var eid := str(l.get("enemy", ""))
+					check(Data.enemies.has(eid), "剧情战斗敌人存在 %s" % eid)
+					used[eid] = true
+	check(used.size() >= 14, "14 场剧情战斗敌人各不相同（%d 种）" % used.size())
+	var manifest := Data.manifest_keys()
+	for eid in Data.enemies:
+		var e: Dictionary = Data.enemies[eid]
+		check(str(e.get("element", "")) in ["潮", "星", "焰"], "%s 有属性" % eid)
+		check(manifest.has(str(e.get("img", ""))), "%s 的形象在美术清单里" % eid)
+		for mv in e.get("pattern", []):
+			check(CombatRules.MOVES.has(str(mv)), "%s 的招式 %s 有效" % [eid, mv])
+		if e.has("phase2"):
+			check(manifest.has(str(e.phase2.img)), "%s 第二形态形象在美术清单里" % eid)
+	# 回廊
+	var bosses := 0
+	for n in range(1, CombatRules.TOWER_FLOORS + 1):
+		var f := CombatRules.tower_floor(n, Data.enemies)
+		check(Data.enemies.has(f.enemy), "回廊第 %d 层敌人有效" % n)
+		if f.boss:
+			bosses += 1
+			check(bool(Data.enemies[f.enemy].get("boss", false)), "回廊第 %d 层是 Boss" % n)
+	check(bosses == 6, "回廊每 5 层一个 Boss")
+	var f1 := CombatRules.tower_floor(1, Data.enemies)
+	var f30 := CombatRules.tower_floor(30, Data.enemies)
+	check(float(Data.enemies[f30.enemy].hp) * f30.hp_mult > float(Data.enemies[f1.enemy].hp) * f1.hp_mult * 5.0, "回廊越往上越难")
+	check(Data.enemies.has(CombatRules.daily_enemy("2026-10-28", Data.enemies)), "每日讨伐敌人有效")
+
+
+## 真的开一场战斗，模拟完美闪避、护盾、打断、Boss 变身和结算。
+func _test_battle_sim() -> void:
+	Game.s = Game.default_state()
+	Game.mark_tutorial("battle")
+	Game.mark_tutorial("battle2")
+	var script: GDScript = load("res://src/screens/Battle.gd")
+	var b: Control = script.new()
+	b.params = {"enemy": "rift_heart", "partner": "gu_ci", "key": "test:rift"}
+	add_child(b)
+	await get_tree().process_frame
+	check(b.elem_e == "潮" and b.elem_p == "星", "属性读取正确")
+	b.set_process(false)
+	# 完美闪避：重击预警最后 0.2 秒
+	b.state = "tele"
+	b.cur_move = "heavy"
+	b.tele_len = 1.5
+	b.st_timer = 1.3
+	b.dodge_cd = 0.0
+	b._dodge()
+	check(b.perfect == 1 and b.invuln > 1.0, "预警末尾闪避判定为完美闪避")
+	Engine.time_scale = 1.0
+	# 过早闪避不算完美
+	b.state = "tele"
+	b.st_timer = 0.2
+	b.dodge_cd = 0.0
+	b._dodge()
+	check(b.perfect == 1, "过早闪避不算完美")
+	# 护盾：普攻只扣盾
+	b._to_idle()
+	b.shield_max = 500.0
+	b.shield = 500.0
+	var hp_before: float = b.ehp
+	b._attack()
+	check(b.ehp == hp_before and b.shield < 500.0, "护盾挡住伤害")
+	b.shield = 1.0
+	b.attack_cd = 0.0
+	b._attack()
+	check(b.shield == 0.0 and b.state == "stun", "破盾后敌人眩晕")
+	# 蓄力打断
+	b._to_idle()
+	b.pattern = ["charge"]
+	b.pat_i = 0
+	b._start_move()
+	b.charge_dealt = b.charge_need + 1.0
+	b._enemy_tick(0.01)
+	check(b.state == "stun", "蓄力期间打出足够伤害可以打断")
+	# Boss 变身
+	b._to_idle()
+	b.ehp = b.ehp_max * 0.52
+	b.skill_cd = 0.0
+	b._skill()
+	check(b.phase == 2, "Boss 血量过半进入第二形态")
+	check(b.elem_e == "星", "第二形态换了属性")
+	# 结算
+	b.paused = false  # 结算
+	b.php = b.php_max
+	b.ehp = 1.0
+	b.attack_cd = 0.0
+	b._attack()
+	check(b.over, "击败敌人后结束")
+	await get_tree().create_timer(1.1).timeout
+	check(Game.battle_stars("test:rift") == 3, "满血 + 完美闪避 = 三星")
+	Router.clear_overlay()
+	b.queue_free()
+	Engine.time_scale = 1.0
+
+
+
+func _find_button(root: Node, text_part: String) -> Button:
+	for n in root.find_children("*", "Button", true, false):
+		var b := n as Button
+		if b.is_visible_in_tree() and (b.text.contains(text_part) or _has_label(b, text_part)):
+			return b
+	return null
+
+
+func _has_label(n: Node, text_part: String) -> bool:
+	for l in n.find_children("*", "Label", true, false):
+		if (l as Label).text.contains(text_part):
+			return true
+	return false
+
+
+func _tap(b: Control) -> void:
+	if b == null:
+		return
+	var pos := b.get_global_rect().get_center()
+	if get_viewport().get_visible_rect().has_point(pos):
+		await _mouse(pos, true)
+		await _mouse(pos, false)
+	elif b is Button:
+		(b as Button).pressed.emit()
+		await get_tree().process_frame
+
+
+## v0.4.0 闪退回归：挑战 → 讨伐 / 回廊第 1 层 → 选搭档（每位男主都试）→ 必须进入战斗。
+func _test_challenge_flow() -> void:
+	print("[挑战入口进战斗]")
+	Game.s = Game.default_state()
+	Game.mark_tutorial("battle")
+	Game.mark_tutorial("battle2")
+	for entry in [["讨伐", "hunt"], ["挑战", "tower"]]:
+		for cid in Data.char_order:
+			Router.go("Home")
+			Router.push("Challenge")
+			await get_tree().process_frame
+			await get_tree().process_frame
+			var screen: Control = Router.stack.back().node
+			var btn := _find_button(screen, entry[0])
+			if entry[1] == "tower":
+				btn = null
+				for n in screen.find_children("*", "Button", true, false):
+					if (n as Button).text == "挑战" and n.is_visible_in_tree():
+						btn = n
+						break
+			check(btn != null, "%s：找到入口按钮" % entry[1])
+			await _tap(btn)
+			await get_tree().process_frame
+			var name := Data.char_name(cid)
+			var pick := _find_button(Router.overlay, name)
+			check(pick != null, "%s：弹出选搭档并有 %s" % [entry[1], name])
+			await _tap(pick)
+			await get_tree().process_frame
+			await get_tree().process_frame
+			check(Router.current_name() == "Battle", "%s + %s：进入战斗（当前 %s）" % [entry[1], name, Router.current_name()])
+			if Router.current_name() == "Battle":
+				var bt: Control = Router.stack.back().node
+				check(str(bt.params.get("partner", "")) == cid and str(bt.params.get("mode", "")) == entry[1], "%s：战斗参数正确" % entry[1])
+				bt.set_process(false)
+			check(Router.overlay.get_child_count() == 0 or _no_picker(), "%s：选搭档弹窗已关闭" % entry[1])
+	Router.go("Home")
+	await get_tree().process_frame
+
+
+func _no_picker() -> bool:
+	return not _has_label(Router.overlay, "选择搭档")

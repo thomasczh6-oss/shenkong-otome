@@ -98,7 +98,7 @@ func _top_bar() -> Control:
 	h.add_child(who)
 	h.add_child(UIKit.spacer(0, true))
 	h.add_child(UIKit.currency("◆", Game.diamonds(), UIKit.C_ACCENT))
-	h.add_child(UIKit.currency("✦", Game.tickets("limited") + Game.tickets("standard"), UIKit.C_GOLD))
+	h.add_child(UIKit.currency("◆", Game.tickets("limited") + Game.tickets("standard"), UIKit.C_GOLD))
 	var plus := UIKit.button("＋", "gold", 30, 56)
 	plus.custom_minimum_size = Vector2(56, 56)
 	plus.pressed.connect(func() -> void: Router.push("Shop"))
@@ -114,6 +114,7 @@ func _side_buttons() -> Control:
 	var items := [
 		["签到", func() -> void: Router.push("Daily", {"tab": 3}), Game.can_signin()],
 		["任务", func() -> void: Router.push("Daily", {"tab": 3}), false],
+		["挑战", func() -> void: Router.push("Challenge"), not Game.hunt_done_today() and Game.scene_done("ch1", "s1")],
 		["回忆", func() -> void: Router.push("Gallery"), false],
 		["商店", func() -> void: Router.push("Shop"), false],
 		["我的", func() -> void: Router.push("Profile"), false],
@@ -186,7 +187,7 @@ func _nav() -> Control:
 		["许愿", "抽卡", func() -> void: Router.push("Gacha")],
 		["约会", "约会", func() -> void: Router.push("Dates", {"char": cid})],
 	]
-	var icons := {"主线": "★", "日常": "♪", "思念": "❀", "许愿": "✦", "约会": "♡"}
+	var icons := {"主线": "★", "日常": "♪", "思念": "❀", "许愿": "☆", "约会": "♡"}
 	for it in items:
 		var b := UIKit.button(str(icons.get(str(it[0]), "")) + "\n" + str(it[0]), "dark", 30, 128)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL

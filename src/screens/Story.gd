@@ -519,7 +519,8 @@ func _start_battle(line: Dictionary) -> void:
 			if Game.power(cid) > best:
 				best = Game.power(cid)
 				partner = cid
-	Router.push("Battle", {"enemy": str(line.get("enemy", "tide_shade")), "partner": partner})
+	var key := "story:%s/%s" % [ch_id, sc_id] if date_id == "" else ""
+	Router.push("Battle", {"enemy": str(line.get("enemy", "tide_shade")), "partner": partner, "key": key})
 
 
 func _show_history() -> void:
