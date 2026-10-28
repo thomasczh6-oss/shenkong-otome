@@ -126,7 +126,7 @@ func _show_results(results: Array, n: int) -> void:
 	var dim := ColorRect.new()
 	dim.color = Color(0.02, 0.03, 0.08, 0.96)
 	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
-	var m := UIKit.margin(30, 90, 30, 50)
+	var m := UIKit.safe_margin(30, 90, 30, 50)
 	m.set_anchors_preset(Control.PRESET_FULL_RECT)
 	var v := UIKit.vbox(20)
 	var best := 3

@@ -45,7 +45,7 @@ func build() -> void:
 	drift.tween_property(logo, "position:y", 168.0, 3.2).set_trans(Tween.TRANS_SINE)
 	drift.tween_property(logo, "position:y", 150.0, 3.2).set_trans(Tween.TRANS_SINE)
 
-	var m := UIKit.margin(110, 0, 110, 120)
+	var m := UIKit.safe_margin(110, 0, 110, 120)
 	m.set_anchors_preset(Control.PRESET_FULL_RECT)
 	m.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var v := UIKit.vbox(22)

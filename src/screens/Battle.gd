@@ -57,7 +57,7 @@ func build() -> void:
 	add_child(bg)
 	add_child(UIKit.gradient_rect(Color(0.02, 0.03, 0.1, 0.2), Color(0.02, 0.03, 0.1, 0.9)))
 
-	var m := UIKit.margin(36, 70, 36, 40)
+	var m := UIKit.safe_margin(36, 70, 36, 40)
 	m.set_anchors_preset(Control.PRESET_FULL_RECT)
 	m.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var v := UIKit.vbox(16)
@@ -75,6 +75,7 @@ func build() -> void:
 
 	enemy_box = CenterContainer.new()
 	enemy_box.custom_minimum_size = Vector2(0, 780)
+	enemy_box.size_flags_vertical = Control.SIZE_EXPAND_FILL  # 长屏手机上怪物居中，不留大片空白
 	enemy_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	enemy_box.add_child(_build_enemy_stage())
 	v.add_child(enemy_box)
@@ -82,7 +83,6 @@ func build() -> void:
 	warn_label.custom_minimum_size = Vector2(0, 44)
 	v.add_child(warn_label)
 	v.add_child(UIKit.label(str(enemy.get("desc", "")), 24, UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_CENTER))
-	v.add_child(UIKit.spacer())
 
 	# 我方
 	var me := UIKit.hbox(16)

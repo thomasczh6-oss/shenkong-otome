@@ -56,7 +56,7 @@ func build() -> void:
 		UIKit.pop(portrait, 0.97, 0.3))
 	add_child(touch)
 
-	var m := UIKit.margin(30, 60, 30, 36)
+	var m := UIKit.safe_margin(30, 60, 30, 36)
 	m.set_anchors_preset(Control.PRESET_FULL_RECT)
 	m.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var v := UIKit.vbox(14)

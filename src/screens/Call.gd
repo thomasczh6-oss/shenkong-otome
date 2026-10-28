@@ -29,7 +29,7 @@ func build() -> void:
 	add_child(portrait)
 	add_child(UIKit.gradient_rect(Color(0, 0, 0, 0.0), Color(0, 0, 0, 0.9)))
 
-	var m := UIKit.margin(50, 90, 50, 70)
+	var m := UIKit.safe_margin(50, 90, 50, 70)
 	m.set_anchors_preset(Control.PRESET_FULL_RECT)
 	var v := UIKit.vbox(10)
 	v.add_child(UIKit.label(Data.char_name(cid), 60, UIKit.C_TEXT, HORIZONTAL_ALIGNMENT_CENTER))

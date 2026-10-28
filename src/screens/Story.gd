@@ -90,9 +90,9 @@ func build() -> void:
 
 
 func _build_dialog() -> void:
-	var m := UIKit.margin(30, 0, 30, 60)
+	var m := UIKit.safe_margin(30, 0, 30, 60)
 	m.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
-	m.offset_top = -470
+	m.offset_top = -470 - UIKit.safe_insets().y
 	m.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var v := UIKit.vbox(-18)  # 名牌压在对话框上沿
 	v.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -133,7 +133,7 @@ func _build_dialog() -> void:
 func _build_top_buttons() -> void:
 	var h := UIKit.hbox(10)
 	h.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	h.offset_top = 56
+	h.offset_top = 56 + UIKit.safe_insets().x
 	h.offset_left = 24
 	h.offset_right = -24
 	h.alignment = BoxContainer.ALIGNMENT_END

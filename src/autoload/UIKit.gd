@@ -183,6 +183,28 @@ func hbox(sep := 16) -> HBoxContainer:
 	return h
 
 
+## 刘海 / 挖孔 / 底部手势条占掉的高度（视口像素）：x = 顶部，y = 底部。电脑上为 0。
+func safe_insets() -> Vector2:
+	# 调试：--safe=顶部,底部（视口像素），在电脑上模拟刘海屏
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with("--safe="):
+			var p := a.trim_prefix("--safe=").split(",")
+			return Vector2(float(p[0]), float(p[1]) if p.size() > 1 else 0.0)
+	var screen := DisplayServer.screen_get_size()
+	var safe := DisplayServer.get_display_safe_area()
+	if screen.y <= 0 or safe.size.y <= 0:
+		return Vector2.ZERO
+	var vp := get_tree().root.get_visible_rect().size
+	var k := vp.y / float(screen.y)
+	return Vector2(maxf(0.0, safe.position.y) * k, maxf(0.0, float(screen.y - safe.end.y)) * k)
+
+
+## 和 margin() 一样，但上下额外让出安全区。
+func safe_margin(left := 40, top := 40, right := 40, bottom := 40) -> MarginContainer:
+	var ins := safe_insets()
+	return margin(left, top + int(ins.x), right, bottom + int(ins.y))
+
+
 func margin(left := 40, top := 40, right := 40, bottom := 40) -> MarginContainer:
 	var m := MarginContainer.new()
 	m.add_theme_constant_override("margin_left", left)
@@ -209,6 +231,9 @@ func scroll(content: Control) -> ScrollContainer:
 	s.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	s.add_child(content)
+	var drag := preload("res://src/ui/DragScroll.gd").new()
+	drag.name = "DragScroll"
+	s.add_child(drag)
 	return s
 
 
@@ -243,7 +268,7 @@ func page(title_text := "", on_back: Callable = Callable(), right: Control = nul
 	root.set_anchors_preset(Control.PRESET_FULL_RECT)
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(dreamy_bg())
-	var m := margin(36, 70, 36, 40)
+	var m := safe_margin(36, 70, 36, 40)
 	m.set_anchors_preset(Control.PRESET_FULL_RECT)
 	m.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var v := vbox(20)

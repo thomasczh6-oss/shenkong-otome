@@ -19,6 +19,7 @@ func _ready() -> void:
 	_test_dates()
 	_test_audio()
 	await _test_fonts()
+	await _test_drag_scroll()
 	print("\n%d checks, %d failures" % [checks, failures])
 	get_tree().quit(1 if failures > 0 else 0)
 
@@ -281,4 +282,51 @@ func _test_fonts() -> void:
 	check(lbl.get_theme_font("font") == UIKit.font, "CanvasLayer 下的 Label 用中文字体")
 	check(edit.get_theme_font("font") == UIKit.font, "CanvasLayer 下的输入框用中文字体")
 	layer.queue_free()
+
+
+func _mouse(pos: Vector2, pressed: Variant = null) -> void:
+	var ev: InputEvent
+	if pressed == null:
+		var mm := InputEventMouseMotion.new()
+		mm.button_mask = MOUSE_BUTTON_MASK_LEFT
+		ev = mm
+	else:
+		var mb := InputEventMouseButton.new()
+		mb.button_index = MOUSE_BUTTON_LEFT
+		mb.pressed = pressed
+		ev = mb
+	ev.position = pos
+	ev.global_position = pos
+	get_viewport().push_input(ev, true)
+	await get_tree().process_frame
+
+
+## 手指按在按钮上往上拖，列表要滚动，而且松手不能触发按钮；轻点按钮仍然能点。
+func _test_drag_scroll() -> void:
+	var host := Control.new()
+	host.position = Vector2.ZERO
+	host.size = Vector2(1080, 900)
+	add_child(host)
+	var v := UIKit.vbox(10)
+	var taps := {"n": 0}
+	for i in 30:
+		var b := UIKit.button("条目 %d" % i, "ghost", 30, 120)
+		b.pressed.connect(func() -> void: taps.n += 1)
+		v.add_child(b)
+	var sc := UIKit.scroll(v)
+	sc.set_anchors_preset(Control.PRESET_FULL_RECT)
+	host.add_child(sc)
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await _mouse(Vector2(540, 700), true)
+	for i in 10:
+		await _mouse(Vector2(540, 700 - 40 * (i + 1)))
+	await _mouse(Vector2(540, 300), false)
+	check(sc.scroll_vertical >= 300, "手指拖动能滚动列表（滚动了 %d）" % sc.scroll_vertical)
+	check(taps.n == 0, "拖动松手不会误点按钮")
+	sc.set_process(false)
+	await _mouse(Vector2(540, 450), true)
+	await _mouse(Vector2(540, 450), false)
+	check(taps.n == 1, "轻点按钮仍然有效")
+	host.queue_free()
 
