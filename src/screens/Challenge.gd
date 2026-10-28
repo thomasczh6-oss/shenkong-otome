@@ -44,15 +44,16 @@ func _hunt_card() -> Control:
 	row.add_child(UIKit.label(str(e.get("name", "")), 40, UIKit.C_TEXT, HORIZONTAL_ALIGNMENT_LEFT, false))
 	row.add_child(UIKit.pill(el, UIKit.element_color(el), 22))
 	bv.add_child(row)
-	bv.add_child(UIKit.label("强化版 · 弱点「%s」· 推荐 %s" % [weak, _char_of(weak)], 24, UIKit.C_MUTED))
+	bv.add_child(UIKit.label("强度随搭档战力调整 · 弱点「%s」· 推荐 %s" % [weak, _char_of(weak)], 24, UIKit.C_MUTED))
 	bv.add_child(UIKit.label("奖励：" + UIKit.reward_text(HUNT_REWARD), 24, UIKit.C_TEXT))
 	var done := Game.hunt_done_today()
 	var b := UIKit.button("今日已讨伐 ✓" if done else "讨伐", "ghost" if done else "primary", 30, 84)
 	b.disabled = done
 	b.pressed.connect(func() -> void:
 		_pick_partner(eid, func(cid: String) -> void:
+			var sc := Combat.hunt_scale(Game.team_stats(cid), e)
 			Router.push("Battle", {"enemy": eid, "partner": cid, "mode": "hunt", "key": "hunt:" + eid,
-				"hp_mult": 1.4, "atk_mult": 1.1, "reward": HUNT_REWARD})))
+				"hp_mult": sc.hp_mult, "atk_mult": sc.atk_mult, "reward": HUNT_REWARD})))
 	bv.add_child(b)
 	h.add_child(bv)
 	panel.add_child(h)

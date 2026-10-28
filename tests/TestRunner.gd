@@ -350,6 +350,15 @@ const CombatRules := preload("res://src/systems/Combat.gd")
 
 
 func _test_combat_rules() -> void:
+	var fresh := {"hp": 1200, "atk": 90, "def": 30}
+	var strong := {"hp": 9000, "atk": 900, "def": 300}
+	for bid in CombatRules.roster(Data.enemies).boss:
+		var be: Dictionary = Data.enemy(bid)
+		var fs: Dictionary = CombatRules.hunt_scale(fresh, be)
+		var hit := maxf(5.0, 90.0 - float(be.def) * 0.5)
+		check(float(be.hp) * fs.hp_mult / hit <= 40.0, "新手讨伐 %s 约 %d 下普攻可打完" % [bid, int(float(be.hp) * fs.hp_mult / hit)])
+		var ss: Dictionary = CombatRules.hunt_scale(strong, be)
+		check(is_equal_approx(ss.hp_mult, 1.4) and is_equal_approx(ss.atk_mult, 1.1), "高战力讨伐 %s 封顶为强化版" % bid)
 	check(CombatRules.element_mult("潮", "焰") == 1.5, "潮克焰")
 	check(CombatRules.element_mult("焰", "星") == 1.5, "焰克星")
 	check(CombatRules.element_mult("星", "潮") == 1.5, "星克潮")
