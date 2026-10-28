@@ -34,6 +34,10 @@
     "festival": {
       "prompt": "warm festive seaside night, gentle taiko and erhu with soft strings, lanterns and fireworks, romantic and joyful, instrumental",
       "use": "第六章 · 潮汐祭"
+    },
+    "frost": {
+      "prompt": "crystalline arctic ambience, music box and glass harmonica, soft piano and airy strings, distant whale echo, melancholic yet tender, slowly warming, instrumental",
+      "use": "第七章 · 冰海回声"
     }
   }
 }
