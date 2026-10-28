@@ -25,6 +25,26 @@ import time
 
 import requests
 
+import shutil
+import subprocess
+
+# 包体瘦身：配音转 64kbps 单声道，BGM 转 128kbps。没有 ffmpeg 时原样保存。
+BITRATE = {"voice": "64k", "bgm": "128k"}
+
+
+def shrink(path: pathlib.Path, kind: str) -> None:
+    if not shutil.which("ffmpeg"):
+        return
+    tmp = path.with_suffix(".tmp.mp3")
+    args = ["ffmpeg", "-y", "-loglevel", "error", "-i", str(path)]
+    if kind == "voice":
+        args += ["-ac", "1"]
+    args += ["-b:a", BITRATE[kind], str(tmp)]
+    if subprocess.run(args).returncode == 0 and tmp.exists():
+        tmp.replace(path)
+    elif tmp.exists():
+        tmp.unlink()
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 OUT = ROOT / "assets" / "audio"
@@ -147,6 +167,7 @@ def main():
                 try:
                     raw = gw.tts(spoken, v.get("id", "male-qn-jingying"), cfg.get("voice_model", "speech-2.8-hd"))
                     (out_dir / f"{voice_id(who, text)}.mp3").write_bytes(raw)
+                    shrink(out_dir / f"{voice_id(who, text)}.mp3", "voice")
                     ok += 1
                     break
                 except Exception as e:  # noqa: BLE001
@@ -171,6 +192,7 @@ def main():
                 continue
             try:
                 p.write_bytes(gw.instrumental(t["prompt"], cfg.get("bgm_model", "mureka-7.5")))
+                shrink(p, "bgm")
             except Exception as e:  # noqa: BLE001
                 print(f"  失败: {e}", flush=True)
 

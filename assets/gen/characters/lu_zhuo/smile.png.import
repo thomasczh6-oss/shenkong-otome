@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/smile.png-f8bcd02754ecf7fb9adf5babb0f3d5d0.ct
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.82
+compress/lossy_quality=0.85
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
