@@ -388,6 +388,40 @@ func _run() -> void:
 	bt._skill()
 	await _shot("51_frost_clock_p2", 2.0)
 	Router.go("Home")
+	# 第八章：沈砚蜃楼 CG、沙海终章 CG、沙漏之主变身
+	Game.unlock_chapter("ch8")
+	for scid in ["s3", "s5"]:
+		Router.push("Story", {"chapter": "ch8", "scene": scid})
+		story = Router.stack.back().node
+		await get_tree().create_timer(0.3).timeout
+		guard = 0
+		while guard < 200 and not story.ended and not story.cg_active:
+			if story.choice_layer != null:
+				story._pick(story.lines[story.idx].options[0])
+			elif Router.current_name() == "Battle":
+				Router.back({"win": true})
+			else:
+				story._advance()
+			await get_tree().process_frame
+			story._finish_typing()
+			guard += 1
+		story._advance()
+		await get_tree().process_frame
+		story._finish_typing()
+		await _shot("52_ch8_cg_" + scid, 1.2)
+		Router.go("Home")
+	Router.push("Battle", {"enemy": "bronze_sentinel", "partner": "gu_ci"})
+	bt = Router.stack.back().node
+	await get_tree().create_timer(0.4).timeout
+	await _shot("53_bronze_sentinel", 0.3)
+	Router.go("Home")
+	Router.push("Battle", {"enemy": "hourglass_lord", "partner": "lu_zhuo"})
+	bt = Router.stack.back().node
+	await get_tree().create_timer(0.4).timeout
+	bt.ehp = bt.ehp_max * 0.51
+	bt._skill()
+	await _shot("54_hourglass_lord_p2", 2.0)
+	Router.go("Home")
 	Router.push("Battle", {"enemy": "zero_lock", "partner": "lu_zhuo"})
 	bt = Router.stack.back().node
 	await get_tree().create_timer(0.4).timeout

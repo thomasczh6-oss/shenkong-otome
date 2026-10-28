@@ -38,6 +38,10 @@
     "frost": {
       "prompt": "crystalline arctic ambience, music box and glass harmonica, soft piano and airy strings, distant whale echo, melancholic yet tender, slowly warming, instrumental",
       "use": "第七章 · 冰海回声"
+    },
+    "desert": {
+      "prompt": "warm desert night romance, oud and soft hand percussion, gentle strings and distant bells, golden sand and starry sky, mysterious yet tender, instrumental",
+      "use": "第八章 · 沙海钟声"
     }
   }
 }
