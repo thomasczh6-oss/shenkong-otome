@@ -37,6 +37,11 @@ func _ready() -> void:
 		theme.default_font = font
 	theme.default_font_size = 34
 	get_tree().root.theme = theme
+	# CanvasLayer 下的控件（弹窗、提示、新手引导）拿不到 root 的主题，
+	# 会回退到引擎默认字体；默认字体没有中文，真机上就成了方块。这里把全局兜底字体也换掉。
+	if font != null:
+		ThemeDB.fallback_font = font
+	ThemeDB.fallback_font_size = 34
 
 
 func _load_font(path: String) -> Font:

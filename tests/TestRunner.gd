@@ -18,6 +18,7 @@ func _ready() -> void:
 	_test_story()
 	_test_dates()
 	_test_audio()
+	await _test_fonts()
 	print("\n%d checks, %d failures" % [checks, failures])
 	get_tree().quit(1 if failures > 0 else 0)
 
@@ -264,3 +265,20 @@ func _test_audio() -> void:
 	check(n.total > 100, "男主台词数量 > 100")
 	for cid in Data.char_order:
 		check(str(Data.character(cid).get("voice", {}).get("id", "")) != "", "%s 配置了音色" % cid)
+
+
+## 弹窗挂在 CanvasLayer 下，拿不到 root 主题；必须也用中文字体，否则真机上是方块。
+func _test_fonts() -> void:
+	check(UIKit.font != null, "加载到中文字体")
+	check(UIKit.font.has_char("观".unicode_at(0)), "字体包含常用汉字")
+	var layer := CanvasLayer.new()
+	add_child(layer)
+	var lbl := Label.new()
+	layer.add_child(lbl)
+	var edit := LineEdit.new()
+	layer.add_child(edit)
+	await get_tree().process_frame
+	check(lbl.get_theme_font("font") == UIKit.font, "CanvasLayer 下的 Label 用中文字体")
+	check(edit.get_theme_font("font") == UIKit.font, "CanvasLayer 下的输入框用中文字体")
+	layer.queue_free()
+
