@@ -23,7 +23,7 @@ func _ready() -> void:
 	_test_combat_rules()
 	await _test_battle_sim()
 	await _test_challenge_flow()
-	_test_debug_slot()
+	await _test_debug_slot()
 	print("\n%d checks, %d failures" % [checks, failures])
 	get_tree().quit(1 if failures > 0 else 0)
 
@@ -562,8 +562,24 @@ func _test_debug_slot() -> void:
 	Game.debug_unlock_to("ch4")
 	check(Game.chapter_unlocked("ch4") and Game.scene_done("ch3", "s5") and Game.scene_done("ch1", "s1"), "测试存档解锁到第四章，前面章节已通关")
 	check(not Game.scene_done("ch4", "s1"), "第四章本身未标记通关")
+	var pw := Game.power("shen_yan")
+	print("    跳到第四章后沈砚战力 %d（攻 %d）" % [pw, int(Game.team_stats("shen_yan").atk)])
+	check(pw > 2000 and pw < 6000, "跳章后养成拉到该章的大致水平（战力 %d）" % pw)
 	Game.debug_add_resources()
 	check(Game.diamonds() >= 20000, "测试存档加资源")
+	var bscript: GDScript = load("res://src/screens/Battle.gd")
+	var bt: Control = bscript.new()
+	bt.params = {"enemy": "abyss_sampler", "partner": "shen_yan", "key": ""}
+	add_child(bt)
+	await get_tree().process_frame
+	bt.set_process(false)
+	var win_btn: Button = bt.find_child("DebugWin", true, false)
+	check(win_btn != null, "测试存档的战斗里有「直接胜利」")
+	if win_btn != null:
+		win_btn.pressed.emit()
+		check(bt.over, "点「直接胜利」结束战斗")
+	bt.queue_free()
+	Router.clear_overlay()
 	Game.switch_slot(false)
 	check(not Game.is_test_slot() and Game.player_name() == "主存档玩家", "切回主存档，名字还在")
 	check(not Game.chapter_unlocked("ch4") and Game.diamonds() < 20000, "主存档没有被解锁或加资源")

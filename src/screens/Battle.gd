@@ -115,6 +115,15 @@ func build() -> void:
 	if bool(enemy.get("boss", false)):
 		top.add_child(UIKit.pill("BOSS", UIKit.C_GOLD, 24))
 	top.add_child(UIKit.spacer(0, true))
+	if Game.is_test_slot():
+		# 只在测试存档出现：调试用，直接判定胜利（剧情照常继续）
+		var win_btn := UIKit.button("直接胜利", "ghost", 22, 56)
+		win_btn.name = "DebugWin"
+		win_btn.pressed.connect(func() -> void:
+			if not over:
+				ehp = 0.0
+				_finish(true))
+		top.add_child(win_btn)
 	enemy_hp_label = UIKit.label("", 26, UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_RIGHT, false)
 	top.add_child(enemy_hp_label)
 	v.add_child(top)

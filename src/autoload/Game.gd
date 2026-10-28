@@ -138,16 +138,38 @@ func debug_unlock_to(ch_id: String) -> void:
 		s.player_name = "测试员"
 	for t in ["home", "battle", "battle2"]:
 		s.tutorial[t] = true
+	var n := 0
 	for ch in Data.chapters:
 		var cid := str(ch.id)
+		n += 1
 		if not s.story.unlocked.has(cid):
 			s.story.unlocked.append(cid)
 		if cid == ch_id:
 			break
 		for sc in ch.scenes:
 			s.story.done[scene_key(cid, str(sc.id))] = true
+	_debug_power_for_chapter(n)
 	save()
 	changed.emit("debug")
+
+
+## 把测试号的养成拉到「正常玩到第 n 章」的大致水平：每位男主两张 4★ 思念，
+## 等级 1 + 6×(n-1)（第四章约 19 级），好感约 Lv.2 + n，并装备这两张。
+func _debug_power_for_chapter(n: int) -> void:
+	var lv := 1 + 6 * (n - 1)
+	for cid in Data.char_order:
+		var picks: Array = []
+		for card_id in Data.card_order:
+			var c: Dictionary = Data.cards[card_id]
+			if str(c.char) == cid and int(c.rarity) == 4:
+				picks.append(card_id)
+		for card_id in picks.slice(0, 2):
+			if not owns(card_id):
+				s.cards[card_id] = {"level": 1, "dup": 0}
+			s.cards[card_id]["level"] = maxi(card_level(card_id), lv)
+		s.equipped[cid] = picks.slice(0, 2)
+		var aff_target: int = AFF_THRESHOLDS[mini(AFF_THRESHOLDS.size() - 1, 1 + n)]
+		s.affection[cid] = maxi(affection(cid), aff_target)
 
 
 func debug_add_resources() -> void:
