@@ -123,6 +123,20 @@ func _run() -> void:
 	await _shot("17_shop")
 	Router.push("Profile")
 	await _shot("18_profile")
+	# 调试菜单：连点版本号 7 次 → 切到测试存档 → 跳到第四章（真实点击）
+	await _open_debug_menu()
+	await _shot("37_debug_menu_main", 0.3)
+	await _click(_find_button(Router.overlay, "切换到测试存档"))
+	await get_tree().create_timer(0.3).timeout
+	Router.push("Profile")
+	await _open_debug_menu()
+	await _shot("38_debug_menu_test", 0.3)
+	await _click(_find_button(Router.overlay, "第四章"))
+	await get_tree().create_timer(0.3).timeout
+	print("[shot] debug jump: ", Router.current_name(), " test=", Game.is_test_slot(), " ch4=", Game.chapter_unlocked("ch4"))
+	await _shot("39_debug_ch4_chapters", 0.4)
+	Game.switch_slot(false)
+	print("[shot] main slot ch4=", Game.chapter_unlocked("ch4"))
 	Router.go("Home")
 
 	# 挑战：每日讨伐、回廊、选搭档、图鉴、新战斗机制
@@ -288,6 +302,17 @@ func _has_label(n: Node, text_part: String) -> bool:
 		if (l as Label).text.contains(text_part):
 			return true
 	return false
+
+
+func _open_debug_menu() -> void:
+	await get_tree().create_timer(0.3).timeout
+	var page: Node = Router.stack.back().node
+	for sc in page.find_children("*", "ScrollContainer", true, false):
+		(sc as ScrollContainer).scroll_vertical = 99999
+	await get_tree().create_timer(0.3).timeout
+	var ver := _find_button(page, "深与空恋 · v")
+	for i in 7:
+		await _click(ver)
 
 
 ## 用真实的鼠标事件点一个按钮（和手机上的点击走同一条路）。

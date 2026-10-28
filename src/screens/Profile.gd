@@ -219,8 +219,72 @@ func _about(v: VBoxContainer) -> void:
 	v.add_child(_section("关于"))
 	var panel := UIKit.panel(UIKit.C_PANEL, 24, 22, UIKit.C_LINE, 2)
 	var pv := UIKit.vbox(6)
-	pv.add_child(UIKit.label("深与空恋 · 原型 0.1", 28, UIKit.C_TEXT))
+	# 版本号：连点 7 次打开调试菜单（测试存档 / 章节解锁），正式版由 debug_menu 开关关闭
+	var ver := Button.new()
+	ver.text = "深与空恋 · v%s" % str(ProjectSettings.get_setting("application/config/version", ""))
+	ver.flat = true
+	ver.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	ver.add_theme_font_size_override("font_size", 28)
+	ver.add_theme_color_override("font_color", UIKit.C_TEXT)
+	var taps := {"n": 0}
+	ver.pressed.connect(func() -> void:
+		if not Game.debug_enabled():
+			return
+		taps.n += 1
+		if taps.n >= 7:
+			taps.n = 0
+			_debug_menu()
+		elif taps.n >= 4:
+			Router.toast("再点 %d 次打开调试菜单" % (7 - taps.n), 0.8))
+	pv.add_child(ver)
+	if Game.is_test_slot():
+		pv.add_child(UIKit.label("当前使用测试存档（主存档未改动）", 24, UIKit.C_GOLD))
 	pv.add_child(UIKit.label("Godot 4.4 · 竖屏 1080×1920 · 剧情 / 好感 / 许愿 / 思念 / 战斗 / 日常 / 商店", 22, UIKit.C_MUTED))
 	pv.add_child(UIKit.label("美术由 image 2 生成（tools/gen_assets.py），当前为占位图。", 22, UIKit.C_MUTED))
 	panel.add_child(pv)
 	v.add_child(panel)
+
+
+func _debug_menu() -> void:
+	var panel := UIKit.panel(UIKit.C_PANEL, 32, 30, UIKit.C_GOLD, 2)
+	panel.custom_minimum_size = Vector2(900, 0)
+	var v := UIKit.vbox(16)
+	v.add_child(UIKit.label("调试菜单", 40, UIKit.C_TEXT, HORIZONTAL_ALIGNMENT_CENTER))
+	var test := Game.is_test_slot()
+	v.add_child(UIKit.label("当前：%s" % ("测试存档" if test else "主存档"), 26, UIKit.C_GOLD if test else UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_CENTER))
+	v.add_child(UIKit.label("解锁、加资源只作用于测试存档，主存档不会被改动。切回主存档即可恢复原来的进度。", 22, UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_CENTER))
+	var holder := {"dim": null}
+	var close := func() -> void:
+		if holder.dim != null and is_instance_valid(holder.dim):
+			holder.dim.queue_free()
+		holder.dim = null
+	var add := func(text: String, style: String, action: Callable) -> void:
+		var b := UIKit.button(text, style, 28, 84)
+		b.pressed.connect(func() -> void:
+			close.call()
+			action.call())
+		v.add_child(b)
+	if not test:
+		add.call("切换到测试存档", "primary", func() -> void:
+			Game.switch_slot(true)
+			Router.toast("已切换到测试存档", 1.4)
+			Router.go("Home"))
+	else:
+		for ch in Data.chapters:
+			var cid := str(ch.id)
+			add.call("跳到 %s（之前章节全部通关）" % str(ch.title), "ghost", func() -> void:
+				Game.debug_unlock_to(cid)
+				Router.toast("已解锁到 " + str(Data.chapter(cid).get("title", cid)), 1.4)
+				Router.go("Home")
+				Router.push("Chapters"))
+		add.call("资源 +（钻石、金币、星屑、许愿券）", "ghost", func() -> void:
+			Game.debug_add_resources()
+			Router.toast("资源已添加", 1.2)
+			Router.go("Home"))
+		add.call("切回主存档", "primary", func() -> void:
+			Game.switch_slot(false)
+			Router.toast("已切回主存档", 1.4)
+			Router.go("Home"))
+	add.call("关闭", "ghost", func() -> void: pass)
+	panel.add_child(v)
+	holder.dim = Router.modal(panel, true)
