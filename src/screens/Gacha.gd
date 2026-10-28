@@ -2,6 +2,7 @@ extends "res://src/screens/BaseScreen.gd"
 ## 许愿（抽卡）界面：卡池切换、概率与保底展示、单抽 / 十连、结果翻牌动画。
 
 const Gacha := preload("res://src/systems/Gacha.gd")
+const GachaShow := preload("res://src/ui/GachaShow.gd")
 
 var pool_id := ""
 var pool_ids: Array = []
@@ -119,13 +120,22 @@ func _do_pull(n: int) -> void:
 	if not r.ok:
 		Router.confirm("钻石不足", str(r.get("error", "")) + "\n去商店补充？", func() -> void: Router.push("Shop"), "去商店", "再想想")
 		return
-	_show_results(r.results, n)
+	var show := GachaShow.new()
+	show.setup(r.results, func() -> void: _show_results(r.results, n))
+	Router.overlay.add_child(show)
 
 
 func _show_results(results: Array, n: int) -> void:
 	var dim := ColorRect.new()
-	dim.color = Color(0.02, 0.03, 0.08, 0.96)
+	dim.color = Color(0.05, 0.03, 0.12, 1.0)
 	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	# 结果页沿用许愿场景的星空，压暗一点让卡面更突出
+	var bgimg := UIKit.image(Data.texture("ui/wish_bg"))
+	bgimg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	bgimg.modulate = Color(0.55, 0.5, 0.65, 1.0)
+	bgimg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	dim.add_child(bgimg)
+	dim.add_child(UIKit.sparkles(Rect2(0, 0, 1080, 1920), 50))
 	var m := UIKit.safe_margin(30, 90, 30, 50)
 	m.set_anchors_preset(Control.PRESET_FULL_RECT)
 	var v := UIKit.vbox(20)

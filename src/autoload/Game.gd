@@ -8,6 +8,8 @@ const SAVE_PATH := "user://save.json"
 ## 测试存档：调试菜单里切换，和主存档完全分开，不会覆盖主存档。
 const TEST_SAVE_PATH := "user://save_test.json"
 const SLOT_FILE := "user://slot.txt"
+## 每次从主存档切到测试存档前，先把主存档复制一份，测完可以一键恢复。
+const MAIN_BACKUP_PATH := "user://save_main_backup.json"
 
 ## 好感等级阈值与称呼（参考主流乙游的“亲密度”梯度）。
 const AFF_THRESHOLDS := [0, 40, 100, 180, 280, 400, 550, 730, 940, 1180, 1450]
@@ -126,12 +128,28 @@ func switch_slot(test: bool) -> void:
 	if test == is_test_slot():
 		return
 	save()
+	if test and FileAccess.file_exists(SAVE_PATH):
+		DirAccess.copy_absolute(ProjectSettings.globalize_path(SAVE_PATH), ProjectSettings.globalize_path(MAIN_BACKUP_PATH))
 	save_path = TEST_SAVE_PATH if test else SAVE_PATH
 	var f := FileAccess.open(SLOT_FILE, FileAccess.WRITE)
 	if f != null:
 		f.store_string("test" if test else "main")
 	load_game()
 	changed.emit("slot")
+
+
+func has_main_backup() -> bool:
+	return debug_enabled() and FileAccess.file_exists(MAIN_BACKUP_PATH)
+
+
+## 在主存档上：恢复到上一次切去测试存档之前的样子。
+func restore_main_backup() -> bool:
+	if is_test_slot() or not has_main_backup():
+		return false
+	DirAccess.copy_absolute(ProjectSettings.globalize_path(MAIN_BACKUP_PATH), ProjectSettings.globalize_path(SAVE_PATH))
+	load_game()
+	changed.emit("slot")
+	return true
 
 
 ## 只在测试存档上生效：把 ch_id 之前的章节全部标记通关，并解锁 ch_id（"all" 解锁全部）。

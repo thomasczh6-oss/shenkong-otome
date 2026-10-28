@@ -269,6 +269,12 @@ func _debug_menu() -> void:
 			Game.switch_slot(true)
 			Router.toast("已切换到测试存档", 1.4)
 			Router.go("Home"))
+		if Game.has_main_backup():
+			add.call("恢复主存档（回到上次切去测试存档前）", "ghost", func() -> void:
+				Router.confirm("恢复主存档", "主存档会回到上一次「切换到测试存档」之前的状态，之后在主存档上的进度会被覆盖。确定吗？", func() -> void:
+					if Game.restore_main_backup():
+						Router.toast("主存档已恢复", 1.4)
+						Router.go("Home"), "恢复", "取消"))
 	else:
 		for ch in Data.chapters:
 			var cid := str(ch.id)

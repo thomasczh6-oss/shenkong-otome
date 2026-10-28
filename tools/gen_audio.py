@@ -62,6 +62,17 @@ def voice_id(who, text):
     return hashlib.md5(f"{who}|{text}".encode("utf-8")).hexdigest()[:16]
 
 
+def npc_cfg():
+    return load("npc_voices.json")
+
+
+def npc_key(name):
+    """配角配音 key，与 Data.npc_voice_key() 一致；没登记声音返回空串。"""
+    cfg = npc_cfg()
+    canon = cfg.get("aliases", {}).get(name, name)
+    return f"npc:{canon}" if canon in cfg.get("voices", {}) else ""
+
+
 def collect_lines():
     """返回 [(who, text)]，去重。"""
     out = []
@@ -71,6 +82,8 @@ def collect_lines():
             t = l.get("t", "say")
             if t == "say" and l.get("who") in CHARS:
                 out.append((l["who"], l["text"]))
+            elif t == "say" and l.get("who") == "npc" and npc_key(l.get("name", "")):
+                out.append((npc_key(l.get("name", "")), l["text"]))
             elif t == "choice":
                 for o in l.get("options", []):
                     walk(o.get("lines", []))
@@ -96,6 +109,8 @@ def collect_lines():
     for card in load("cards.json")["cards"]:
         if card.get("whisper"):
             out.append((card["char"], card["whisper"]))
+        if card.get("obtain"):
+            out.append((card["char"], card["obtain"]))
     seen, uniq = set(), []
     for who, text in out:
         if (who, text) not in seen:
@@ -152,6 +167,8 @@ def main():
 
     if args.what == "voice":
         voices = {c["id"]: c.get("voice", {}) for c in load("characters.json")["characters"]}
+        for name, vid in npc_cfg().get("voices", {}).items():
+            voices[f"npc:{name}"] = {"id": vid}
         lines = [(w, t) for w, t in collect_lines() if w.startswith(args.only)]
         out_dir = OUT / "voice"
         out_dir.mkdir(parents=True, exist_ok=True)

@@ -26,6 +26,9 @@ func _ready() -> void:
 	await _test_debug_slot()
 	_test_growth_daily()
 	await _test_card_tap()
+	await _test_gacha_show()
+	_test_voice_coverage()
+	await _test_slot_isolation()
 	print("\n%d checks, %d failures" % [checks, failures])
 	get_tree().quit(1 if failures > 0 else 0)
 
@@ -197,6 +200,8 @@ func _test_story() -> void:
 	check(Data.enemy("frost_clock").has("phase2"), "第七章 Boss 霜钟守望者有第二形态")
 	check(Data.chapter("ch8").get("scenes", []).size() == 5 and str(Data.chapter("ch8").get("requires", "")) == "ch7", "第八章 5 节，完成第七章后解锁")
 	check(Data.enemy("hourglass_lord").has("phase2"), "第八章 Boss 沙漏之主有第二形态")
+	check(Data.chapter("ch9").get("scenes", []).size() == 5 and str(Data.chapter("ch9").get("requires", "")) == "ch8", "第九章 5 节，完成第八章后解锁")
+	check(Data.enemy("chorus_engine").has("phase2"), "第九章 Boss 千声合唱有第二形态")
 	var bgms: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/audio.json")).get("bgm", {})
 	for ch in Data.chapters:
 		for sc in ch.scenes:
@@ -697,3 +702,133 @@ func _test_card_tap() -> void:
 	await get_tree().process_frame
 	check(Router.current_name() == "Cards", "在卡面上拖动不会误开详情")
 	Router.go("Home")
+
+
+## 许愿演出：能完整播完（含 5★），也能随时跳过，结束后都会进结果页。
+func _test_gacha_show() -> void:
+	print("[许愿演出]")
+	Game.s = Game.default_state()
+	Router.go("Home")
+	var res: Array = [{"card": "shen_yan_3_1", "rarity": 3, "new": true}, {"card": "gu_ci_4_1", "rarity": 4, "new": false}, {"card": "lu_zhuo_5_1", "rarity": 5, "new": true}]
+	var script: GDScript = load("res://src/ui/GachaShow.gd")
+	var done := {"n": 0}
+	var show: Control = script.new()
+	show.setup(res, func() -> void: done.n += 1)
+	show.auto_advance = true
+	show.speed = 8.0
+	Router.overlay.add_child(show)
+	check(show.best_rarity() == 5, "演出知道本次最高 5★")
+	var t := 0
+	while done.n == 0 and t < 600:
+		await get_tree().process_frame
+		t += 1
+	check(done.n == 1, "演出自动播完后进入结果页（%d 帧）" % t)
+	for i in 30:
+		await get_tree().process_frame
+	check(not is_instance_valid(show), "演出结束后自己释放")
+	var show2: Control = script.new()
+	show2.setup(res, func() -> void: done.n += 1)
+	Router.overlay.add_child(show2)
+	await get_tree().process_frame
+	show2.skip()
+	t = 0
+	while done.n == 1 and t < 120:
+		await get_tree().process_frame
+		t += 1
+	check(done.n == 2, "点跳过直接进入结果页")
+	for i in 30:
+		await get_tree().process_frame
+	check(not is_instance_valid(show2), "跳过后演出也会释放")
+	check(ResourceLoader.exists("res://assets/audio/sfx/reveal5.ogg"), "5★ 音效存在")
+	for c in Data.cards.values():
+		if int(c.rarity) == 5:
+			check(str(c.get("obtain", "")) != "", "5★ %s 有登场台词" % c.id)
+	Router.clear_overlay()
+
+
+## 配音覆盖：三位男主和所有配角的台词都要有配音文件（主角「我」和旁白不配）。
+## 新加剧情忘了跑 tools/gen_audio.py voice、或者新配角没在 data/npc_voices.json 登记，这里会报出来。
+func _test_voice_coverage() -> void:
+	print("[配音覆盖]")
+	var need: Array = []  # [who_key, text, where]
+	var unknown_npc := {}
+	var walk := func(lines: Array, where: String, self_ref: Callable) -> void:
+		for l in lines:
+			var t := str(l.get("t", "say"))
+			if t == "say":
+				var who := str(l.get("who", ""))
+				if Data.characters.has(who):
+					need.append([who, str(l.text), where])
+				elif who == "npc":
+					var k := Data.npc_voice_key(str(l.get("name", "")))
+					if k == "":
+						unknown_npc[str(l.get("name", ""))] = where
+					else:
+						need.append([k, str(l.text), where])
+			elif t == "choice":
+				for o in l.get("options", []):
+					self_ref.call(o.get("lines", []), where, self_ref)
+			elif t == "touch":
+				for sp in l.get("spots", []):
+					need.append([str(l.who), str(sp.text), where])
+	for ch in Data.chapters:
+		for sc in ch.scenes:
+			walk.call(sc.lines, "%s-%s" % [ch.id, sc.id], walk)
+	var dates: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/dates.json"))
+	for d in dates.get("dates", []):
+		walk.call(d.lines, "约会 " + str(d.id), walk)
+	for c in Data.cards.values():
+		for f in ["whisper", "obtain"]:
+			if str(c.get(f, "")) != "":
+				need.append([str(c.char), str(c[f]), "思念 " + str(c.id)])
+	var missing: Array = []
+	for n in need:
+		if not Audio.has_voice(n[0], n[1]):
+			missing.append("%s %s「%s」" % [n[2], n[0], str(n[1]).left(12)])
+	check(unknown_npc.is_empty(), "所有配角都登记了声音（未登记：%s）" % ", ".join(unknown_npc.keys()))
+	check(missing.is_empty(), "%d 句台词都有配音（缺 %d 句：%s）" % [need.size(), missing.size(), "；".join(missing.slice(0, 5))])
+
+
+## v0.10.0 MuMu 复测：按 bot 的顺序操作测试存档后，主存档进度不能有任何变化。
+## 主存档第一章 2/4 → 切测试存档 → 跳到第八章 → 真的把 8-5 打完 → 许愿十连 → 切回主存档。
+func _test_slot_isolation() -> void:
+	print("[测试存档不污染主存档]")
+	Game.s = Game.default_state()
+	Game.s.player_name = "主存档玩家"
+	Game.mark_tutorial("home")
+	Game.s.story.done["ch1/s1"] = true
+	Game.s.story.done["ch1/s2"] = true
+	Game.save()
+	var before := FileAccess.get_file_as_string(Game.SAVE_PATH)
+	var main_done: Dictionary = Game.s.story.done.duplicate()
+	Game.switch_slot(true)
+	check(FileAccess.file_exists(Game.MAIN_BACKUP_PATH), "切到测试存档前备份了主存档")
+	Game.debug_unlock_to("ch8")
+	Router.go("Home")
+	Router.push("Story", {"chapter": "ch8", "scene": "s5"})
+	var story: Node = Router.stack.back().node
+	var guard := 0
+	while guard < 400 and not story.ended:
+		if story.choice_layer != null:
+			story._pick(story.lines[story.idx].options[0])
+		elif Router.current_name() == "Battle":
+			Router.back({"win": true})
+		else:
+			story._advance()
+		await get_tree().process_frame
+		story._finish_typing()
+		guard += 1
+	check(Game.scene_done("ch8", "s5"), "测试存档里打完了 8-5")
+	Gacha.pull("standard", 10)
+	Router.clear_overlay()
+	Router.go("Home")
+	Game.switch_slot(false)
+	check(Game.s.story.done == main_done, "切回后主存档剧情进度不变（%s）" % str(Game.s.story.done.keys()))
+	check(FileAccess.get_file_as_string(Game.SAVE_PATH) == before, "主存档文件一字未改")
+	# 恢复备份：先在主存档上「误打」一节，再恢复
+	Game.mark_scene_done("ch1", "s3")
+	check(Game.restore_main_backup() and not Game.scene_done("ch1", "s3"), "恢复主存档备份回到切换前")
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(Game.TEST_SAVE_PATH))
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(Game.SLOT_FILE))
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(Game.MAIN_BACKUP_PATH))
+	Game.reset()

@@ -1,0 +1,29 @@
+{
+  "_note": "配角配音：剧情里 who=npc 的台词按 name 找声音（MiniMax speech-2.8-hd 系统音色）。aliases 把同一个人的不同称呼指到同一个声音。主角「我」和旁白不配音。",
+  "voices": {
+    "秦岳": "Chinese (Mandarin)_Kind-hearted_Elder",
+    "温叙": "Chinese (Mandarin)_IntellectualGirl",
+    "林岚局长": "female-chengshu",
+    "苏晚": "Chinese (Mandarin)_Lyrical_Voice",
+    "白鸮": "Chinese (Mandarin)_Sincere_Adult",
+    "鼓手": "male-qn-badao",
+    "林舟": "audiobook_male_2",
+    "少年": "Chinese (Mandarin)_Pure-hearted_Boy",
+    "渡潮者": "audiobook_male_1",
+    "焚化执行官": "Chinese (Mandarin)_Male_Announcer",
+    "小满": "lovely_girl",
+    "程澈": "clever_boy",
+    "程小禾": "Chinese (Mandarin)_Cute_Spirit",
+    "阿昭": "Chinese (Mandarin)_Crisp_Girl",
+    "阿暮": "cute_boy",
+    "秦安": "Chinese (Mandarin)_Soft_Girl"
+  },
+  "aliases": {
+    "第一观测员": "苏晚",
+    "？？？": "苏晚",
+    "苏晚（字迹）": "苏晚",
+    "焚化协议": "焚化执行官",
+    "回声冰晶": "温叙",
+    "回声冰狼": "程澈"
+  }
+}
