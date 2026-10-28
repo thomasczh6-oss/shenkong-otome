@@ -5,6 +5,9 @@ extends Node
 var characters: Dictionary = {}
 var char_order: Array = []
 var cards: Dictionary = {}
+var awaken_cfg: Dictionary = {}
+var companion: Dictionary = {}
+var commissions: Dictionary = {}
 var card_order: Array = []
 var gacha: Dictionary = {}
 var chapters: Array = []
@@ -42,6 +45,9 @@ func load_all() -> void:
 	for c in cd.get("cards", []):
 		cards[c.id] = c
 		card_order.append(c.id)
+	awaken_cfg = cd.get("awaken", {})
+	companion = _json("res://data/companion.json")
+	commissions = _json("res://data/commissions.json")
 
 	gacha = _json("res://data/gacha.json")
 

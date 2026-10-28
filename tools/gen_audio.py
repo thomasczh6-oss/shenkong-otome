@@ -69,6 +69,13 @@ def collect_lines():
     for c in load("characters.json")["characters"]:
         if c.get("greet"):
             out.append((c["id"], c["greet"]))
+    for cid, groups in load("companion.json")["lines"].items():
+        for texts in groups.values():
+            for text in texts:
+                out.append((cid, text))
+    for card in load("cards.json")["cards"]:
+        if card.get("whisper"):
+            out.append((card["char"], card["whisper"]))
     seen, uniq = set(), []
     for who, text in out:
         if (who, text) not in seen:

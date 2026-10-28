@@ -23,6 +23,8 @@ const DAILY_TASKS := [
 	{"id": "battle", "name": "赢下 1 场战斗", "goal": 1, "reward": {"diamonds": 50, "xp": 25}},
 	{"id": "chat", "name": "回复 1 条消息", "goal": 1, "reward": {"diamonds": 50, "xp": 25}},
 	{"id": "pull", "name": "许愿 1 次", "goal": 1, "reward": {"diamonds": 50, "xp": 25}},
+	{"id": "companion", "name": "在主页陪伴他 3 次", "goal": 3, "reward": {"gold": 1000, "xp": 20}},
+	{"id": "commission", "name": "完成 1 次委托", "goal": 1, "reward": {"stardust": 10, "xp": 20}},
 ]
 
 const PASS_MAX_LEVEL := 20
@@ -70,6 +72,8 @@ func default_state() -> Dictionary:
 		"tower": {"best": 0},
 		"hunt": {"date": "", "done": false},
 		"bestiary": {},
+		"companion": {"date": "", "taps": 0, "last": {}},
+		"commissions": {},
 	}
 
 
@@ -317,10 +321,180 @@ func add_card(card_id: String) -> bool:
 	return true
 
 
+# ---------------- 思念觉醒 ----------------
+## 重复抽到的同名思念 + 星屑 → 觉醒（最多 5 阶），每阶全属性 +10%，3 阶解锁「心语」。
+
+func card_awaken(card_id: String) -> int:
+	return int(s.cards.get(card_id, {}).get("awaken", 0))
+
+
+func card_dup(card_id: String) -> int:
+	return int(s.cards.get(card_id, {}).get("dup", 0))
+
+
+func awaken_cost(card_id: String) -> int:
+	var r := str(int(Data.cards.get(card_id, {}).get("rarity", 3)))
+	return int(Data.awaken_cfg.get("stardust", {}).get(r, 40)) * (card_awaken(card_id) + 1)
+
+
+func awaken_max() -> int:
+	return int(Data.awaken_cfg.get("max", 5))
+
+
+func can_awaken(card_id: String) -> bool:
+	return owns(card_id) and card_awaken(card_id) < awaken_max() and card_dup(card_id) >= 1 and stardust() >= awaken_cost(card_id)
+
+
+func awaken_card(card_id: String) -> bool:
+	if not can_awaken(card_id):
+		return false
+	s.stardust = stardust() - awaken_cost(card_id)
+	s.cards[card_id]["dup"] = card_dup(card_id) - 1
+	s.cards[card_id]["awaken"] = card_awaken(card_id) + 1
+	changed.emit("cards")
+	save()
+	return true
+
+
+func whisper_unlocked(card_id: String) -> bool:
+	return card_awaken(card_id) >= int(Data.awaken_cfg.get("whisper_at", 3))
+
+
+# ---------------- 委托 ----------------
+## s.commissions[cid] = {tier, start, end}（unix 秒）。到时间后领取奖励和好感。
+
+func now_unix() -> int:
+	return int(Time.get_unix_time_from_system())
+
+
+func commission_tier(tier_id: String) -> Dictionary:
+	for t in Data.commissions.get("tiers", []):
+		if str(t.id) == tier_id:
+			return t
+	return {}
+
+
+func commission_job(cid: String, tier_id: String) -> Dictionary:
+	return Data.commissions.get("jobs", {}).get(cid, {}).get(tier_id, {})
+
+
+func commission_of(cid: String) -> Dictionary:
+	if not s.has("commissions"):
+		s.commissions = {}
+	return s.commissions.get(cid, {})
+
+
+func commission_left(cid: String) -> int:
+	var c := commission_of(cid)
+	if c.is_empty():
+		return -1
+	return maxi(0, int(c.end) - now_unix())
+
+
+func start_commission(cid: String, tier_id: String) -> bool:
+	var t := commission_tier(tier_id)
+	if t.is_empty() or not commission_of(cid).is_empty():
+		return false
+	var start := now_unix()
+	s.commissions[cid] = {"tier": tier_id, "start": start, "end": start + int(float(t.hours) * 3600.0)}
+	save()
+	changed.emit("commission")
+	return true
+
+
+## 领取：返回 {reward, aff, note, leveled}；没完成返回空。
+func collect_commission(cid: String) -> Dictionary:
+	var c := commission_of(cid)
+	if c.is_empty() or commission_left(cid) > 0:
+		return {}
+	var t := commission_tier(str(c.tier))
+	var reward: Dictionary = t.get("reward", {})
+	grant(reward)
+	var leveled := add_affection(cid, int(t.get("aff", 0)))
+	s.commissions.erase(cid)
+	task_progress("commission")
+	save()
+	changed.emit("commission")
+	return {"reward": reward, "aff": int(t.get("aff", 0)), "note": str(commission_job(cid, str(c.tier)).get("note", "")), "leveled": leveled}
+
+
+func commissions_ready() -> int:
+	var n := 0
+	for cid in Data.char_order:
+		if commission_left(cid) == 0:
+			n += 1
+	return n
+
+
+func debug_finish_commissions() -> void:
+	if not is_test_slot():
+		return
+	for cid in s.get("commissions", {}).keys():
+		s.commissions[cid].end = now_unix()
+	save()
+
+
+# ---------------- 主页陪伴 ----------------
+
+func _companion_today() -> Dictionary:
+	if not s.has("companion"):
+		s.companion = {"date": "", "taps": 0, "last": {}}
+	if str(s.companion.get("date", "")) != today():
+		s.companion.date = today()
+		s.companion.taps = 0
+	return s.companion
+
+
+func companion_taps_left() -> int:
+	return maxi(0, int(Data.companion.get("daily_aff_taps", 5)) - int(_companion_today().taps))
+
+
+## 时段：morning 5-11 点、day 11-18 点、其余 night。
+static func time_slot(hour: int) -> String:
+	if hour >= 5 and hour < 11:
+		return "morning"
+	if hour >= 11 and hour < 18:
+		return "day"
+	return "night"
+
+
+## 点主页立绘：按时段和好感挑一句（不和上一句重复），每天前几次 +1 好感。
+## 返回 {text, expr, aff, leveled}
+func companion_tap(cid: String, hour := -1) -> Dictionary:
+	if hour < 0:
+		hour = int(Time.get_datetime_dict_from_system().hour)
+	var groups: Dictionary = Data.companion.get("lines", {}).get(cid, {})
+	var pool: Array = []
+	for t in groups.get(time_slot(hour), []):
+		pool.append([t, "smile"])
+	if affection_level(cid) >= 5:
+		for t in groups.get("close", []):
+			pool.append([t, "shy"])
+	var c := _companion_today()
+	var last := str(c.get("last", {}).get(cid, ""))
+	if pool.size() > 1:
+		pool = pool.filter(func(p: Array) -> bool: return str(p[0]) != last)
+	if pool.is_empty():
+		return {"text": str(Data.character(cid).get("greet", "……")), "expr": "smile", "aff": 0, "leveled": false}
+	var pick: Array = pool[randi() % pool.size()]
+	if not c.has("last"):
+		c.last = {}
+	c.last[cid] = str(pick[0])
+	var aff := 0
+	var leveled := false
+	if companion_taps_left() > 0:
+		c.taps = int(c.taps) + 1
+		aff = 1
+		task_progress("companion")
+		leveled = add_affection(cid, 1)
+	save()
+	return {"text": str(pick[0]), "expr": str(pick[1]), "aff": aff, "leveled": leveled}
+
+
 func card_stats(card_id: String) -> Dictionary:
 	var c: Dictionary = Data.cards.get(card_id, {})
 	var lv := maxi(card_level(card_id), 1)
-	var m := 1.0 + 0.08 * float(lv - 1)
+	var m := (1.0 + 0.08 * float(lv - 1)) * (1.0 + float(Data.awaken_cfg.get("stat_bonus", 0.1)) * card_awaken(card_id))
 	return {
 		"hp": int(float(c.get("hp", 0)) * m),
 		"atk": int(float(c.get("atk", 0)) * m),

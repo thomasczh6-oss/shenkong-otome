@@ -4,6 +4,11 @@ extends "res://src/screens/BaseScreen.gd"
 var cid: String = ""
 var nav_btns: Dictionary = {}
 var side_btns: Dictionary = {}
+var bubble: Control = null
+var tap_serial := 0
+var aff_lv_label: Label
+var aff_bar: ProgressBar
+var aff_num_label: Label
 
 
 func build() -> void:
@@ -50,10 +55,7 @@ func build() -> void:
 	touch.add_theme_stylebox_override("hover", StyleBoxEmpty.new())
 	touch.add_theme_stylebox_override("pressed", StyleBoxEmpty.new())
 	touch.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
-	touch.pressed.connect(func() -> void:
-		Router.toast("%s：%s" % [ch.name, ch.get("greet", "……")], 2.4)
-		Audio.play_voice(cid, str(ch.get("greet", "")))
-		UIKit.pop(portrait, 0.97, 0.3))
+	touch.pressed.connect(func() -> void: _companion(portrait, ch))
 	add_child(touch)
 
 	var m := UIKit.safe_margin(30, 60, 30, 36)
@@ -70,6 +72,64 @@ func build() -> void:
 	add_child(m)
 	if not Game.tutorial_done("home"):
 		_run_tutorial()
+
+
+## 陪伴：点立绘，他按时段 / 好感说一句话，换表情，每天前几次加好感。
+func _companion(portrait: TextureRect, ch: Dictionary) -> void:
+	var r := Game.companion_tap(cid)
+	Audio.play_voice(cid, str(r.text))
+	UIKit.pop(portrait, 0.97, 0.3)
+	tap_serial += 1
+	var serial := tap_serial
+	var tex := Data.texture(Data.portrait_key(cid, str(r.expr)))
+	if tex != null:
+		portrait.texture = tex
+	if bubble != null and is_instance_valid(bubble):
+		bubble.queue_free()
+	var col := Color(str(ch.get("color", "#ff9ec7")))
+	var panel := UIKit.panel(Color(0.08, 0.06, 0.18, 0.88), 30, 26, Color(col, 0.8), 2)
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var v := UIKit.vbox(6)
+	v.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	v.add_child(UIKit.label(str(ch.name), 28, col, HORIZONTAL_ALIGNMENT_LEFT, false))
+	v.add_child(UIKit.label(str(r.text), 32, UIKit.C_TEXT))
+	var foot := "♥ 好感 +1 · 今日陪伴还剩 %d 次" % Game.companion_taps_left() if int(r.aff) > 0 else "今日陪伴的好感已满，明天再来"
+	if bool(r.leveled):
+		foot = "♥ 好感升级为「%s」！" % Game.affection_name(cid)
+	v.add_child(UIKit.label(foot, 22, UIKit.C_ROSE if int(r.aff) > 0 else UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_RIGHT, false))
+	panel.add_child(v)
+	# 贴在底部信息栏上方（不挡脸，也不挡右侧按钮列），向上生长
+	var bottom := UIKit.safe_insets().y
+	panel.anchor_left = 0.0
+	panel.anchor_right = 1.0
+	panel.anchor_top = 1.0
+	panel.anchor_bottom = 1.0
+	panel.offset_left = 40
+	panel.offset_right = -40
+	panel.offset_bottom = -(560 + bottom)
+	panel.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	add_child(panel)
+	bubble = panel
+	UIKit.fade_in(panel, 0.25)
+	var tw := panel.create_tween()
+	tw.tween_interval(3.6)
+	tw.tween_property(panel, "modulate:a", 0.0, 0.5)
+	tw.tween_callback(func() -> void:
+		panel.queue_free()
+		if serial == tap_serial and is_instance_valid(portrait):
+			portrait.texture = Data.texture(Data.portrait_key(cid, "calm")))
+	if int(r.aff) > 0:
+		_refresh_aff()
+
+
+func _refresh_aff() -> void:
+	if aff_lv_label == null:
+		return
+	var prog := Game.affection_progress(cid)
+	aff_lv_label.text = "♥ Lv.%d %s" % [Game.affection_level(cid), Game.affection_name(cid)]
+	aff_bar.max_value = prog[1]
+	aff_bar.value = prog[0]
+	aff_num_label.text = "%d/%d" % [prog[0], prog[1]]
 
 
 ## 新手引导：第一次回到主页时，由当前男主介绍各个入口。
@@ -113,7 +173,7 @@ func _side_buttons() -> Control:
 	var col := UIKit.vbox(10)
 	var items := [
 		["签到", func() -> void: Router.push("Daily", {"tab": 3}), Game.can_signin()],
-		["任务", func() -> void: Router.push("Daily", {"tab": 3}), false],
+		["委托", func() -> void: Router.push("Commission"), Game.commissions_ready() > 0],
 		["挑战", func() -> void: Router.push("Challenge"), not Game.hunt_done_today() and Game.scene_done("ch1", "s1")],
 		["回忆", func() -> void: Router.push("Gallery"), false],
 		["商店", func() -> void: Router.push("Shop"), false],
@@ -154,13 +214,15 @@ func _char_panel(ch: Dictionary) -> Control:
 	v.add_child(UIKit.label(str(ch.get("title", "")), 26, UIKit.C_MUTED))
 	v.add_child(UIKit.label("「" + str(ch.get("tagline", "")) + "」", 28, UIKit.C_TEXT))
 	var aff_row := UIKit.hbox(10)
-	aff_row.add_child(UIKit.label("♥ Lv.%d %s" % [Game.affection_level(cid), Game.affection_name(cid)], 26, UIKit.C_ROSE, HORIZONTAL_ALIGNMENT_LEFT, false))
-	var prog := Game.affection_progress(cid)
-	var bar := UIKit.progress(prog[0], prog[1], UIKit.C_ROSE, 18)
-	bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	aff_row.add_child(bar)
-	aff_row.add_child(UIKit.label("%d/%d" % [prog[0], prog[1]], 22, UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_RIGHT, false))
+	aff_lv_label = UIKit.label("", 26, UIKit.C_ROSE, HORIZONTAL_ALIGNMENT_LEFT, false)
+	aff_row.add_child(aff_lv_label)
+	aff_bar = UIKit.progress(0, 1, UIKit.C_ROSE, 18)
+	aff_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	aff_bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	aff_row.add_child(aff_bar)
+	aff_num_label = UIKit.label("", 22, UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_RIGHT, false)
+	aff_row.add_child(aff_num_label)
+	_refresh_aff()
 	v.add_child(aff_row)
 	panel.add_child(v)
 

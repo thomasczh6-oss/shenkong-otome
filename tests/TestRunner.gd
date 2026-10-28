@@ -24,6 +24,7 @@ func _ready() -> void:
 	await _test_battle_sim()
 	await _test_challenge_flow()
 	await _test_debug_slot()
+	_test_growth_daily()
 	print("\n%d checks, %d failures" % [checks, failures])
 	get_tree().quit(1 if failures > 0 else 0)
 
@@ -596,3 +597,53 @@ func _test_debug_slot() -> void:
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(Game.TEST_SAVE_PATH))
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(Game.SLOT_FILE))
 	Game.reset()
+
+
+## v0.7 养成与日常：思念觉醒、主页陪伴、委托。
+func _test_growth_daily() -> void:
+	print("[养成与日常]")
+	Game.s = Game.default_state()
+	var id := "shen_yan_4_1"
+	Game.add_card(id)
+	var base_atk := int(Game.card_stats(id).atk)
+	check(not Game.can_awaken(id), "没有重复思念不能觉醒")
+	Game.add_card(id)
+	check(Game.card_dup(id) == 1, "重复抽到记为 1 张重复")
+	Game.s.stardust = 1000
+	var cost := Game.awaken_cost(id)
+	check(Game.awaken_card(id) and Game.card_awaken(id) == 1, "觉醒 1 阶")
+	check(Game.stardust() == 1000 - cost and Game.card_dup(id) == 0, "消耗星屑和重复思念")
+	check(int(Game.card_stats(id).atk) > base_atk, "觉醒后攻击提升（%d → %d）" % [base_atk, int(Game.card_stats(id).atk)])
+	check(not Game.whisper_unlocked(id), "1 阶还没有心语")
+	Game.s.cards[id].awaken = 3
+	check(Game.whisper_unlocked(id), "3 阶解锁心语")
+	for cid in Data.char_order:
+		for card_id in Data.card_order:
+			if str(Data.cards[card_id].char) == cid:
+				check(str(Data.cards[card_id].get("whisper", "")) != "", "%s 有心语" % card_id)
+				break
+	# 陪伴
+	var r1: Dictionary = Game.companion_tap("gu_ci", 8)
+	check(str(r1.text) != "" and int(r1.aff) == 1, "早上点顾辞说一句话并 +1 好感")
+	var morning: Array = Data.companion.lines.gu_ci.morning
+	check(morning.has(str(r1.text)), "早上说的是早上的台词")
+	var r2: Dictionary = Game.companion_tap("gu_ci", 8)
+	check(str(r2.text) != str(r1.text), "连续两次不重复")
+	for i in 5:
+		Game.companion_tap("gu_ci", 22)
+	check(Game.companion_taps_left() == 0, "每天陪伴加好感有上限")
+	check(int(Game.companion_tap("gu_ci", 22).aff) == 0, "超过上限不再加好感")
+	check(Game.time_slot(8) == "morning" and Game.time_slot(14) == "day" and Game.time_slot(23) == "night" and Game.time_slot(3) == "night", "时段划分")
+	# 委托
+	check(Game.start_commission("lu_zhuo", "mid"), "派陆灼去委托")
+	check(not Game.start_commission("lu_zhuo", "short"), "同一人不能同时接两件")
+	check(Game.commission_left("lu_zhuo") > 3 * 3600, "4 小时委托剩余时间正确")
+	check(Game.collect_commission("lu_zhuo").is_empty(), "没到时间不能领")
+	Game.s.commissions.lu_zhuo.end = Game.now_unix() - 1
+	check(Game.commissions_ready() == 1, "到时间后提示可领取")
+	var gold := Game.gold()
+	var aff := Game.affection("lu_zhuo")
+	var res: Dictionary = Game.collect_commission("lu_zhuo")
+	check(not res.is_empty() and str(res.note) != "", "领取委托有手记")
+	check(Game.gold() == gold + 3000 and Game.affection("lu_zhuo") == aff + 5, "委托奖励和好感到账")
+	check(Game.commission_of("lu_zhuo").is_empty(), "领取后空闲")

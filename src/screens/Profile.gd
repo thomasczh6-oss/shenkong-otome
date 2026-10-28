@@ -277,6 +277,10 @@ func _debug_menu() -> void:
 				Router.toast("已解锁到 " + str(Data.chapter(cid).get("title", cid)), 1.4)
 				Router.go("Home")
 				Router.push("Chapters"))
+		add.call("委托立即完成", "ghost", func() -> void:
+			Game.debug_finish_commissions()
+			Router.toast("进行中的委托已完成", 1.2)
+			Router.go("Home"))
 		add.call("资源 +（钻石、金币、星屑、许愿券）", "ghost", func() -> void:
 			Game.debug_add_resources()
 			Router.toast("资源已添加", 1.2)
