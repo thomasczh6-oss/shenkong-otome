@@ -953,6 +953,174 @@
         },
         "line": "上千盏灯燃起了白火……她不想放手！"
       }
+    },
+    "echo_crystal": {
+      "name": "回声冰晶",
+      "desc": "冰海上竖起的镜面冰晶，会用你的声音重复你说过的每一句话。",
+      "hp": 4400,
+      "atk": 128,
+      "def": 48,
+      "attack_interval": 1.6,
+      "telegraph": 0.75,
+      "img": "enemies/echo_crystal",
+      "aura": "#bfe8ff",
+      "element": "星",
+      "pattern": [
+        "hit",
+        "combo",
+        "shield",
+        "hit",
+        "heavy"
+      ],
+      "skill_names": {
+        "combo": "复读",
+        "shield": "镜冰",
+        "heavy": "回音崩落"
+      },
+      "reward": {
+        "gold": 2900,
+        "diamonds": 95,
+        "xp": 90
+      }
+    },
+    "frost_eel": {
+      "name": "霜鳞鳗",
+      "desc": "绕着冰窟游动的银白巨鳗，鳞片像碎冰。它在一点一点吃掉被冻住的时间。",
+      "hp": 4800,
+      "atk": 132,
+      "def": 50,
+      "attack_interval": 1.5,
+      "telegraph": 0.75,
+      "img": "enemies/frost_eel",
+      "aura": "#dff4ff",
+      "element": "焰",
+      "pattern": [
+        "combo",
+        "hit",
+        "charge",
+        "heal"
+      ],
+      "skill_names": {
+        "combo": "冰鳞绞缠",
+        "charge": "深寒",
+        "heal": "吞时"
+      },
+      "reward": {
+        "gold": 3000,
+        "diamonds": 100,
+        "xp": 95
+      }
+    },
+    "aurora_moth": {
+      "name": "极光蛾",
+      "desc": "从极光里飞出来的巨蛾，翅膀上的鳞粉闪着绿光。它们靠那一秒活着，不想让时间走。",
+      "hp": 5100,
+      "atk": 134,
+      "def": 50,
+      "attack_interval": 1.5,
+      "telegraph": 0.75,
+      "img": "enemies/aurora_moth",
+      "aura": "#9dffcf",
+      "element": "潮",
+      "pattern": [
+        "hit",
+        "combo",
+        "shield",
+        "charge"
+      ],
+      "skill_names": {
+        "combo": "鳞粉旋舞",
+        "shield": "光幕",
+        "charge": "极夜"
+      },
+      "reward": {
+        "gold": 3100,
+        "diamonds": 105,
+        "xp": 95
+      }
+    },
+    "echo_wolf": {
+      "name": "回声冰狼",
+      "desc": "由冰和四十天的呼喊凝成的巨狼。它的每一声嚎叫，都是那个男孩的声音。",
+      "hp": 5600,
+      "atk": 140,
+      "def": 52,
+      "attack_interval": 1.7,
+      "telegraph": 0.8,
+      "img": "enemies/echo_wolf",
+      "aura": "#a8d8ff",
+      "element": "星",
+      "boss": true,
+      "pattern": [
+        "hit",
+        "charge",
+        "combo",
+        "shield",
+        "heavy"
+      ],
+      "skill_names": {
+        "charge": "长嚎",
+        "combo": "冰牙三连",
+        "shield": "冻土",
+        "heavy": "雪崩"
+      },
+      "reward": {
+        "gold": 4400,
+        "diamonds": 180,
+        "xp": 130
+      }
+    },
+    "frost_clock": {
+      "name": "霜钟守望者",
+      "desc": "钟楼下由冰和齿轮组成的巨人，双手捧着被封住的那一秒。它会拼尽全力，让时间停在这里。",
+      "hp": 6400,
+      "atk": 150,
+      "def": 54,
+      "attack_interval": 1.8,
+      "telegraph": 0.75,
+      "img": "enemies/frost_clock",
+      "aura": "#d6ecff",
+      "element": "潮",
+      "boss": true,
+      "pattern": [
+        "heavy",
+        "shield",
+        "combo",
+        "heal",
+        "charge"
+      ],
+      "skill_names": {
+        "heavy": "冰钟落锤",
+        "shield": "时之壁",
+        "combo": "齿轮三连",
+        "heal": "倒转",
+        "charge": "停摆"
+      },
+      "reward": {
+        "gold": 5600,
+        "diamonds": 290,
+        "xp": 160
+      },
+      "phase2": {
+        "name": "霜钟守望者·碎冰",
+        "img": "enemies/frost_clock_p2",
+        "aura": "#ffd6e8",
+        "element": "焰",
+        "atk_mult": 1.3,
+        "speed_mult": 0.8,
+        "pattern": [
+          "charge",
+          "combo",
+          "heavy",
+          "combo",
+          "shield"
+        ],
+        "skill_names": {
+          "charge": "二十一点四十七分",
+          "combo": "冰海回响"
+        },
+        "line": "冰里的那一秒开始尖叫……四十天的呼喊同时涌了过来！"
+      }
     }
   }
 }
