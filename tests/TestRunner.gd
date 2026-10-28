@@ -191,6 +191,8 @@ func _test_story() -> void:
 			end_cgs += 1
 			check(str(e.char) != "", "结局 CG %s 归属到男主" % e.key)
 	check(end_cgs == 3, "三位男主各有一张结局 CG（%d）" % end_cgs)
+	check(Data.chapter("ch6").get("scenes", []).size() == 5 and str(Data.chapter("ch6").get("requires", "")) == "ch5", "第六章 5 节，完成第五章后解锁")
+	check(Data.enemy("lantern_mother").has("phase2"), "第六章 Boss 千灯雾母有第二形态")
 	var bgms: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/audio.json")).get("bgm", {})
 	for ch in Data.chapters:
 		for sc in ch.scenes:

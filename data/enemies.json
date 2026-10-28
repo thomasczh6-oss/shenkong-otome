@@ -785,6 +785,174 @@
         },
         "line": "鲸的身体亮起了灯塔一样的光……它在用最后的力气挣扎！"
       }
+    },
+    "fog_shade": {
+      "name": "雾影",
+      "desc": "跟着温叙从雾港漂过来的影子，贴在玻璃上往里看。它们怕光，更怕热。",
+      "hp": 3800,
+      "atk": 118,
+      "def": 44,
+      "attack_interval": 1.6,
+      "telegraph": 0.75,
+      "img": "enemies/fog_shade",
+      "aura": "#cfd8e6",
+      "element": "星",
+      "pattern": [
+        "hit",
+        "combo",
+        "shield",
+        "hit",
+        "heavy"
+      ],
+      "skill_names": {
+        "combo": "雾缚三连",
+        "shield": "浓雾",
+        "heavy": "白夜压顶"
+      },
+      "reward": {
+        "gold": 2600,
+        "diamonds": 85,
+        "xp": 80
+      }
+    },
+    "ghost_lights": {
+      "name": "雾灯鬼火",
+      "desc": "漂在雾海上的上百盏假灯，专把船引到礁石上。想得越清楚要回哪里，就越不会被骗。",
+      "hp": 4200,
+      "atk": 122,
+      "def": 44,
+      "attack_interval": 1.6,
+      "telegraph": 0.75,
+      "img": "enemies/ghost_lights",
+      "aura": "#9ff0d8",
+      "element": "焰",
+      "pattern": [
+        "combo",
+        "hit",
+        "charge",
+        "heal"
+      ],
+      "skill_names": {
+        "combo": "千灯引路",
+        "charge": "触礁",
+        "heal": "重燃"
+      },
+      "reward": {
+        "gold": 2700,
+        "diamonds": 90,
+        "xp": 85
+      }
+    },
+    "fog_heron": {
+      "name": "雾翼鹭",
+      "desc": "用雾织罩子的巨鸟。只要它们在，雾港就永远看不见天。",
+      "hp": 4400,
+      "atk": 124,
+      "def": 46,
+      "attack_interval": 1.5,
+      "telegraph": 0.75,
+      "img": "enemies/fog_heron",
+      "aura": "#e8eef6",
+      "element": "潮",
+      "pattern": [
+        "hit",
+        "combo",
+        "shield",
+        "charge"
+      ],
+      "skill_names": {
+        "combo": "雾羽连斩",
+        "shield": "织雾",
+        "charge": "遮天"
+      },
+      "reward": {
+        "gold": 2800,
+        "diamonds": 95,
+        "xp": 85
+      }
+    },
+    "mute_puppet": {
+      "name": "静音傀儡",
+      "desc": "嘴被缝上的戏服木偶，手里的线连着整条巷子的灯笼。它要把唱歌的孩子抓回去。",
+      "hp": 5000,
+      "atk": 130,
+      "def": 48,
+      "attack_interval": 1.7,
+      "telegraph": 0.8,
+      "img": "enemies/mute_puppet",
+      "aura": "#ff8fb1",
+      "element": "星",
+      "boss": true,
+      "pattern": [
+        "hit",
+        "charge",
+        "combo",
+        "shield",
+        "heavy"
+      ],
+      "skill_names": {
+        "charge": "收线",
+        "combo": "提线三连",
+        "shield": "戏服",
+        "heavy": "落幕"
+      },
+      "reward": {
+        "gold": 4000,
+        "diamonds": 170,
+        "xp": 120
+      }
+    },
+    "lantern_mother": {
+      "name": "千灯雾母",
+      "desc": "雾港老人口中守护渔民的神。三十天来，她只想把唱歌的孩子抱回怀里。",
+      "hp": 5800,
+      "atk": 140,
+      "def": 50,
+      "attack_interval": 1.8,
+      "telegraph": 0.75,
+      "img": "enemies/lantern_mother",
+      "aura": "#ffe2a8",
+      "element": "潮",
+      "boss": true,
+      "pattern": [
+        "heavy",
+        "shield",
+        "combo",
+        "heal",
+        "charge"
+      ],
+      "skill_names": {
+        "heavy": "雾潮",
+        "shield": "千灯之帷",
+        "combo": "灯影三叠",
+        "heal": "渔歌",
+        "charge": "不许走"
+      },
+      "reward": {
+        "gold": 5200,
+        "diamonds": 270,
+        "xp": 150
+      },
+      "phase2": {
+        "name": "千灯雾母·白焰",
+        "img": "enemies/lantern_mother_p2",
+        "aura": "#e8f4ff",
+        "element": "星",
+        "atk_mult": 1.3,
+        "speed_mult": 0.8,
+        "pattern": [
+          "charge",
+          "combo",
+          "heavy",
+          "combo",
+          "shield"
+        ],
+        "skill_names": {
+          "charge": "千灯白焰",
+          "combo": "雾港长夜"
+        },
+        "line": "上千盏灯燃起了白火……她不想放手！"
+      }
     }
   }
 }

@@ -4876,6 +4876,945 @@
           ]
         }
       ]
+    },
+    {
+      "id": "ch6",
+      "title": "第六章 · 雾港来客",
+      "requires": "ch5",
+      "cover": "backgrounds/fog_lantern_square",
+      "summary": "第二部开幕。潮汐祭的烟花还没放完，雾港的观测员带来了一个消息：那里的「锁」，是一个十岁的孩子。",
+      "scenes": [
+        {
+          "id": "s1",
+          "title": "6-1 · 潮汐祭",
+          "bg": "backgrounds/tide_festival",
+          "bgm": "festival",
+          "reward": {
+            "diamonds": 150,
+            "tickets_limited": 1
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "第二部 · 归潮"
+            },
+            {
+              "t": "title",
+              "text": "半年后 · 北港灯塔 · 潮汐祭"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "零号潮过去十五年零六个月，澜城第一次办起了「潮汐祭」。北港的灯塔下挂满了纸灯，海面上漂着一盏一盏写着名字的河灯。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "你的观测仪已经安静了半年。每天 06:17，它只会轻轻亮一下——像有人在说早安。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "喂！这边！乐队今晚压轴，你得站第一排。我给你留了位置，谁抢我跟谁急。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "九点有烟花。天文台的露台看得最清楚，我带了热可可。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "……放河灯的地方在码头尽头。人少。我已经写好了一盏，还差一个名字。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "（去听陆灼的演出）",
+                  "aff": {
+                    "lu_zhuo": 5
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "shy",
+                      "text": "……你真来了。那我今晚唱的每一首，都算给你的。"
+                    }
+                  ]
+                },
+                {
+                  "text": "（和顾辞去看烟花）",
+                  "aff": {
+                    "gu_ci": 5
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "热可可还是烫的。小心，我替你吹一吹。"
+                    }
+                  ]
+                },
+                {
+                  "text": "（陪沈砚放河灯）",
+                  "aff": {
+                    "shen_yan": 5
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "calm",
+                      "text": "名字，你来写。……写什么都行。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "narrator",
+                      "text": "你在河灯上写下了「苏晚」。他看了很久，在旁边添了一行小字：「她女儿过得很好」。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "九点整，第一朵烟花升起来的那一刻，灯塔的光忽然熄灭了。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "所有人的手机同时响了起来。不是警报——是一段从海上传来的、断断续续的求救信号。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "林岚局长",
+              "text": "观测员，回局里。……有客人从雾港来了。"
+            },
+            {
+              "t": "bg",
+              "key": "backgrounds/bureau_office"
+            },
+            {
+              "t": "title",
+              "text": "深空潮汐局 · 会客室"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "会客室里坐着一个穿灰色风衣的年轻女人。她的头发上还带着海雾的水珠，手里攥着一枚和你一模一样的观测仪。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "温叙",
+              "text": "我叫温叙。雾港潮汐局，观测员。……也是你在这个世界上唯一的「同行」。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "温叙",
+              "text": "雾港的裂隙在三十天前打开了。和你们十五年前的零号潮，一模一样。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "温叙",
+              "text": "不一样的是，我们的「锁」，是一个十岁的孩子。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "serious",
+              "text": "……孩子？"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "温叙",
+              "text": "她叫小满。裂隙打开的那天晚上，她在雾港的灯塔下唱歌。然后，雾就再也没散过。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "温叙",
+              "text": "秦岳的「深空计划」，不只在澜城做过。我是来求你们的。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "会客室的窗玻璃上，忽然凝起了一层厚厚的白雾。雾里，有什么东西在往里看。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "serious",
+              "text": "跟着她过来的？……行啊，正好热热身。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "观测员，今晚的压轴还没唱完。借我回响，我们先把这首唱完。"
+            },
+            {
+              "t": "battle",
+              "enemy": "fog_shade",
+              "partner": "lu_zhuo"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "雾影在火光里散开，窗外的雾却没有退。温叙看着你，眼神很平静，平静得让人心疼。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "温叙",
+              "text": "明天一早出发。走海路，坐飞机，或者从陆路穿过雾墙——三条路都能到雾港。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "海路我熟。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "天上我熟。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "陆路我熟。……所以，你跟谁走？"
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "title": "6-2 · 沈砚 · 雾中航线",
+          "char": "shen_yan",
+          "bg": "backgrounds/fog_sea",
+          "reward": {
+            "diamonds": 150,
+            "tickets_limited": 1
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "雾海 · 「回声号」科考船"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "出港两个小时后，雾就吞掉了整片海。船头的探照灯只能照出十米远，雷达屏幕上全是雪花。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "冷吗。这里的雾会吃掉体温。……围巾给你。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "他把围巾绕在你脖子上，绕了两圈，又仔细把末端塞进你的衣领。动作很慢，像在做一件很重要的事。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "以前出海，我只看仪表。现在会看你有没有冷，有没有晕船，有没有……在看我。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "那你现在在看什么？"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "shy",
+              "text": "……在看你。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "雾里忽然亮起了一盏灯。然后是两盏，十盏，上百盏——它们漂在海面上，像一条通往深处的路。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "那不是灯塔。是雾灯鬼火，专门把船引到礁石上。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "雾港的老渔民说，看见鬼火，就想想最想回去的地方。想得越清楚，就越不会被骗。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "我最想回去的地方，是你身边。",
+                  "aff": {
+                    "shen_yan": 7
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "shy",
+                      "text": "……你这样说，我会握不稳舵。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "smile",
+                      "text": "那我也是。我最想回去的地方，是你在的港口。"
+                    }
+                  ]
+                },
+                {
+                  "text": "（握住他扶舵的手）我们一起想。",
+                  "aff": {
+                    "shen_yan": 6
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "narrator",
+                      "text": "你的手覆在他的手背上。舵轮在你们手里稳了下来，船头一点一点偏离了那条鬼火铺成的路。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "calm",
+                      "text": "嗯。一起。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "鬼火察觉到了。它们从海面上升起来，聚成一团扭曲的、成千上万只眼睛一样的光。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "它们急了。……观测员，回响借我。这条航线，我要亲手把你送到。"
+            },
+            {
+              "t": "battle",
+              "enemy": "ghost_lights",
+              "partner": "shen_yan"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "鬼火熄灭了。雾里露出一道缝，缝的那边，隐约能看见雾港的灯塔——它是黑的。"
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch6_shen_yan_fog"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "以后不管去多远的海，我都想这样。你在甲板上，我在你旁边。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "shy",
+              "text": "半年前我说过，比潮汐还准。……这句话，我会一直兑现。"
+            },
+            {
+              "t": "cg_end"
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "title": "6-3 · 顾辞 · 雾港上空",
+          "char": "gu_ci",
+          "bg": "backgrounds/above_fog",
+          "reward": {
+            "diamonds": 150,
+            "tickets_limited": 1
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "雾港上空 · 七千米"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "搜救机穿过雾墙的时候，机身剧烈地抖了一下。然后，世界忽然安静了。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "脚下是一片白茫茫的云海，云海的正中间，倒扣着一个巨大的雾罩——雾港就在里面。头顶，是一整片你从没见过的星空。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "你看。雾港的人已经三十天没见过星星了。可是星星一直都在，只是被挡住了。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "我想把这片星空带下去。带给那个叫小满的孩子。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "……其实我今天本来休假。原本的计划，是带你去山顶看日落，然后在车里睡一觉，醒了看日出。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "计划被打乱了，你生气吗？"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "不生气。和你在一起的话，在哪里都算休假。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "那等这件事结束，我陪你补一个真正的假期。",
+                  "aff": {
+                    "gu_ci": 7
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "shy",
+                      "text": "……那我要提前写好计划表。第一项：和你一起睡到中午。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "开玩笑的。第一项是，看你笑。"
+                    }
+                  ]
+                },
+                {
+                  "text": "（打开舷窗旁的小灯，在玻璃上画一颗星星）",
+                  "aff": {
+                    "gu_ci": 6
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "narrator",
+                      "text": "你在起雾的舷窗上画了一颗歪歪扭扭的星星，旁边写了他的名字。他看着那颗星，笑出了声。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "这颗不用观测。我一眼就认出来了。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "雾罩的顶端忽然裂开一道口子。一群灰白色的巨鸟冲了出来，它们的翅膀是雾做的，所过之处，星星一颗一颗地暗下去。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "serious",
+              "text": "雾翼鹭……它们在织这个罩子。只要它们在，雾港就永远看不见天。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "观测员，坐稳了。我要把它们引到星星最亮的地方——然后，把天还给雾港。"
+            },
+            {
+              "t": "battle",
+              "enemy": "fog_heron",
+              "partner": "gu_ci"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "最后一只雾翼鹭消散的时候，雾罩上开了一个圆圆的洞。星光从洞里落下去，像一束聚光灯，打在雾港的灯塔上。"
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch6_gu_ci_above"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "你看下面。有人在灯塔下面朝我们挥手。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "shy",
+              "text": "……我刚才在想，如果以后每次飞行，副驾驶都是你就好了。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "calm",
+              "text": "这不是飞行员该有的想法。可是我忍不住。"
+            },
+            {
+              "t": "cg_end"
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "title": "6-4 · 陆灼 · 灯笼巷",
+          "char": "lu_zhuo",
+          "bg": "backgrounds/fog_night_market",
+          "reward": {
+            "diamonds": 150,
+            "tickets_limited": 1
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "雾港 · 灯笼巷夜市"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "雾港的夜市还开着。灯笼挂满了整条巷子，可是没有一个摊主在吆喝。卖唱的人抱着琴，嘴在动，却没有声音。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "……跟回响之城一样。声音被拿走了。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "不过烤串的香味还在。站这儿别动，我去买两串。……你那串不放辣。好吧，放一点点。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "他回来的时候，手里拿着两串烤鱿鱼，身后跟着一个扎着两个小辫的女孩。女孩手里攥着一只没点亮的纸灯笼。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "这小家伙一直跟着我。……我好像知道她是谁了。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "小满",
+              "text": "……"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "女孩张开嘴，没有声音。可是你的观测仪亮了——你听见了。她在唱歌，唱一首很老的雾港渔歌。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "她是小满。整个雾港的声音，都被锁在她身体里。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "serious",
+              "text": "……十岁啊。十岁就要替一座城撑着。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "我十岁的时候，只会在后台睡觉。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "（蹲下来，轻轻跟着她的旋律哼）",
+                  "aff": {
+                    "lu_zhuo": 6
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "narrator",
+                      "text": "你跟着她哼了一段。小满愣了一下，然后笑了。陆灼看着你们，把吉他从背上取了下来。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "smile",
+                      "text": "那我来伴奏。三个人的乐队，够了。"
+                    }
+                  ]
+                },
+                {
+                  "text": "陆灼，你给她唱一首吧。用你的声音。",
+                  "aff": {
+                    "lu_zhuo": 8
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "shy",
+                      "text": "……在这儿？好吧，就一首。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "narrator",
+                      "text": "他唱的是《宵夜》。整条夜市里只有他的声音。小满听着听着，眼泪就掉下来了。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "巷子尽头传来一阵僵硬的「咔哒」声。一个穿着戏服、提着线的巨大木偶从雾里走出来，它的嘴被缝上了，手里的线连着整条巷子的灯笼。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "小满",
+              "text": "……！"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "serious",
+              "text": "静音傀儡。它在抓她回去。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "serious",
+              "text": "小家伙，躲到她身后。……观测员，这一次不用省着烧。借我回响！"
+            },
+            {
+              "t": "battle",
+              "enemy": "mute_puppet",
+              "partner": "lu_zhuo"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "傀儡的线一根根断开。灯笼一盏接一盏地亮了，整条夜市忽然响起了声音——吆喝声、笑声、炭火噼啪的声音。"
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch6_lu_zhuo_market"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "你听。雾港有声音了。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "shy",
+              "text": "……刚才你蹲下来哼歌的样子，我想写进下一首歌里。歌名我都想好了，叫《灯笼巷》。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "calm",
+              "text": "但是这首也只唱给你一个人听。小满可以当伴唱。"
+            },
+            {
+              "t": "cg_end"
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "title": "6-5 · 终章 · 千灯",
+          "bg": "backgrounds/fog_lantern_square",
+          "bgm": "tension",
+          "reward": {
+            "diamonds": 300,
+            "tickets_limited": 2
+          },
+          "lines": [
+            {
+              "t": "title",
+              "text": "雾港灯塔 · 千灯广场"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "雾港的灯塔下面，是一片挂满了上千盏灯的广场。所有的灯都没有亮。灯塔顶上，坐着一个由雾和灯笼组成的巨大女人。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "温叙",
+              "text": "那是「千灯雾母」。雾港的老人说，她是守护渔民的神。可现在……她只想把小满抱回去。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "小满",
+              "text": "……妈妈说，雾母会保护我。只要我一直唱歌，雾就不会散，坏东西就进不来。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "小满，你一个人唱了三十天，累不累？"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "小满",
+              "text": "……累。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "那是你第一次听见她用自己的声音说话。很小，很哑。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "温叙",
+              "text": "我们试过所有办法。只要把锁从她身上拿下来，裂隙就会扩大。除非……有人替她。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "serious",
+              "text": "不行。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "serious",
+              "text": "我们不会让她替的。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "serious",
+              "text": "谁也别想再当锁。十五年前那种事，一次就够了。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "……不用一个人替。"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "我妈妈只有一个人，所以她只能自己当锁。可是现在，雾港有好几万人。每个人分一点点，就不重了。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "温叙",
+              "text": "你是说——用你的回响，把锁分给整座城？"
+            },
+            {
+              "t": "say",
+              "who": "me",
+              "text": "我能听见所有人的声音。那我也能把她的声音，还给所有人。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "千灯雾母站了起来。她察觉到了你要做的事。上千盏灯同时转向你，灯芯里燃起了冰冷的白火。"
+            },
+            {
+              "t": "choice",
+              "options": [
+                {
+                  "text": "沈砚，帮我稳住潮水。",
+                  "aff": {
+                    "shen_yan": 10
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "shen_yan",
+                      "expr": "calm",
+                      "text": "交给我。你专心。"
+                    }
+                  ]
+                },
+                {
+                  "text": "顾辞，帮我把星光引下来。",
+                  "aff": {
+                    "gu_ci": 10
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "gu_ci",
+                      "expr": "smile",
+                      "text": "雾港的天，我已经打开了。"
+                    }
+                  ]
+                },
+                {
+                  "text": "陆灼，帮我把灯点亮。",
+                  "aff": {
+                    "lu_zhuo": 10
+                  },
+                  "lines": [
+                    {
+                      "t": "say",
+                      "who": "lu_zhuo",
+                      "expr": "smile",
+                      "text": "一千盏？小意思。"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "battle",
+              "enemy": "lantern_mother",
+              "partner": "auto"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "雾母倒下的时候，没有消失。她低下头，看着小满，用雾做的手轻轻摸了摸她的头。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "你握住小满的手，把回响推了出去——不是推向裂隙，而是推向整座雾港。推向每一扇窗，每一盏灯，每一个人。"
+            },
+            {
+              "t": "cg",
+              "key": "cg/ch6_finale"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "千灯广场上的灯，一盏接一盏地亮了。然后是整条街，整座城。雾港的每一户人家，都在同一时刻，轻轻哼起了那首渔歌。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "小满",
+              "text": "……大家都在唱。我不用一个人唱了。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "温叙",
+              "text": "锁……分开了。分给了几万个人。每个人只担了一点点，一点点就不重。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "温叙",
+              "text": "……谢谢你，苏念。"
+            },
+            {
+              "t": "cg_end"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "天亮的时候，雾散了。三十天来第一次，雾港看见了太阳。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "小满睡在温叙怀里。温叙看着你，从风衣口袋里拿出一张折得很小的纸。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "温叙",
+              "text": "这是我在雾港潮汐局档案室找到的。秦岳的「深空计划」，有七个试验点。"
+            },
+            {
+              "t": "say",
+              "who": "npc",
+              "name": "温叙",
+              "text": "澜城是第一个。雾港是第二个。还有五座城市，五个像小满一样的孩子，可能正在某个地方，一个人唱着歌。"
+            },
+            {
+              "t": "say",
+              "who": "shen_yan",
+              "expr": "calm",
+              "text": "那就一座一座去。"
+            },
+            {
+              "t": "say",
+              "who": "gu_ci",
+              "expr": "smile",
+              "text": "地图我来画。"
+            },
+            {
+              "t": "say",
+              "who": "lu_zhuo",
+              "expr": "smile",
+              "text": "路上的宵夜我包了。"
+            },
+            {
+              "t": "say",
+              "who": "narrator",
+              "text": "你把那张纸摊开。七个红点，从澜城一路向北，最后一个，在一片没有名字的冰海上。"
+            },
+            {
+              "t": "title",
+              "text": "第六章 · 完　　第七章「冰海回声」敬请期待"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
