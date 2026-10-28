@@ -494,3 +494,23 @@ func glow_blob(center: Vector2, d: float, color: Color) -> TextureRect:
 	tr.size = Vector2(d, d)
 	tr.position = center - Vector2(d, d) / 2.0
 	return tr
+
+
+## 让一整块控件（卡片、列表行）可以点：整块接收点击，里面的子控件都不拦截；
+## 松手时才触发，按下后手指移动超过阈值（被当成滚动）就不算点击。
+func on_tap(ctrl: Control, callback: Callable) -> void:
+	ctrl.mouse_filter = Control.MOUSE_FILTER_STOP
+	for n in ctrl.find_children("*", "Control", true, false):
+		(n as Control).mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var st := {"down": false, "pos": Vector2.ZERO}
+	ctrl.gui_input.connect(func(ev: InputEvent) -> void:
+		if ev is InputEventMouseButton and ev.button_index == MOUSE_BUTTON_LEFT:
+			if ev.pressed:
+				st.down = true
+				st.pos = ev.global_position
+			elif st.down:
+				st.down = false
+				if ev.global_position.distance_to(st.pos) <= 40.0 and ctrl.get_global_rect().has_point(ev.global_position):
+					callback.call()
+		elif ev is InputEventMouseMotion and st.down and ev.global_position.distance_to(st.pos) > 40.0:
+			st.down = false)

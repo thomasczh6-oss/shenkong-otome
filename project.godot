@@ -7,7 +7,7 @@ config_version=5
 [application]
 
 config/name="深与空恋"
-config/version="0.7.0"
+config/version="0.7.1"
 config/debug_menu=true
 config/description="面向女性玩家的移动端乙女恋爱游戏原型（Godot 4.4）"
 run/main_scene="res://src/App.tscn"

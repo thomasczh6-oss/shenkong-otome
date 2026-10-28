@@ -63,12 +63,11 @@ func _tile(e: Dictionary) -> Control:
 	v.add_child(UIKit.label(str(e.scene_title), 24, UIKit.C_TEXT if open else UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_CENTER, false))
 	v.add_child(UIKit.label(str(e.chapter_title), 20, UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_CENTER, false))
 	panel.add_child(v)
-	panel.gui_input.connect(func(ev: InputEvent) -> void:
-		if ev is InputEventMouseButton and ev.pressed and ev.button_index == MOUSE_BUTTON_LEFT:
-			if open:
-				_view(key)
-			else:
-				Router.toast("在「%s」中解锁" % str(e.scene_title)))
+	UIKit.on_tap(panel, func() -> void:
+		if open:
+			_view(key)
+		else:
+			Router.toast("在「%s」中解锁" % str(e.scene_title)))
 	return panel
 
 

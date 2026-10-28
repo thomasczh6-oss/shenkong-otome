@@ -25,6 +25,7 @@ func _ready() -> void:
 	await _test_challenge_flow()
 	await _test_debug_slot()
 	_test_growth_daily()
+	await _test_card_tap()
 	print("\n%d checks, %d failures" % [checks, failures])
 	get_tree().quit(1 if failures > 0 else 0)
 
@@ -647,3 +648,46 @@ func _test_growth_daily() -> void:
 	check(not res.is_empty() and str(res.note) != "", "领取委托有手记")
 	check(Game.gold() == gold + 3000 and Game.affection("lu_zhuo") == aff + 5, "委托奖励和好感到账")
 	check(Game.commission_of("lu_zhuo").is_empty(), "领取后空闲")
+
+
+## v0.7.0 MuMu 反馈：思念列表点卡面图片没反应。点图片区域要能打开详情，拖动不能误开。
+func _test_card_tap() -> void:
+	print("[思念列表点击]")
+	Game.s = Game.default_state()
+	Game.mark_tutorial("home")
+	Game.add_card("shen_yan_3_1")
+	Router.go("Home")
+	Router.push("Cards")
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var screen: Node = Router.stack.back().node
+	var img: Control = null
+	for n in screen.find_children("*", "TextureRect", true, false):
+		if (n as TextureRect).is_visible_in_tree() and (n as TextureRect).get_global_rect().size.y > 200:
+			img = n
+			break
+	check(img != null, "找到卡面图片")
+	if img == null:
+		return
+	var p := img.get_global_rect().get_center()
+	await _mouse(p, true)
+	await _mouse(p, false)
+	await get_tree().process_frame
+	check(Router.current_name() == "CardDetail", "点卡面图片打开详情（当前 %s）" % Router.current_name())
+	Router.go("Home")
+	Router.push("Cards")
+	await get_tree().process_frame
+	await get_tree().process_frame
+	screen = Router.stack.back().node
+	for n in screen.find_children("*", "TextureRect", true, false):
+		if (n as TextureRect).is_visible_in_tree() and (n as TextureRect).get_global_rect().size.y > 200:
+			img = n
+			break
+	p = img.get_global_rect().get_center()
+	await _mouse(p, true)
+	for i in 8:
+		await _mouse(p + Vector2(0, -30 * (i + 1)))
+	await _mouse(p + Vector2(0, -240), false)
+	await get_tree().process_frame
+	check(Router.current_name() == "Cards", "在卡面上拖动不会误开详情")
+	Router.go("Home")
