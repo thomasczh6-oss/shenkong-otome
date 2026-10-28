@@ -177,9 +177,11 @@ func coach(steps: Array, on_done: Callable = Callable(), i := 0) -> void:
 	root.mouse_filter = Control.MOUSE_FILTER_STOP
 	overlay.add_child(root)
 	var vp := root.get_viewport_rect().size
-	var target: Control = step.get("target")
+	# 目标控件可能已经被释放（比如界面切走了），先判有效再转成 Control
+	var raw_target: Variant = step.get("target")
+	var target: Control = raw_target as Control if is_instance_valid(raw_target) else null
 	var hole := Rect2()
-	if target != null and is_instance_valid(target) and target.is_visible_in_tree():
+	if target != null and target.is_visible_in_tree():
 		hole = target.get_global_rect().grow(12)
 	var dim_c := Color(0, 0, 0, 0.66)
 	if hole.size == Vector2.ZERO:
