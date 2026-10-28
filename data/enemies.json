@@ -1121,6 +1121,174 @@
         },
         "line": "冰里的那一秒开始尖叫……四十天的呼喊同时涌了过来！"
       }
+    },
+    "sand_wraith": {
+      "name": "流沙之影",
+      "desc": "从正午沙暴里走出来的流沙人形，走到哪里，哪里就被沙子吞掉。",
+      "hp": 5000,
+      "atk": 136,
+      "def": 52,
+      "attack_interval": 1.6,
+      "telegraph": 0.75,
+      "img": "enemies/sand_wraith",
+      "aura": "#f2c98a",
+      "element": "潮",
+      "pattern": [
+        "hit",
+        "combo",
+        "shield",
+        "hit",
+        "heavy"
+      ],
+      "skill_names": {
+        "combo": "流沙三连",
+        "shield": "沙壁",
+        "heavy": "埋没"
+      },
+      "reward": {
+        "gold": 3200,
+        "diamonds": 100,
+        "xp": 95
+      }
+    },
+    "dune_serpent": {
+      "name": "沙丘蛇",
+      "desc": "在沙丘底下游动的巨蛇，鳞片像磨亮的铜。它专吃被遗落的回响。",
+      "hp": 5300,
+      "atk": 140,
+      "def": 54,
+      "attack_interval": 1.5,
+      "telegraph": 0.75,
+      "img": "enemies/dune_serpent",
+      "aura": "#e8a85a",
+      "element": "星",
+      "pattern": [
+        "combo",
+        "hit",
+        "charge",
+        "heal"
+      ],
+      "skill_names": {
+        "combo": "沙涌",
+        "charge": "破丘",
+        "heal": "蜕鳞"
+      },
+      "reward": {
+        "gold": 3300,
+        "diamonds": 105,
+        "xp": 100
+      }
+    },
+    "mirage_jelly": {
+      "name": "蜃气水母",
+      "desc": "浮在落日海面上的半透明巨母，每根触须都映着一个人的回忆。蜃楼是它们造的。",
+      "hp": 5600,
+      "atk": 142,
+      "def": 54,
+      "attack_interval": 1.5,
+      "telegraph": 0.75,
+      "img": "enemies/mirage_jelly",
+      "aura": "#ffc2e0",
+      "element": "焰",
+      "pattern": [
+        "hit",
+        "combo",
+        "shield",
+        "charge"
+      ],
+      "skill_names": {
+        "combo": "回忆触须",
+        "shield": "蜃气",
+        "charge": "海市"
+      },
+      "reward": {
+        "gold": 3400,
+        "diamonds": 110,
+        "xp": 100
+      }
+    },
+    "bronze_sentinel": {
+      "name": "铜钟哨兵",
+      "desc": "秦岳在齿轮室里布下的守卫，由铜钟和齿轮拼成，胸口的钟舌一晃就是一记重锤。",
+      "hp": 6200,
+      "atk": 148,
+      "def": 56,
+      "attack_interval": 1.7,
+      "telegraph": 0.8,
+      "img": "enemies/bronze_sentinel",
+      "aura": "#d9a05b",
+      "element": "潮",
+      "boss": true,
+      "pattern": [
+        "hit",
+        "charge",
+        "combo",
+        "shield",
+        "heavy"
+      ],
+      "skill_names": {
+        "charge": "嗡鸣",
+        "combo": "齿轮连击",
+        "shield": "铜壁",
+        "heavy": "钟锤"
+      },
+      "reward": {
+        "gold": 4800,
+        "diamonds": 190,
+        "xp": 140
+      }
+    },
+    "hourglass_lord": {
+      "name": "沙漏之主",
+      "desc": "双生锁分开后，被困住的时间自己长出来的巨人。一半正午，一半午夜。",
+      "hp": 7000,
+      "atk": 160,
+      "def": 58,
+      "attack_interval": 1.8,
+      "telegraph": 0.75,
+      "img": "enemies/hourglass_lord",
+      "aura": "#ffd27a",
+      "element": "星",
+      "boss": true,
+      "pattern": [
+        "heavy",
+        "shield",
+        "combo",
+        "heal",
+        "charge"
+      ],
+      "skill_names": {
+        "heavy": "正午沙暴",
+        "shield": "时之沙",
+        "combo": "昼夜三叠",
+        "heal": "倒流",
+        "charge": "停滞"
+      },
+      "reward": {
+        "gold": 6000,
+        "diamonds": 310,
+        "xp": 170
+      },
+      "phase2": {
+        "name": "沙漏之主·昼夜",
+        "img": "enemies/hourglass_lord_p2",
+        "aura": "#8fa8ff",
+        "element": "焰",
+        "atk_mult": 1.3,
+        "speed_mult": 0.8,
+        "pattern": [
+          "charge",
+          "combo",
+          "heavy",
+          "combo",
+          "shield"
+        ],
+        "skill_names": {
+          "charge": "日蚀",
+          "combo": "昼夜颠倒"
+        },
+        "line": "沙漏翻转了过来……白天和黑夜同时压了下来！"
+      }
     }
   }
 }

@@ -101,7 +101,7 @@ static func hunt_scale(stats: Dictionary, e: Dictionary) -> Dictionary:
 	var base_hp := float(e.get("hp", 900))
 	var base_atk := float(e.get("atk", 60))
 	var hit := maxf(5.0, float(stats.atk) - float(e.get("def", 10)) * 0.5)
-	var hp_mult := clampf(hit * 26.0 / base_hp, 0.35, 1.4)
+	var hp_mult := clampf(hit * 26.0 / base_hp, minf(0.35, 1800.0 / base_hp), 1.4)
 	var atk_mult := clampf((float(stats.hp) / 10.0 + float(stats.def) * 0.5) / base_atk, 0.7, 1.1)
 	return {"hp_mult": hp_mult, "atk_mult": atk_mult}
 
