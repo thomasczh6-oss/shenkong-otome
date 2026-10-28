@@ -5,6 +5,9 @@ extends Node
 signal changed(what: String)
 
 const SAVE_PATH := "user://save.json"
+## 测试存档：调试菜单里切换，和主存档完全分开，不会覆盖主存档。
+const TEST_SAVE_PATH := "user://save_test.json"
+const SLOT_FILE := "user://slot.txt"
 
 ## 好感等级阈值与称呼（参考主流乙游的“亲密度”梯度）。
 const AFF_THRESHOLDS := [0, 40, 100, 180, 280, 400, 550, 730, 940, 1180, 1450]
@@ -28,9 +31,12 @@ const CARD_MAX_LEVEL := 50
 const BASE_STATS := {"hp": 1200, "atk": 90, "def": 30}
 
 var s: Dictionary = {}
+var save_path := SAVE_PATH
 
 
 func _ready() -> void:
+	if debug_enabled() and FileAccess.file_exists(SLOT_FILE) and FileAccess.get_file_as_string(SLOT_FILE).strip_edges() == "test":
+		save_path = TEST_SAVE_PATH
 	load_game()
 
 
@@ -71,8 +77,8 @@ func default_state() -> Dictionary:
 
 func load_game() -> void:
 	s = default_state()
-	if FileAccess.file_exists(SAVE_PATH):
-		var f := FileAccess.open(SAVE_PATH, FileAccess.READ)
+	if FileAccess.file_exists(save_path):
+		var f := FileAccess.open(save_path, FileAccess.READ)
 		if f != null:
 			var parsed = JSON.parse_string(f.get_as_text())
 			if typeof(parsed) == TYPE_DICTIONARY:
@@ -82,7 +88,7 @@ func load_game() -> void:
 
 
 func save() -> void:
-	var f := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	var f := FileAccess.open(save_path, FileAccess.WRITE)
 	if f != null:
 		f.store_string(JSON.stringify(s, "\t"))
 
@@ -94,9 +100,66 @@ func has_save() -> bool:
 func reset() -> void:
 	s = default_state()
 	var d := DirAccess.open("user://")
-	if d != null and d.file_exists("save.json"):
-		d.remove("save.json")
+	var fname := save_path.get_file()
+	if d != null and d.file_exists(fname):
+		d.remove(fname)
 	changed.emit("reset")
+
+
+# ---------------- 调试（测试存档） ----------------
+
+## 正式版把 project.godot 里的 application/config/debug_menu 改成 false 即可关掉调试入口。
+func debug_enabled() -> bool:
+	return bool(ProjectSettings.get_setting("application/config/debug_menu", false))
+
+
+func is_test_slot() -> bool:
+	return save_path == TEST_SAVE_PATH
+
+
+## 切换主存档 / 测试存档。先把当前存档写盘，再读另一份。
+func switch_slot(test: bool) -> void:
+	if test == is_test_slot():
+		return
+	save()
+	save_path = TEST_SAVE_PATH if test else SAVE_PATH
+	var f := FileAccess.open(SLOT_FILE, FileAccess.WRITE)
+	if f != null:
+		f.store_string("test" if test else "main")
+	load_game()
+	changed.emit("slot")
+
+
+## 只在测试存档上生效：把 ch_id 之前的章节全部标记通关，并解锁 ch_id（"all" 解锁全部）。
+func debug_unlock_to(ch_id: String) -> void:
+	if not is_test_slot():
+		return
+	if str(s.get("player_name", "")) == "":
+		s.player_name = "测试员"
+	for t in ["home", "battle", "battle2"]:
+		s.tutorial[t] = true
+	for ch in Data.chapters:
+		var cid := str(ch.id)
+		if not s.story.unlocked.has(cid):
+			s.story.unlocked.append(cid)
+		if cid == ch_id:
+			break
+		for sc in ch.scenes:
+			s.story.done[scene_key(cid, str(sc.id))] = true
+	save()
+	changed.emit("debug")
+
+
+func debug_add_resources() -> void:
+	if not is_test_slot():
+		return
+	s.diamonds = int(s.diamonds) + 20000
+	s.gold = int(s.get("gold", 0)) + 200000
+	s.stardust = int(s.get("stardust", 0)) + 2000
+	s.tickets.standard = int(s.tickets.get("standard", 0)) + 50
+	s.tickets.limited = int(s.tickets.get("limited", 0)) + 50
+	save()
+	changed.emit("debug")
 
 
 func player_name() -> String:

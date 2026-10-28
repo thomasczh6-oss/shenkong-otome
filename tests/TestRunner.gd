@@ -23,6 +23,7 @@ func _ready() -> void:
 	_test_combat_rules()
 	await _test_battle_sim()
 	await _test_challenge_flow()
+	_test_debug_slot()
 	print("\n%d checks, %d failures" % [checks, failures])
 	get_tree().quit(1 if failures > 0 else 0)
 
@@ -547,3 +548,27 @@ func _test_challenge_flow() -> void:
 
 func _no_picker() -> bool:
 	return not _has_label(Router.overlay, "选择搭档")
+
+
+## 调试菜单：测试存档和主存档分开，解锁只改测试存档。
+func _test_debug_slot() -> void:
+	print("[调试 · 测试存档]")
+	check(Game.debug_enabled(), "调试入口已开启（正式版可关）")
+	Game.s = Game.default_state()
+	Game.s.player_name = "主存档玩家"
+	Game.save()
+	Game.switch_slot(true)
+	check(Game.is_test_slot(), "切换到测试存档")
+	Game.debug_unlock_to("ch4")
+	check(Game.chapter_unlocked("ch4") and Game.scene_done("ch3", "s5") and Game.scene_done("ch1", "s1"), "测试存档解锁到第四章，前面章节已通关")
+	check(not Game.scene_done("ch4", "s1"), "第四章本身未标记通关")
+	Game.debug_add_resources()
+	check(Game.diamonds() >= 20000, "测试存档加资源")
+	Game.switch_slot(false)
+	check(not Game.is_test_slot() and Game.player_name() == "主存档玩家", "切回主存档，名字还在")
+	check(not Game.chapter_unlocked("ch4") and Game.diamonds() < 20000, "主存档没有被解锁或加资源")
+	Game.debug_unlock_to("ch4")
+	check(not Game.chapter_unlocked("ch4"), "主存档上调用解锁无效")
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(Game.TEST_SAVE_PATH))
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(Game.SLOT_FILE))
+	Game.reset()
