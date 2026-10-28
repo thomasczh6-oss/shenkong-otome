@@ -179,11 +179,11 @@ func _side_buttons() -> Control:
 		["商店", func() -> void: Router.push("Shop"), false],
 		["我的", func() -> void: Router.push("Profile"), false],
 	]
+	var side_icons := {"签到": "signin", "委托": "commission", "挑战": "challenge", "回忆": "gallery", "商店": "shop", "我的": "profile"}
 	for it in items:
-		var b := UIKit.button(str(it[0]) + ("  ●" if it[2] else ""), "dark", 26, 72)
-		b.custom_minimum_size = Vector2(150, 72)
+		var b := UIKit.icon_button(str(it[0]), "ui/icon_" + str(side_icons[str(it[0])]), 22, Vector2(118, 124), 66)
 		if it[2]:
-			b.add_theme_color_override("font_color", UIKit.C_ROSE)
+			UIKit.add_badge(b)
 		b.pressed.connect(it[1])
 		side_btns[str(it[0])] = b
 		col.add_child(b)
@@ -201,7 +201,7 @@ func _char_panel(ch: Dictionary) -> Control:
 	next.custom_minimum_size = Vector2(80, 110)
 	next.pressed.connect(func() -> void: _switch(1))
 
-	var panel := UIKit.panel(Color(0.03, 0.04, 0.1, 0.55), 28, 24, Color(1, 1, 1, 0.1), 2)
+	var panel := UIKit.panel(Color(0.17, 0.08, 0.25, 0.58), 32, 24, Color(1, 0.8, 0.92, 0.28), 2)
 	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var v := UIKit.vbox(8)
 	var name_row := UIKit.hbox(14)
@@ -249,9 +249,9 @@ func _nav() -> Control:
 		["许愿", "抽卡", func() -> void: Router.push("Gacha")],
 		["约会", "约会", func() -> void: Router.push("Dates", {"char": cid})],
 	]
-	var icons := {"主线": "★", "日常": "♪", "思念": "❀", "许愿": "☆", "约会": "♡"}
+	var icons := {"主线": "story", "日常": "daily", "思念": "cards", "许愿": "wish", "约会": "date"}
 	for it in items:
-		var b := UIKit.button(str(icons.get(str(it[0]), "")) + "\n" + str(it[0]), "dark", 30, 128)
+		var b := UIKit.icon_button(str(it[0]), "ui/icon_" + str(icons[str(it[0])]), 28, Vector2(0, 150), 84)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.pressed.connect(it[2])
 		nav_btns[str(it[0])] = b
