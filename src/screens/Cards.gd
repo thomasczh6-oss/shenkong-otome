@@ -73,7 +73,5 @@ func _tile(id: String, c: Dictionary) -> Control:
 		sub += " · 装备中"
 	v.add_child(UIKit.label(sub, 20, UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_CENTER, false))
 	panel.add_child(v)
-	panel.gui_input.connect(func(ev: InputEvent) -> void:
-		if ev is InputEventMouseButton and ev.pressed and ev.button_index == MOUSE_BUTTON_LEFT:
-			Router.push("CardDetail", {"card": id}))
+	UIKit.on_tap(panel, func() -> void: Router.push("CardDetail", {"card": id}))
 	return panel

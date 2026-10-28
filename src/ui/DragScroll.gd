@@ -4,7 +4,7 @@ extends Node
 ## 真机上表现为列表滑不动。这里在 _input 里自己处理：按下记录位置，移动超过阈值就开始滚动，
 ## 松手后带一点惯性；一旦判定为拖动，松手时不会再触发手指下面的按钮。
 
-const THRESHOLD := 14.0  # 视口像素，超过才算拖动，避免轻点被误判
+const THRESHOLD := 24.0  # 视口像素，超过才算拖动，避免轻点被误判
 const FRICTION := 5.0
 
 var sc: ScrollContainer

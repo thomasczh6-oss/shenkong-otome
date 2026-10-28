@@ -75,9 +75,7 @@ func _messages(v: VBoxContainer) -> void:
 		var unread := int(st.get("index", 0)) < steps.size()
 		var right: Control = UIKit.pill("新消息", UIKit.C_ROSE, 20) if unread else null
 		var row := _avatar_row(cid, Data.char_name(cid), preview, right)
-		row.gui_input.connect(func(ev: InputEvent) -> void:
-			if ev is InputEventMouseButton and ev.pressed:
-				Router.push("Chat", {"char": cid}))
+		UIKit.on_tap(row, func() -> void: Router.push("Chat", {"char": cid}))
 		v.add_child(row)
 	v.add_child(UIKit.label("回复消息会提升好感；每天的对话会在次日继续。", 22, UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_CENTER))
 
