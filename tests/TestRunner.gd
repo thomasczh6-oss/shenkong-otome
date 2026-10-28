@@ -22,6 +22,7 @@ func _ready() -> void:
 	await _test_drag_scroll()
 	_test_combat_rules()
 	await _test_battle_sim()
+	await _test_challenge_flow()
 	print("\n%d checks, %d failures" % [checks, failures])
 	get_tree().quit(1 if failures > 0 else 0)
 
@@ -458,3 +459,73 @@ func _test_battle_sim() -> void:
 	b.queue_free()
 	Engine.time_scale = 1.0
 
+
+
+func _find_button(root: Node, text_part: String) -> Button:
+	for n in root.find_children("*", "Button", true, false):
+		var b := n as Button
+		if b.is_visible_in_tree() and (b.text.contains(text_part) or _has_label(b, text_part)):
+			return b
+	return null
+
+
+func _has_label(n: Node, text_part: String) -> bool:
+	for l in n.find_children("*", "Label", true, false):
+		if (l as Label).text.contains(text_part):
+			return true
+	return false
+
+
+func _tap(b: Control) -> void:
+	if b == null:
+		return
+	var pos := b.get_global_rect().get_center()
+	if get_viewport().get_visible_rect().has_point(pos):
+		await _mouse(pos, true)
+		await _mouse(pos, false)
+	elif b is Button:
+		(b as Button).pressed.emit()
+		await get_tree().process_frame
+
+
+## v0.4.0 闪退回归：挑战 → 讨伐 / 回廊第 1 层 → 选搭档（每位男主都试）→ 必须进入战斗。
+func _test_challenge_flow() -> void:
+	print("[挑战入口进战斗]")
+	Game.s = Game.default_state()
+	Game.mark_tutorial("battle")
+	Game.mark_tutorial("battle2")
+	for entry in [["讨伐", "hunt"], ["挑战", "tower"]]:
+		for cid in Data.char_order:
+			Router.go("Home")
+			Router.push("Challenge")
+			await get_tree().process_frame
+			await get_tree().process_frame
+			var screen: Control = Router.stack.back().node
+			var btn := _find_button(screen, entry[0])
+			if entry[1] == "tower":
+				btn = null
+				for n in screen.find_children("*", "Button", true, false):
+					if (n as Button).text == "挑战" and n.is_visible_in_tree():
+						btn = n
+						break
+			check(btn != null, "%s：找到入口按钮" % entry[1])
+			await _tap(btn)
+			await get_tree().process_frame
+			var name := Data.char_name(cid)
+			var pick := _find_button(Router.overlay, name)
+			check(pick != null, "%s：弹出选搭档并有 %s" % [entry[1], name])
+			await _tap(pick)
+			await get_tree().process_frame
+			await get_tree().process_frame
+			check(Router.current_name() == "Battle", "%s + %s：进入战斗（当前 %s）" % [entry[1], name, Router.current_name()])
+			if Router.current_name() == "Battle":
+				var bt: Control = Router.stack.back().node
+				check(str(bt.params.get("partner", "")) == cid and str(bt.params.get("mode", "")) == entry[1], "%s：战斗参数正确" % entry[1])
+				bt.set_process(false)
+			check(Router.overlay.get_child_count() == 0 or _no_picker(), "%s：选搭档弹窗已关闭" % entry[1])
+	Router.go("Home")
+	await get_tree().process_frame
+
+
+func _no_picker() -> bool:
+	return not _has_label(Router.overlay, "选择搭档")

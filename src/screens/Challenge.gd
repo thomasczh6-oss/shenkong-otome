@@ -126,7 +126,7 @@ func _pick_partner(eid: String, on_pick: Callable) -> void:
 	var v := UIKit.vbox(18)
 	v.add_child(UIKit.label("选择搭档", 42, UIKit.C_TEXT, HORIZONTAL_ALIGNMENT_CENTER))
 	v.add_child(UIKit.label("对手：%s（%s）· 弱点「%s」" % [str(e.get("name", "")), el, Combat.weakness(el)], 26, UIKit.C_MUTED, HORIZONTAL_ALIGNMENT_CENTER))
-	var dim: Control = null
+	var holder := {"dim": null}
 	for cid in Data.char_order:
 		var ch := Data.character(cid)
 		var pel := str(ch.get("element", ""))
@@ -163,11 +163,19 @@ func _pick_partner(eid: String, on_pick: Callable) -> void:
 		b.add_child(h)
 		var captured: String = cid
 		b.pressed.connect(func() -> void:
-			dim.queue_free()
+			_close_dim(holder)
 			on_pick.call(captured))
 		v.add_child(b)
 	var cancel := UIKit.button("取消", "ghost", 28, 80)
 	v.add_child(cancel)
 	panel.add_child(v)
-	dim = Router.modal(panel, true)
-	cancel.pressed.connect(func() -> void: dim.queue_free())
+	holder.dim = Router.modal(panel, true)
+	cancel.pressed.connect(func() -> void: _close_dim(holder))
+
+
+# Lambdas capture locals by value, so the modal is kept in a dict holder.
+func _close_dim(holder: Dictionary) -> void:
+	var d = holder.get("dim")
+	if d != null and is_instance_valid(d):
+		d.queue_free()
+	holder.dim = null
