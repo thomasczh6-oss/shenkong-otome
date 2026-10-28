@@ -197,6 +197,57 @@ func _run() -> void:
 	await _shot("22_gallery")
 	Router.go("Home")
 
+	# 第四章：章节列表、开场对白、CG、终章 Boss 变身
+	for cid in ["ch1", "ch2", "ch3"]:
+		for sc in Data.chapter(cid).scenes:
+			Game.s.story.done[cid + "/" + str(sc.id)] = true
+		Game.unlock_chapter(cid)
+	Game.unlock_chapter("ch4")
+	Router.push("Chapters")
+	await get_tree().create_timer(0.3).timeout
+	var chs: Node = Router.stack.back().node
+	for sc in chs.find_children("*", "ScrollContainer", true, false):
+		(sc as ScrollContainer).scroll_vertical = 99999
+	await _shot("32_chapters_ch4", 0.4)
+	Router.go("Home")
+	Router.push("Story", {"chapter": "ch4", "scene": "s1"})
+	story = Router.stack.back().node
+	for i in 3:
+		await get_tree().create_timer(0.2).timeout
+		story._advance()
+		await get_tree().process_frame
+		story._finish_typing()
+	await _shot("33_ch4_dialog", 0.6)
+	Router.go("Home")
+	for scid in ["s2", "s5"]:
+		Router.push("Story", {"chapter": "ch4", "scene": scid})
+		story = Router.stack.back().node
+		await get_tree().create_timer(0.3).timeout
+		guard = 0
+		while not story.cg_active and guard < 120 and not story.ended:
+			if story.choice_layer != null:
+				story._pick(story.lines[story.idx].options[0])
+			elif Router.current_name() == "Battle":
+				Router.back({"win": true})
+			else:
+				story._advance()
+			await get_tree().process_frame
+			story._finish_typing()
+			guard += 1
+		story._advance()
+		await get_tree().process_frame
+		story._finish_typing()
+		await _shot("34_ch4_cg_" + scid, 1.2)
+		Router.go("Home")
+	Router.push("Battle", {"enemy": "zero_lock", "partner": "lu_zhuo"})
+	bt = Router.stack.back().node
+	await get_tree().create_timer(0.4).timeout
+	await _shot("35_zero_lock", 0.3)
+	bt.ehp = bt.ehp_max * 0.51
+	bt._skill()
+	await _shot("36_zero_lock_p2", 2.0)
+	Router.go("Home")
+
 	# 约会
 	Router.push("Dates", {"char": "shen_yan"})
 	await _shot("23_dates")

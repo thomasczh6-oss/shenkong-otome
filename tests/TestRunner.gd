@@ -172,6 +172,14 @@ func _test_story() -> void:
 	check(Data.chapters.size() >= 2, "至少 2 章")
 	check(Data.chapter("ch2").get("scenes", []).size() == 5, "第二章 5 节")
 	check(Data.chapter("ch3").get("scenes", []).size() == 5 and str(Data.chapter("ch3").get("requires", "")) == "ch2", "第三章 5 节，完成第二章后解锁")
+	check(Data.chapter("ch4").get("scenes", []).size() == 5 and str(Data.chapter("ch4").get("requires", "")) == "ch3", "第四章 5 节，完成第三章后解锁")
+	var ch4_enemies := {}
+	for sc in Data.chapter("ch4").get("scenes", []):
+		for line in sc.lines:
+			if str(line.get("t", "")) == "battle":
+				ch4_enemies[str(line.enemy)] = true
+	check(ch4_enemies.size() == 5, "第四章 5 场战斗都是新敌人（%d）" % ch4_enemies.size())
+	check(Data.enemy("zero_lock").has("phase2"), "第四章 Boss 零号之锁有第二形态")
 	var bgms: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/audio.json")).get("bgm", {})
 	for ch in Data.chapters:
 		for sc in ch.scenes:
@@ -501,6 +509,7 @@ func _tap(b: Control) -> void:
 func _test_challenge_flow() -> void:
 	print("[挑战入口进战斗]")
 	Game.s = Game.default_state()
+	Game.mark_tutorial("home")
 	Game.mark_tutorial("battle")
 	Game.mark_tutorial("battle2")
 	for entry in [["讨伐", "hunt"], ["挑战", "tower"]]:
