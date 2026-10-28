@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/aquarium.png-1a3f109f0dd584276e980bdd5943d01b
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.82
+compress/lossy_quality=0.85
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
