@@ -3,16 +3,16 @@ extends Node
 ## 配色（v0.3 面向女性玩家重做）：暮紫夜色底 + 樱粉主色 + 香槟金点缀 + 月白文字。
 ## 字体：霞鹜文楷（主字体，OFL）+ 文泉驿正黑（缺字回退）。
 
-const C_BG := Color("130e2a")
-const C_BG2 := Color("2a1a45")
-const C_PANEL := Color(0.19, 0.13, 0.33, 0.92)
+const C_BG := Color("1c1233")
+const C_BG2 := Color("3d2652")
+const C_PANEL := Color(0.25, 0.16, 0.37, 0.80)
 const C_PANEL2 := Color("3a2a63")
-const C_LINE := Color(1.0, 0.78, 0.9, 0.22)
+const C_LINE := Color(1.0, 0.82, 0.92, 0.30)
 const C_ACCENT := Color("ff9ec7")
 const C_ROSE := Color("ff7eaa")
 const C_GOLD := Color("f6d79a")
 const C_TEXT := Color("fff7fb")
-const C_MUTED := Color("c3b5dc")
+const C_MUTED := Color("d4c4e6")
 const C_DANGER := Color("ff6b8a")
 const C_OK := Color("9fe8c4")
 const C_INK := Color("3a1636")  # 浅色按钮上的文字
@@ -138,10 +138,22 @@ func button(text: String, kind := "primary", size := 36, min_h := 96) -> Button:
 			bg = Color(0.1, 0.06, 0.18, 0.62)
 			border = Color(1, 0.85, 0.95, 0.18)
 			bw = 2
-	var r := mini(36, int(min_h / 2))
-	b.add_theme_stylebox_override("normal", _glow_sb(sb(bg, r, border, bw), glow))
-	b.add_theme_stylebox_override("hover", _glow_sb(sb(bg.lightened(0.08), r, border, bw), glow))
-	b.add_theme_stylebox_override("pressed", sb(bg.darkened(0.15), r, border, bw))
+	var r := mini(40, int(min_h / 2))
+	if kind in ["primary", "gold", "rose"]:
+		# 亮色按钮：上浅下深的渐变 + 顶部高光 + 外发光，像糖果一样的质感
+		var top: Color = {"primary": Color("ffc4dc"), "gold": Color("fff0c9"), "rose": Color("ffa3c2")}[kind]
+		var bottom: Color = {"primary": Color("ff8fbf"), "gold": Color("f2c983"), "rose": Color("ff6f9e")}[kind]
+		b.add_theme_stylebox_override("normal", soft_box(top, bottom, r, border, glow))
+		b.add_theme_stylebox_override("hover", soft_box(top.lightened(0.06), bottom.lightened(0.06), r, border, glow))
+		b.add_theme_stylebox_override("pressed", soft_box(top.darkened(0.08), bottom.darkened(0.1), r, border, Color(glow, glow.a * 0.5)))
+	else:
+		var n := sb(bg, r, border, bw)
+		n.shadow_color = Color(0.05, 0.0, 0.1, 0.25)
+		n.shadow_size = 6
+		n.shadow_offset = Vector2(0, 3)
+		b.add_theme_stylebox_override("normal", n)
+		b.add_theme_stylebox_override("hover", sb(bg.lightened(0.08), r, border, bw))
+		b.add_theme_stylebox_override("pressed", sb(bg.darkened(0.15), r, border, bw))
 	b.add_theme_stylebox_override("disabled", sb(Color(0.35, 0.3, 0.45, 0.4), r, Color(1, 1, 1, 0.08), 2))
 	b.pivot_offset = Vector2(0, 0)
 	b.button_down.connect(func() -> void:
@@ -167,8 +179,68 @@ func _glow_sb(s: StyleBoxFlat, glow: Color) -> StyleBoxFlat:
 
 func panel(bg := C_PANEL, radius := 28, pad := 24, border: Color = Color.TRANSPARENT, border_w := 0) -> PanelContainer:
 	var p := PanelContainer.new()
-	p.add_theme_stylebox_override("panel", sb(bg, radius, border, border_w, pad))
+	var st := sb(bg, maxi(radius, 0) if radius < 900 else radius, border, border_w, pad)
+	# 半透明的卡片加一点柔和投影和高光描边，像磨砂玻璃
+	if bg.a > 0.3 and radius < 900:
+		st.shadow_color = Color(0.06, 0.0, 0.12, 0.3)
+		st.shadow_size = 10
+		st.shadow_offset = Vector2(0, 4)
+		if border_w == 0:
+			st.set_border_width_all(2)
+			st.border_color = Color(1, 0.86, 0.95, 0.16)
+	p.add_theme_stylebox_override("panel", st)
 	return p
+
+
+var _box_cache: Dictionary = {}
+
+
+## 生成一张 9 宫格贴图样式：圆角、上下渐变、顶部高光、描边、外发光。按参数缓存。
+func soft_box(top: Color, bottom: Color, radius: int, border: Color = Color.TRANSPARENT, glow: Color = Color.TRANSPARENT) -> StyleBoxTexture:
+	var key := "%s|%s|%d|%s|%s" % [top.to_html(), bottom.to_html(), radius, border.to_html(), glow.to_html()]
+	if _box_cache.has(key):
+		return _box_cache[key]
+	var g := 14 if glow.a > 0.0 else 0
+	var inner := radius * 2 + 24
+	var w := inner + g * 2
+	var img := Image.create(w, w, false, Image.FORMAT_RGBA8)
+	var half := Vector2(inner, inner) / 2.0
+	var c := Vector2(w, w) / 2.0
+	for y in w:
+		for x in w:
+			# 圆角矩形的有向距离（内部为负）
+			var q := (Vector2(x + 0.5, y + 0.5) - c).abs() - (half - Vector2(radius, radius))
+			var d := Vector2(maxf(q.x, 0.0), maxf(q.y, 0.0)).length() + minf(maxf(q.x, q.y), 0.0) - radius
+			var col := Color(0, 0, 0, 0)
+			if d < 0.5:
+				var t := clampf((y - g) / float(inner), 0.0, 1.0)
+				col = top.lerp(bottom, t)
+				if t < 0.42:
+					col = col.lerp(Color.WHITE, 0.22 * (1.0 - t / 0.42))
+				if border.a > 0.0 and d > -2.5:
+					col = col.lerp(Color(border, 1.0), border.a * 0.85)
+				col.a = clampf(0.5 - d, 0.0, 1.0) * maxf(top.a, 0.01)
+			elif g > 0:
+				var k := exp(-pow(d / (g * 0.55), 2.0))
+				col = Color(glow, glow.a * k)
+			img.set_pixel(x, y, col)
+	var st := StyleBoxTexture.new()
+	st.texture = ImageTexture.create_from_image(img)
+	var m := float(radius + g + 2)
+	st.texture_margin_left = m
+	st.texture_margin_right = m
+	st.texture_margin_top = m
+	st.texture_margin_bottom = m
+	st.expand_margin_left = g
+	st.expand_margin_right = g
+	st.expand_margin_top = g
+	st.expand_margin_bottom = g
+	st.content_margin_left = 18
+	st.content_margin_right = 18
+	st.content_margin_top = 6
+	st.content_margin_bottom = 6
+	_box_cache[key] = st
+	return st
 
 
 func vbox(sep := 16) -> VBoxContainer:
@@ -242,7 +314,7 @@ func header(title_text: String, on_back: Callable = Callable(), right: Control =
 	var h := hbox(16)
 	h.custom_minimum_size = Vector2(0, 100)
 	if on_back.is_valid():
-		var b := button("← 返回", "dark", 30, 76)
+		var b := button("‹  返回", "ghost", 30, 76)
 		b.custom_minimum_size = Vector2(170, 76)
 		b.pressed.connect(on_back)
 		h.add_child(b)
@@ -250,7 +322,11 @@ func header(title_text: String, on_back: Callable = Callable(), right: Control =
 	tv.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	tv.alignment = BoxContainer.ALIGNMENT_CENTER
 	tv.add_theme_constant_override("separation", 2)
-	var t := label("❀ " + title_text, 46, C_TEXT, HORIZONTAL_ALIGNMENT_LEFT, false)
+	var t := label("❀ " + title_text, 48, C_TEXT, HORIZONTAL_ALIGNMENT_LEFT, false)
+	t.add_theme_color_override("font_shadow_color", Color(1.0, 0.55, 0.78, 0.55))
+	t.add_theme_constant_override("shadow_outline_size", 10)
+	t.add_theme_constant_override("shadow_offset_x", 0)
+	t.add_theme_constant_override("shadow_offset_y", 0)
 	tv.add_child(t)
 	var line := gradient_rect(Color(C_GOLD, 0.9), Color(C_GOLD, 0.0), false)
 	line.custom_minimum_size = Vector2(260, 3)
@@ -285,6 +361,17 @@ func dreamy_bg() -> Control:
 	root.set_anchors_preset(Control.PRESET_FULL_RECT)
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(gradient_rect(C_BG, C_BG2))
+	var page := Data.texture("ui/page_bg")
+	if page != null:
+		var img := image(page)
+		img.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		img.modulate = Color(0.78, 0.72, 0.86, 0.85)
+		img.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		root.add_child(img)
+		# 上下压暗一点，保证文字可读
+		var veil := gradient_rect(Color(C_BG, 0.55), Color(C_BG, 0.35))
+		veil.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		root.add_child(veil)
 	for spec in [[Vector2(0.85, 0.08), Color(1.0, 0.55, 0.78, 0.22), 900.0], [Vector2(0.1, 0.75), Color(0.6, 0.55, 1.0, 0.16), 1000.0]]:
 		var g := Gradient.new()
 		g.set_color(0, spec[1])
@@ -303,7 +390,49 @@ func dreamy_bg() -> Control:
 		tr.position = Vector2(1080.0 * spec[0].x, 1920.0 * spec[0].y) - Vector2(d, d) / 2.0
 		root.add_child(tr)
 	root.add_child(sparkles(Rect2(0, 0, 1080, 1920), 40))
+	root.add_child(petals(Rect2(0, -60, 1080, 40), 10))
 	return root
+
+
+var _petal_tex: Texture2D = null
+
+
+## 缓缓飘落的花瓣。
+func petals(area: Rect2, amount := 10) -> CPUParticles2D:
+	if _petal_tex == null:
+		var im := Image.create(24, 32, false, Image.FORMAT_RGBA8)
+		for y in 32:
+			for x in 24:
+				var dx := (x - 11.5) / 11.5
+				var dy := (y - 16.0) / 16.0
+				# 上宽下尖的水滴形
+				var w := 1.0 - pow(absf(dy), 1.6) * (0.6 if dy < 0.0 else 1.0)
+				var d := absf(dx) / maxf(w, 0.01)
+				if d < 1.0 and absf(dy) < 1.0:
+					var a := clampf((1.0 - d) * 3.0, 0.0, 1.0)
+					im.set_pixel(x, y, Color(1.0, 0.93 - 0.12 * (1.0 - d), 0.96, a))
+		_petal_tex = ImageTexture.create_from_image(im)
+	var pt := CPUParticles2D.new()
+	pt.texture = _petal_tex
+	pt.position = area.get_center()
+	pt.amount = amount
+	pt.lifetime = 14.0
+	pt.preprocess = 14.0
+	pt.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+	pt.emission_rect_extents = area.size / 2.0
+	pt.direction = Vector2(0.4, 1)
+	pt.spread = 25.0
+	pt.gravity = Vector2(6, 14)
+	pt.initial_velocity_min = 60.0
+	pt.initial_velocity_max = 110.0
+	pt.angular_velocity_min = -40.0
+	pt.angular_velocity_max = 40.0
+	pt.angle_min = 0.0
+	pt.angle_max = 360.0
+	pt.scale_amount_min = 0.6
+	pt.scale_amount_max = 1.2
+	pt.color = Color(1.0, 0.78, 0.88, 0.55)
+	return pt
 
 
 ## 闪烁星点粒子，铺在 area 内。
@@ -394,8 +523,13 @@ func progress(value: float, max_value: float, color := C_ACCENT, h := 22) -> Pro
 	p.value = value
 	p.show_percentage = false
 	p.custom_minimum_size = Vector2(0, h)
-	p.add_theme_stylebox_override("background", sb(Color(1, 1, 1, 0.08), int(h / 2.0)))
-	p.add_theme_stylebox_override("fill", sb(color, int(h / 2.0)))
+	p.add_theme_stylebox_override("background", sb(Color(1, 1, 1, 0.1), int(h / 2.0), Color(1, 1, 1, 0.08), 1))
+	var fill := sb(color, int(h / 2.0))
+	fill.border_width_top = maxi(1, int(h / 6.0))
+	fill.border_color = color.lightened(0.35)
+	fill.shadow_color = Color(color, 0.45)
+	fill.shadow_size = 6
+	p.add_theme_stylebox_override("fill", fill)
 	p.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	return p
 
@@ -409,7 +543,7 @@ func pill(text: String, color := C_ACCENT, size := 26) -> PanelContainer:
 
 ## 货币胶囊：图标 + 数值。
 func currency(icon_text: String, value: int, color := C_GOLD) -> PanelContainer:
-	var p := panel(Color(0.03, 0.04, 0.1, 0.7), 999, 8, Color(1, 1, 1, 0.1), 2)
+	var p := panel(Color(0.18, 0.1, 0.26, 0.72), 999, 8, Color(1, 0.85, 0.95, 0.25), 2)
 	var h := hbox(8)
 	h.add_child(label(icon_text, 28, color, HORIZONTAL_ALIGNMENT_CENTER, false))
 	var v := label(str(value), 28, C_TEXT, HORIZONTAL_ALIGNMENT_LEFT, false)
@@ -514,3 +648,42 @@ func on_tap(ctrl: Control, callback: Callable) -> void:
 					callback.call()
 		elif ev is InputEventMouseMotion and st.down and ev.global_position.distance_to(st.pos) > 40.0:
 			st.down = false)
+
+
+## 图标在上、文字在下的磨砂圆角按钮（主页导航用）。图标缺失时退回纯文字。
+func icon_button(text: String, icon_key: String, font_size := 26, min_size := Vector2(0, 140), icon_px := 80) -> Button:
+	var b := button(text, "dark", font_size, int(min_size.y))
+	b.custom_minimum_size = min_size
+	var tex := Data.texture(icon_key)
+	if tex != null:
+		b.icon = tex
+		b.expand_icon = true
+		b.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		b.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
+		b.add_theme_constant_override("icon_max_width", icon_px)
+		b.add_theme_constant_override("h_separation", 2)
+	var sb := soft_box(Color(1.0, 0.94, 0.98, 0.20), Color(0.86, 0.72, 0.95, 0.10), 30, Color(1, 1, 1, 0.32), Color(1.0, 0.6, 0.8, 0.18))
+	var sbh := soft_box(Color(1.0, 0.9, 0.96, 0.32), Color(0.95, 0.75, 0.92, 0.18), 30, Color(1, 1, 1, 0.5), Color(1.0, 0.6, 0.8, 0.28))
+	b.add_theme_stylebox_override("normal", sb)
+	for st in ["hover", "pressed"]:
+		b.add_theme_stylebox_override(st, sbh)
+	b.add_theme_color_override("font_color", Color(1, 0.97, 0.99))
+	b.add_theme_color_override("font_outline_color", Color(0.35, 0.12, 0.3, 0.6))
+	b.add_theme_constant_override("outline_size", 6)
+	return b
+
+
+## 右上角小红点（有待领取/可做的事）。
+func add_badge(c: Control) -> void:
+	var dot := panel(Color(1.0, 0.36, 0.55), 999, 0, Color(1, 1, 1, 0.9), 3)
+	dot.custom_minimum_size = Vector2(22, 22)
+	dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	dot.anchor_left = 1.0
+	dot.anchor_right = 1.0
+	dot.offset_left = -30
+	dot.offset_right = -8
+	dot.offset_top = 8
+	dot.offset_bottom = 30
+	dot.name = "Badge"
+	c.add_child(dot)
+
